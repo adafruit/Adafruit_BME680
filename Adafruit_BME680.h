@@ -22,9 +22,15 @@
 #else
  #include "WProgram.h"
 #endif
-
+#include <Wire.h>
+#include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
+#include "bme680.h"
+
+
+int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
+int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 
 
 #define BME680_SIGN_BIT_MASK					(0x08)
@@ -32,7 +38,7 @@
 /*=========================================================================
     I2C ADDRESS/BITS
     -----------------------------------------------------------------------*/
-    #define BME680_ADDRESS                (0x77)
+#define BME680_DEFAULT_ADDRESS                (0x77)
 /*=========================================================================*/
 
 /*=========================================================================
@@ -75,7 +81,7 @@
 
       BME680_REGISTER_CHIPID             = 0xD0,
 
-      BME680_REGISTER_CONFIG       = 0x75
+      BME680_REGISTER_CONFIG       = 0x75,
 
       BME680_REGISTER_PRESSUREDATA       = 0xF7,
       BME680_REGISTER_TEMPDATA           = 0xFA,
@@ -85,46 +91,6 @@
     };
 
 #define BME680_FILTER_COEFF_OFF 0
-/*=========================================================================*/
-
-/*=========================================================================
-    CALIBRATION DATA
-    -----------------------------------------------------------------------*/
-    typedef struct
-    {
-      uint16_t dig_T1;
-      int16_t  dig_T2;
-      int8_t  dig_T3;
-
-      uint16_t dig_P1;
-      int16_t  dig_P2;
-      int8_t  dig_P3;
-      int16_t  dig_P4;
-      int16_t  dig_P5;
-      int8_t  dig_P6;
-      int8_t  dig_P7;
-      int16_t  dig_P8;
-      int16_t  dig_P9;
-      uint8_t  dig_P10;
-
-      uint16_t  dig_H1;
-      uint16_t  dig_H2;
-      int8_t    dig_H3;
-      int8_t    dig_H4;
-      int8_t    dig_H5;
-      uint8_t   dig_H6;
-      uint8_t   dig_H7;
-
-      int8_t    dig_GH1;
-      int16_t   dig_GH2;
-      int8_t    dig_GH3;
-
-      int32_t   t_fine;/**<calibration T_FINE data*/
-      uint8_t	res_heat_range;/**<resistance calculation*/
-      uint8_t	range_switching_error;/**<range switching error*/
-      int8_t    res_heat_val;/**<resistance heat value*/
-
-    } bme680_calib_data;
 /*=========================================================================*/
 
 /*
@@ -152,39 +118,35 @@ class Adafruit_BME680_Unified : public Adafruit_Sensor
 class Adafruit_BME680
 {
   public:
-    Adafruit_BME680(void);
-    Adafruit_BME680(int8_t cspin);
+    Adafruit_BME680(int8_t cspin = -1);
     Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
-    bool  begin(uint8_t addr = BME680_ADDRESS);
+    bool  begin(uint8_t addr = BME680_DEFAULT_ADDRESS);
     float readTemperature(void);
     float readPressure(void);
     float readHumidity(void);
     float readGas(void);
     float readAltitude(float seaLevel);
 
+
+    bool setTemperatureOversampling(uint8_t os);
+    bool setPressureOversampling(uint8_t os);
+    bool setHumidityOversampling(uint8_t os);
+    bool setIIRFilterSize(uint8_t fs);
+    bool setGasHeater(uint16_t heaterTemp, uint16_t heaterTime);
+
+    bool performReading(void);
+
   private:
 
-    void readCoefficients(void);
-    uint8_t spixfer(uint8_t x);
-
-    void      write8(byte reg, byte value);
-    uint8_t   read8(byte reg);
-    int8_t    readS8(byte reg);
-    uint16_t  read16(byte reg);
-    uint32_t  read24(byte reg);
-    int16_t   readS16(byte reg);
-    uint16_t  read16_LE(byte reg); // little endian
-    int16_t   readS16_LE(byte reg); // little endian
-
+    bool      _filterEnabled, _tempEnabled, _humEnabled, _presEnabled, _gasEnabled;
     uint8_t   _i2caddr;
     int32_t   _sensorID;
-    double comp_temperature;
-
     int8_t _cs, _mosi, _miso, _sck;
 
-    bme680_calib_data _bme680_calib;
+    uint8_t spixfer(uint8_t x);
 
+    struct bme680_dev gas_sensor;
 };
 
 #endif
