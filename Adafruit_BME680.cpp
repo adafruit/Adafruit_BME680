@@ -86,6 +86,36 @@ bool Adafruit_BME680::begin(uint8_t addr) {
   if (rslt != BME680_OK) 
     return false;
 
+  Serial.print("T1 = "); Serial.println(gas_sensor.calib.par_t1);
+  Serial.print("T2 = "); Serial.println(gas_sensor.calib.par_t2);
+  Serial.print("T3 = "); Serial.println(gas_sensor.calib.par_t3);
+  Serial.print("P1 = "); Serial.println(gas_sensor.calib.par_p1);
+  Serial.print("P2 = "); Serial.println(gas_sensor.calib.par_p2);
+  Serial.print("P3 = "); Serial.println(gas_sensor.calib.par_p3);
+  Serial.print("P4 = "); Serial.println(gas_sensor.calib.par_p4);
+  Serial.print("P5 = "); Serial.println(gas_sensor.calib.par_p5);
+  Serial.print("P6 = "); Serial.println(gas_sensor.calib.par_p6);
+  Serial.print("P7 = "); Serial.println(gas_sensor.calib.par_p7);
+  Serial.print("P8 = "); Serial.println(gas_sensor.calib.par_p8);
+  Serial.print("P9 = "); Serial.println(gas_sensor.calib.par_p9);
+  Serial.print("P10 = "); Serial.println(gas_sensor.calib.par_p10);
+  Serial.print("H1 = "); Serial.println(gas_sensor.calib.par_h1);
+  Serial.print("H2 = "); Serial.println(gas_sensor.calib.par_h2);
+  Serial.print("H3 = "); Serial.println(gas_sensor.calib.par_h3);
+  Serial.print("H4 = "); Serial.println(gas_sensor.calib.par_h4);
+  Serial.print("H5 = "); Serial.println(gas_sensor.calib.par_h5);
+  Serial.print("H6 = "); Serial.println(gas_sensor.calib.par_h6);
+  Serial.print("H7 = "); Serial.println(gas_sensor.calib.par_h7);
+  Serial.print("G1 = "); Serial.println(gas_sensor.calib.par_gh1);
+  Serial.print("G2 = "); Serial.println(gas_sensor.calib.par_gh2);
+  Serial.print("G3 = "); Serial.println(gas_sensor.calib.par_gh3);
+  Serial.print("G1 = "); Serial.println(gas_sensor.calib.par_gh1);
+  Serial.print("G2 = "); Serial.println(gas_sensor.calib.par_gh2);
+  Serial.print("G3 = "); Serial.println(gas_sensor.calib.par_gh3);
+  Serial.print("Heat Range = "); Serial.println(gas_sensor.calib.res_heat_range);
+  Serial.print("Heat Val = "); Serial.println(gas_sensor.calib.res_heat_val);
+  Serial.print("SW Error = "); Serial.println(gas_sensor.calib.range_sw_err);
+
   setTemperatureOversampling(BME680_OS_8X);
   setHumidityOversampling(BME680_OS_2X);
   setPressureOversampling(BME680_OS_4X);
@@ -136,8 +166,9 @@ bool Adafruit_BME680::performReading(void) {
   uint16_t meas_period;
   bme680_get_profile_dur(&meas_period, &gas_sensor);
   Serial.print("Waiting (ms) "); Serial.println(meas_period);
-  delay(meas_period); /* Delay till the measurement is ready */
+  delay(meas_period * 2); /* Delay till the measurement is ready */
   
+  Serial.print("t_fine = "); Serial.println(gas_sensor.calib.t_fine);
 
   Serial.println("Getting sensor data");
   rslt = bme680_get_sensor_data(&data, &gas_sensor);
