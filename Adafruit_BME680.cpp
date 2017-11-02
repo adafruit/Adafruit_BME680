@@ -17,11 +17,18 @@
 #include "Arduino.h"
 #include "Adafruit_BME680.h"
 
-#define BME680_DEBUG
+//#define BME680_DEBUG
 
 
 // must be global in order to work with underlying library
 int8_t _BME680_SoftwareSPI_MOSI, _BME680_SoftwareSPI_MISO, _BME680_SoftwareSPI_SCK;
+
+// Our hardware interface functions
+static int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
+static int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
+static int8_t spi_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
+static int8_t spi_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
+static uint8_t spi_transfer(uint8_t x);
 
 
 /***************************************************************************
@@ -82,10 +89,14 @@ bool Adafruit_BME680::begin(uint8_t addr) {
 
   int8_t rslt = BME680_OK;
   rslt = bme680_init(&gas_sensor);
-  //Serial.print("Result: "); Serial.println(rslt);
+#ifdef BME680_DEBUG
+  Serial.print("Result: "); Serial.println(rslt);
+#endif
+
   if (rslt != BME680_OK) 
     return false;
 
+#ifdef BME680_DEBUG
   Serial.print("T1 = "); Serial.println(gas_sensor.calib.par_t1);
   Serial.print("T2 = "); Serial.println(gas_sensor.calib.par_t2);
   Serial.print("T3 = "); Serial.println(gas_sensor.calib.par_t3);
@@ -115,6 +126,7 @@ bool Adafruit_BME680::begin(uint8_t addr) {
   Serial.print("Heat Range = "); Serial.println(gas_sensor.calib.res_heat_range);
   Serial.print("Heat Val = "); Serial.println(gas_sensor.calib.res_heat_val);
   Serial.print("SW Error = "); Serial.println(gas_sensor.calib.range_sw_err);
+#endif
 
   setTemperatureOversampling(BME680_OS_8X);
   setHumidityOversampling(BME680_OS_2X);
@@ -127,6 +139,28 @@ bool Adafruit_BME680::begin(uint8_t addr) {
 
   return true;
 }
+
+
+float Adafruit_BME680::readTemperature(void) {
+  performReading();
+  return temperature;
+}
+
+float Adafruit_BME680::readPressure(void) {
+  performReading();
+  return pressure;
+}
+
+float Adafruit_BME680::readHumidity(void) {
+  performReading();
+  return humidity;
+}
+
+uint32_t Adafruit_BME680::readGas(void) {
+  performReading();
+  return gas_resistance;
+}
+
 
 bool Adafruit_BME680::performReading(void) {
   uint8_t set_required_settings = 0;
@@ -150,13 +184,13 @@ bool Adafruit_BME680::performReading(void) {
     set_required_settings |= BME680_GAS_SENSOR_SEL;
 
   /* Set the desired sensor configuration */
-  Serial.println("Setting sensor settings");
+  //Serial.println("Setting sensor settings");
   rslt = bme680_set_sensor_settings(set_required_settings, &gas_sensor);
   if (rslt != BME680_OK) 
     return false;
   
   /* Set the power mode */
-  Serial.println("Setting power mode");
+  //Serial.println("Setting power mode");
   rslt = bme680_set_sensor_mode(&gas_sensor);
   if (rslt != BME680_OK) 
     return false;
@@ -165,32 +199,45 @@ bool Adafruit_BME680::performReading(void) {
    * measurement is complete */
   uint16_t meas_period;
   bme680_get_profile_dur(&meas_period, &gas_sensor);
-  Serial.print("Waiting (ms) "); Serial.println(meas_period);
+  //Serial.print("Waiting (ms) "); Serial.println(meas_period);
   delay(meas_period * 2); /* Delay till the measurement is ready */
   
-  Serial.print("t_fine = "); Serial.println(gas_sensor.calib.t_fine);
+  //Serial.print("t_fine = "); Serial.println(gas_sensor.calib.t_fine);
 
-  Serial.println("Getting sensor data");
+  //Serial.println("Getting sensor data");
   rslt = bme680_get_sensor_data(&data, &gas_sensor);
   if (rslt != BME680_OK) 
     return false;
 
   if (_tempEnabled) {
-    Serial.print("Temp: "); Serial.println(data.temperature / 100.0, 2);
+    //Serial.print("Temp: "); Serial.println(data.temperature / 100.0, 2);
+    temperature = data.temperature / 100.0;
+  } else {
+    temperature = NAN;
   }
+
   if (_humEnabled) {
-    Serial.print("Hum:  "); Serial.println(data.humidity / 1000.0, 2);
+    //Serial.print("Hum:  "); Serial.println(data.humidity / 1000.0, 2);
+    humidity = data.humidity / 1000.0;
+  } else {
+    humidity = NAN;
   }
+
   if (_presEnabled) {
-    Serial.print("Pres: "); Serial.println(data.pressure / 100.0, 2);
+    //Serial.print("Pres: "); Serial.println(data.pressure / 100.0, 2);
+    pressure = data.pressure;
+  } else {
+    pressure = NAN;
   }
 
   /* Avoid using measurements from an unstable heating setup */
   if (_gasEnabled) {
     if (data.status & BME680_HEAT_STAB_MSK) {
-      Serial.print("Gas resistance: "); Serial.println(data.gas_resistance);
+      //Serial.print("Gas resistance: "); Serial.println(data.gas_resistance);
+      gas_resistance = data.gas_resistance;
     } else {
-      Serial.println("Gas reading unstable!");
+      gas_resistance = 0;
+      //Serial.println("Gas reading unstable!");
     }
   }
 

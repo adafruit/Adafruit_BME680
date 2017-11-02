@@ -29,12 +29,6 @@
 #include "bme680.h"
 
 
-int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
-int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
-int8_t spi_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
-int8_t spi_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
-uint8_t spi_transfer(uint8_t x);
-
 /*=========================================================================
     I2C ADDRESS/BITS
     -----------------------------------------------------------------------*/
@@ -75,7 +69,7 @@ class Adafruit_BME680
     float readTemperature(void);
     float readPressure(void);
     float readHumidity(void);
-    float readGas(void);
+    uint32_t readGas(void);
     float readAltitude(float seaLevel);
 
 
@@ -87,6 +81,7 @@ class Adafruit_BME680
 
     bool performReading(void);
 
+    float temperature, pressure, humidity, gas_resistance;
   private:
 
     bool _filterEnabled, _tempEnabled, _humEnabled, _presEnabled, _gasEnabled;
