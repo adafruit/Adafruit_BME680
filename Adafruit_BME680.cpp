@@ -19,7 +19,6 @@
 
 //#define BME680_DEBUG
 
-
 // must be global in order to work with underlying library
 int8_t _BME680_SoftwareSPI_MOSI, _BME680_SoftwareSPI_MISO, _BME680_SoftwareSPI_SCK;
 
@@ -159,6 +158,31 @@ float Adafruit_BME680::readHumidity(void) {
 uint32_t Adafruit_BME680::readGas(void) {
   performReading();
   return gas_resistance;
+}
+
+
+
+
+/**************************************************************************/
+/*!
+    Calculates the altitude (in meters) from the specified atmospheric
+    pressure (in hPa), and sea-level pressure (in hPa).
+
+    @param  seaLevel      Sea-level pressure in hPa
+    @param  atmospheric   Atmospheric pressure in hPa
+*/
+/**************************************************************************/
+float Adafruit_BME680::readAltitude(float seaLevel)
+{
+    // Equation taken from BMP180 datasheet (page 16):
+    //  http://www.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
+
+    // Note that using the equation from wikipedia can give bad results
+    // at high altitude. See this thread for more information:
+    //  http://forums.adafruit.com/viewtopic.php?f=22&t=58064
+
+    float atmospheric = readPressure() / 100.0F;
+    return 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903));
 }
 
 

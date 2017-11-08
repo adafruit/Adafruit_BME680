@@ -2,13 +2,13 @@
   This is a library for the BME680 gas, humidity, temperature & pressure sensor
 
   Designed specifically to work with the Adafruit BME680 Breakout
-  ----> http://www.adafruit.com/products/XXXX
+  ----> http://www.adafruit.com/products/3660
 
   These sensors use I2C or SPI to communicate, 2 or 4 pins are required
   to interface.
 
   Adafruit invests time and resources providing this open source code,
-  please support Adafruit andopen-source hardware by purchasing products
+  please support Adafruit and open-source hardware by purchasing products
   from Adafruit!
 
   Written by Limor Fried & Kevin Townsend for Adafruit Industries.
@@ -50,30 +50,30 @@ void setup() {
 }
 
 void loop() {
-  /*
-    Serial.print("Temperature = ");
-    Serial.print(bme.readTemperature());
-    Serial.println(" *C");
+  if (! bme.performReading()) {
+    Serial.println("Failed to perform reading :(");
+    return;
+  }
+  Serial.print("Temperature = ");
+  Serial.print(bme.temperature);
+  Serial.println(" *C");
 
-    Serial.print("Pressure = ");
+  Serial.print("Pressure = ");
+  Serial.print(bme.pressure / 100.0);
+  Serial.println(" hPa");
 
-    Serial.print(bme.readPressure() / 100.0F);
-    Serial.println(" hPa");
+  Serial.print("Humidity = ");
+  Serial.print(bme.humidity);
+  Serial.println(" %");
 
-    Serial.print("Approx. Altitude = ");
-    Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-    Serial.println(" m");
+  Serial.print("Gas = ");
+  Serial.print(bme.gas_resistance / 1000.0);
+  Serial.println(" KOhms");
 
-    Serial.print("Humidity = ");
-    Serial.print(bme.readHumidity());
-    Serial.println(" %");
+  Serial.print("Approx. Altitude = ");
+  Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+  Serial.println(" m");
 
-    Serial.print("Gas = ");
-    Serial.print(bme.readGas());
-    Serial.println("");
-*/
-
-  bme.performReading();
   Serial.println();
   delay(2000);
 }

@@ -72,7 +72,6 @@ class Adafruit_BME680
     uint32_t readGas(void);
     float readAltitude(float seaLevel);
 
-
     bool setTemperatureOversampling(uint8_t os);
     bool setPressureOversampling(uint8_t os);
     bool setHumidityOversampling(uint8_t os);
