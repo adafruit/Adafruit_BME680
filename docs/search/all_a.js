@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['nb_5fconv',['nb_conv',['../structbme680__gas__sett.html#ad0fd15bcd071158faaa40037171cd798',1,'bme680_gas_sett']]],
-  ['new_5ffields',['new_fields',['../structbme680__dev.html#a488698f8c1c548bb19ac1f8ee67cbadd',1,'bme680_dev']]]
+  ['os_5fhum',['os_hum',['../structbme680__tph__sett.html#a12b21e2faba6c4e235f14070e9a9bb3e',1,'bme680_tph_sett']]],
+  ['os_5fpres',['os_pres',['../structbme680__tph__sett.html#ad754f858d10c2164e1d18756c9cf8db0',1,'bme680_tph_sett']]],
+  ['os_5ftemp',['os_temp',['../structbme680__tph__sett.html#a80a4dec6bde73d2083d464cb79ae8df8',1,'bme680_tph_sett']]]
 ];

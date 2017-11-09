@@ -34,14 +34,12 @@ static void delay_msec(uint32_t ms);
  PUBLIC FUNCTIONS
  ***************************************************************************/
 
-/*****************************************************************************************
- *  @brief     Create Adafruit_BME680 using hardware SPI 
- *
- *  @param     cspin - the designated chip select pin
- *
- *  @return     none
- ****************************************************************************************/
-
+/**************************************************************************/
+/*!
+    @brief  Instantiates sensor with Hardware SPI or I2C.
+    @param  cspin SPI chip select. If not passed in, I2C will be used
+*/
+/**************************************************************************/
 Adafruit_BME680::Adafruit_BME680(int8_t cspin)
   : _cs(cspin)
 {
@@ -51,6 +49,16 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin)
   _filterEnabled = _tempEnabled = _humEnabled = _presEnabled = _gasEnabled = false;
 }
 
+
+/**************************************************************************/
+/*!
+    @brief  Instantiates sensor with Software (bit-bang) SPI.
+    @param  cspin SPI chip select
+    @param  mosipin SPI MOSI (Data from microcontroller to sensor)
+    @param  misopin SPI MISO (Data to microcontroller from sensor)
+    @param  sckpin SPI Clock
+*/
+/**************************************************************************/
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
   : _cs(cspin)
 {
@@ -61,6 +69,18 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, i
 }
 
 
+
+/**************************************************************************/
+/*!
+    @brief Initializes the sensor
+
+    Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads
+    calibration data in preparation for sensor reads.
+
+    @param  addr Optional parameter for the I2C address of BME680. Default is 0x77
+    @return True on sensor initialization success. False on failure.
+*/
+/**************************************************************************/
 bool Adafruit_BME680::begin(uint8_t addr) {
   _i2caddr = addr;
 
@@ -148,36 +168,63 @@ bool Adafruit_BME680::begin(uint8_t addr) {
 }
 
 
+
+/**************************************************************************/
+/*!
+    @brief Performs a reading and returns the ambient temperature.
+    @return Temperature in degrees Centigrade
+*/
+/**************************************************************************/
 float Adafruit_BME680::readTemperature(void) {
   performReading();
   return temperature;
 }
 
+
+/**************************************************************************/
+/*!
+    @brief Performs a reading and returns the barometric pressure.
+    @return Barometic pressure in Pascals
+*/
+/**************************************************************************/
 float Adafruit_BME680::readPressure(void) {
   performReading();
   return pressure;
 }
 
+
+/**************************************************************************/
+/*!
+    @brief Performs a reading and returns the relative humidity.
+    @return Relative humidity as floating point
+*/
+/**************************************************************************/
 float Adafruit_BME680::readHumidity(void) {
   performReading();
   return humidity;
 }
 
+/**************************************************************************/
+/*!
+    @brief Calculates the resistance of the MOX gas sensor. 
+    @return Resistance in Ohms
+*/
+/**************************************************************************/
 uint32_t Adafruit_BME680::readGas(void) {
   performReading();
   return gas_resistance;
 }
 
 
-
-
 /**************************************************************************/
 /*!
-    Calculates the altitude (in meters) from the specified atmospheric
-    pressure (in hPa), and sea-level pressure (in hPa).
+    @brief Calculates the altitude (in meters). 
+
+    Reads the current atmostpheric pressure (in hPa) from the sensor and calculates
+    via the provided sea-level pressure (in hPa).
 
     @param  seaLevel      Sea-level pressure in hPa
-    @param  atmospheric   Atmospheric pressure in hPa
+    @return Altitude in meters
 */
 /**************************************************************************/
 float Adafruit_BME680::readAltitude(float seaLevel)
@@ -193,7 +240,16 @@ float Adafruit_BME680::readAltitude(float seaLevel)
     return 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903));
 }
 
+/**************************************************************************/
+/*!
+    @brief Performs a full reading of all 4 sensors in the BME680. 
 
+    Assigns the internal Adafruit_BME680#temperature, Adafruit_BME680#pressure, Adafruit_BME680#humidity 
+    and Adafruit_BME680#gas_resistance member variables
+
+    @return True on success, False on failure
+*/
+/**************************************************************************/
 bool Adafruit_BME680::performReading(void) {
   uint8_t set_required_settings = 0;
   struct bme680_field_data data;
@@ -279,6 +335,9 @@ bool Adafruit_BME680::performReading(void) {
 /**************************************************************************/
 /*!
     @brief  Enable and configure gas reading + heater
+    @param  heaterTemp Desired temperature in degrees Centigrade
+    @param  heaterTime Time to keep heater on in milliseconds
+    @return True on success, False on failure
 */
 /**************************************************************************/
 bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
@@ -299,11 +358,14 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
 
 /**************************************************************************/
 /*!
-    @brief  Setters for Temp, Humidity, Pressure oversampling
+    @brief  Setter for Temperature oversampling
+    @param  oversample Oversampling setting, can be BME680_OS_NONE (turn off Temperature reading), 
+    BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
+    @return True on success, False on failure
 */
 /**************************************************************************/
 
-bool Adafruit_BME680::setTemperatureOversampling(uint8_t os) {
+bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
   if (os > BME680_OS_16X) return false;
 
   gas_sensor.tph_sett.os_temp = os;
@@ -316,7 +378,17 @@ bool Adafruit_BME680::setTemperatureOversampling(uint8_t os) {
   return true;
 }
 
-bool Adafruit_BME680::setHumidityOversampling(uint8_t os) {
+
+/**************************************************************************/
+/*!
+    @brief  Setter for Humidity oversampling
+    @param  oversample Oversampling setting, can be BME680_OS_NONE (turn off Humidity reading), 
+    BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
+    @return True on success, False on failure
+*/
+/**************************************************************************/
+
+bool Adafruit_BME680::setHumidityOversampling(uint8_t oversample) {
   if (os > BME680_OS_16X) return false;
 
   gas_sensor.tph_sett.os_hum = os;
@@ -329,6 +401,15 @@ bool Adafruit_BME680::setHumidityOversampling(uint8_t os) {
   return true;
 }
 
+
+/**************************************************************************/
+/*!
+    @brief  Setter for Pressure oversampling
+    @param  oversample Oversampling setting, can be BME680_OS_NONE (turn off Pressure reading), 
+    BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
+    @return True on success, False on failure
+*/
+/**************************************************************************/
 bool Adafruit_BME680::setPressureOversampling(uint8_t os) {
   if (os > BME680_OS_16X) return false;
 
@@ -344,10 +425,13 @@ bool Adafruit_BME680::setPressureOversampling(uint8_t os) {
 
 /**************************************************************************/
 /*!
-    @brief  Setter for IIR filter
+    @brief  Setter for IIR filter.
+    @param filtersize Size of the filter (in samples). Can be BME680_FILTER_SIZE_0 (no filtering), BME680_FILTER_SIZE_1, BME680_FILTER_SIZE_3, BME680_FILTER_SIZE_7, BME680_FILTER_SIZE_15, BME680_FILTER_SIZE_31, BME680_FILTER_SIZE_63, BME680_FILTER_SIZE_127
+    @return True on success, False on failure
+    
 */
 /**************************************************************************/
-bool Adafruit_BME680::setIIRFilterSize(uint8_t fs) {
+bool Adafruit_BME680::setIIRFilterSize(uint8_t filtersize) {
   if (fs > BME680_FILTER_SIZE_127) return false;
 
   gas_sensor.tph_sett.filter = fs;

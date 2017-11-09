@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['meas_5findex',['meas_index',['../structbme680__field__data.html#add2cb9f6b7d736908aa9f75904122d3c',1,'bme680_field_data']]],
-  ['mem_5fpage',['mem_page',['../structbme680__dev.html#a388e543d88b93a2a5c91e1f66ed0e998',1,'bme680_dev']]]
+  ['nb_5fconv',['nb_conv',['../structbme680__gas__sett.html#ad0fd15bcd071158faaa40037171cd798',1,'bme680_gas_sett']]],
+  ['new_5ffields',['new_fields',['../structbme680__dev.html#a488698f8c1c548bb19ac1f8ee67cbadd',1,'bme680_dev']]]
 ];

@@ -1,6 +1,9 @@
 var searchData=
 [
-  ['gas_5findex',['gas_index',['../structbme680__field__data.html#ae96ceedb9e36dc0671ac533e88160f5b',1,'bme680_field_data']]],
-  ['gas_5fresistance',['gas_resistance',['../structbme680__field__data.html#a6ce58ca03356c0df2e4b02bac6c4ce26',1,'bme680_field_data']]],
-  ['gas_5fsett',['gas_sett',['../structbme680__dev.html#aaf0d4528b207d86b53e14a907bb3d7b8',1,'bme680_dev']]]
+  ['readme',['README',['../md__r_e_a_d_m_e.html',1,'']]],
+  ['readaltitude',['readAltitude',['../class_adafruit___b_m_e680.html#a3caae92aa981508f0084b11b1fed4883',1,'Adafruit_BME680']]],
+  ['readgas',['readGas',['../class_adafruit___b_m_e680.html#ae0b55eb1049c5949ff186de86aaafb55',1,'Adafruit_BME680']]],
+  ['readhumidity',['readHumidity',['../class_adafruit___b_m_e680.html#a1402c97860f9c61bf133be7e7056658b',1,'Adafruit_BME680']]],
+  ['readpressure',['readPressure',['../class_adafruit___b_m_e680.html#afd081183a7845fee1d1c080cce20495e',1,'Adafruit_BME680']]],
+  ['readtemperature',['readTemperature',['../class_adafruit___b_m_e680.html#a7b554e6edf5cea06cf480e53bcb65aec',1,'Adafruit_BME680']]]
 ];
