@@ -28,11 +28,19 @@ static int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint
 static int8_t spi_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 static int8_t spi_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 static uint8_t spi_transfer(uint8_t x);
-
+static void delay_msec(uint32_t ms);
 
 /***************************************************************************
  PUBLIC FUNCTIONS
  ***************************************************************************/
+
+/*****************************************************************************************
+ *  @brief     Create Adafruit_BME680 using hardware SPI 
+ *
+ *  @param     cspin - the designated chip select pin
+ *
+ *  @return     none
+ ****************************************************************************************/
 
 Adafruit_BME680::Adafruit_BME680(int8_t cspin)
   : _cs(cspin)
@@ -84,7 +92,7 @@ bool Adafruit_BME680::begin(uint8_t addr) {
     gas_sensor.write = &spi_write;
   }
 
-  gas_sensor.delay_ms = delay;
+  gas_sensor.delay_ms = delay_msec;
 
   int8_t rslt = BME680_OK;
   rslt = bme680_init(&gas_sensor);
@@ -508,3 +516,6 @@ static uint8_t spi_transfer(uint8_t x) {
 }
 
 
+static void delay_msec(uint32_t ms){
+  delay(ms);
+}
