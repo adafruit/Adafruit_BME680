@@ -366,11 +366,11 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
 /**************************************************************************/
 
 bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
-  if (os > BME680_OS_16X) return false;
+  if (oversample > BME680_OS_16X) return false;
 
-  gas_sensor.tph_sett.os_temp = os;
+  gas_sensor.tph_sett.os_temp = oversample;
 
-  if (os == BME680_OS_NONE)
+  if (oversample == BME680_OS_NONE)
     _tempEnabled = false;
   else
     _tempEnabled = true;
@@ -389,11 +389,11 @@ bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
 /**************************************************************************/
 
 bool Adafruit_BME680::setHumidityOversampling(uint8_t oversample) {
-  if (os > BME680_OS_16X) return false;
+  if (oversample > BME680_OS_16X) return false;
 
-  gas_sensor.tph_sett.os_hum = os;
+  gas_sensor.tph_sett.os_hum = oversample;
 
-  if (os == BME680_OS_NONE)
+  if (oversample == BME680_OS_NONE)
     _humEnabled = false;
   else
     _humEnabled = true;
@@ -410,12 +410,12 @@ bool Adafruit_BME680::setHumidityOversampling(uint8_t oversample) {
     @return True on success, False on failure
 */
 /**************************************************************************/
-bool Adafruit_BME680::setPressureOversampling(uint8_t os) {
-  if (os > BME680_OS_16X) return false;
+bool Adafruit_BME680::setPressureOversampling(uint8_t oversample) {
+  if (oversample > BME680_OS_16X) return false;
 
-  gas_sensor.tph_sett.os_pres = os;
+  gas_sensor.tph_sett.os_pres = oversample;
 
-  if (os == BME680_OS_NONE)
+  if (oversample == BME680_OS_NONE)
     _presEnabled = false;
   else
     _presEnabled = true;
@@ -432,11 +432,11 @@ bool Adafruit_BME680::setPressureOversampling(uint8_t os) {
 */
 /**************************************************************************/
 bool Adafruit_BME680::setIIRFilterSize(uint8_t filtersize) {
-  if (fs > BME680_FILTER_SIZE_127) return false;
+  if (filtersize > BME680_FILTER_SIZE_127) return false;
 
-  gas_sensor.tph_sett.filter = fs;
+  gas_sensor.tph_sett.filter = filtersize;
 
-  if (fs == BME680_FILTER_SIZE_0)
+  if (filtersize == BME680_FILTER_SIZE_0)
     _filterEnabled = false;
   else
     _filterEnabled = true;
