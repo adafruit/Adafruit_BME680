@@ -40,8 +40,8 @@
  * patent rights of the copyright holder.
  *
  * @file	bme680.h
- * @date	5 Jul 2017
- * @version	3.5.1
+ * @date	20 Nov 2017
+ * @version	3.5.5
  * @brief
  *
  */
@@ -162,7 +162,7 @@ void bme680_set_profile_dur(uint16_t duration, struct bme680_dev *dev);
  *
  * @return Nothing
  */
-void bme680_get_profile_dur(uint16_t *duration, struct bme680_dev *dev);
+void bme680_get_profile_dur(uint16_t *duration, const struct bme680_dev *dev);
 
 /*!
  * @brief This API reads the pressure, temperature and humidity and gas data
@@ -185,17 +185,17 @@ int8_t bme680_get_sensor_data(struct bme680_field_data *data, struct bme680_dev 
  * @param[in] desired_settings : Variable used to select the settings which
  * are to be set in the sensor.
  *
- *	 Macros			       |	Functionality
- *-------------------------|----------------------------------------------
- *	BME680_OST_SEL		   |	To set temperature oversampling.
- *	BME680_OSP_SEL		   |	To set pressure oversampling.
- *	BME680_OSH_SEL		   |	To set humidity oversampling.
- *	BME680_GAS_MEAS_SEL	   |	To set gas measurement setting.
- *	BME680_FILTER_SEL	   |	To set filter setting.
- *	BME680_HCNTRL_SEL	   |	To set humidity control setting.
- *	BME680_RUN_GAS_SEL	   |	To set run gas setting.
- *	BME680_NBCONV_SEL	   |	To set NB conversion setting.
- *	BME680_GAS_SENSOR_SEL  |	To set all gas sensor related settings
+ *	 Macros	                   |  Functionality
+ *---------------------------------|----------------------------------------------
+ *	BME680_OST_SEL             |    To set temperature oversampling.
+ *	BME680_OSP_SEL             |    To set pressure oversampling.
+ *	BME680_OSH_SEL             |    To set humidity oversampling.
+ *	BME680_GAS_MEAS_SEL        |    To set gas measurement setting.
+ *	BME680_FILTER_SEL          |    To set filter setting.
+ *	BME680_HCNTRL_SEL          |    To set humidity control setting.
+ *	BME680_RUN_GAS_SEL         |    To set run gas setting.
+ *	BME680_NBCONV_SEL          |    To set NB conversion setting.
+ *	BME680_GAS_SENSOR_SEL      |    To set all gas sensor related settings
  *
  * @note : Below are the macros to be used by the user for selecting the
  * desired settings. User can do OR operation of these macros for configuring
