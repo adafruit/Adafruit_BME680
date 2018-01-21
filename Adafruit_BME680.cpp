@@ -272,13 +272,17 @@ bool Adafruit_BME680::performReading(void) {
     set_required_settings |= BME680_GAS_SENSOR_SEL;
 
   /* Set the desired sensor configuration */
-  //Serial.println("Setting sensor settings");
+#ifdef BME680_DEBUG
+  Serial.println("Setting sensor settings");
+#endif
   rslt = bme680_set_sensor_settings(set_required_settings, &gas_sensor);
   if (rslt != BME680_OK) 
     return false;
   
   /* Set the power mode */
-  //Serial.println("Setting power mode");
+#ifdef BME680_DEBUG
+  Serial.println("Setting power mode");
+#endif
   rslt = bme680_set_sensor_mode(&gas_sensor);
   if (rslt != BME680_OK) 
     return false;
@@ -287,10 +291,14 @@ bool Adafruit_BME680::performReading(void) {
    * measurement is complete */
   uint16_t meas_period;
   bme680_get_profile_dur(&meas_period, &gas_sensor);
-  //Serial.print("Waiting (ms) "); Serial.println(meas_period);
+#ifdef BME680_DEBUG
+  Serial.print("Waiting (ms) "); Serial.println(meas_period);
+#endif
   delay(meas_period * 2); /* Delay till the measurement is ready */
   
-  //Serial.print("t_fine = "); Serial.println(gas_sensor.calib.t_fine);
+#ifdef BME680_DEBUG
+  Serial.print("t_fine = "); Serial.println(gas_sensor.calib.t_fine);
+#endif
 
   //Serial.println("Getting sensor data");
   rslt = bme680_get_sensor_data(&data, &gas_sensor);
