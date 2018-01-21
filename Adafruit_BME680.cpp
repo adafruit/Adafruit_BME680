@@ -1,26 +1,40 @@
-/***************************************************************************
-  This is a library for the BME680 humidity, temperature & pressure sensor
+/*!
+ * @file Adafruit_BME680.cpp
+ *
+ * @mainpage Adafruit BME680 temperature, humidity, barometric pressure and gas sensor driver
+ *
+ * @section intro_sec Introduction
+ *
+ * This is the documentation for Adafruit's BME680 driver for the
+ * Arduino platform.  It is designed specifically to work with the
+ * Adafruit BME680 breakout: https://www.adafruit.com/products/3660
+ *
+ * These sensors use I2C to communicate, 2 pins (SCL+SDA) are required
+ * to interface with the breakout.
+ *
+ * Adafruit invests time and resources providing this open source code,
+ * please support Adafruit and open-source hardware by purchasing
+ * products from Adafruit!
+ *
+ * @section author Author
+ *
+ * Written by Ladyada for Adafruit Industries.
+ *
+ * @section license License
+ *
+ * BSD license, all text here must be included in any redistribution.
+ *
+ */
 
-  Designed specifically to work with the Adafruit BME680 Breakout
-  ----> http://www.adafruit.com/products/2650
-
-  These sensors use I2C or SPI to communicate, 2 or 4 pins are required
-  to interface.
-
-  Adafruit invests time and resources providing this open source code,
-  please support Adafruit andopen-source hardware by purchasing products
-  from Adafruit!
-
-  Written by Limor Fried & Kevin Townsend for Adafruit Industries.
-  BSD license, all text above must be included in any redistribution
- ***************************************************************************/
 #include "Arduino.h"
 #include "Adafruit_BME680.h"
 
 //#define BME680_DEBUG
 
-// must be global in order to work with underlying library
-int8_t _BME680_SoftwareSPI_MOSI, _BME680_SoftwareSPI_MISO, _BME680_SoftwareSPI_SCK;
+///! These SPI pins must be global in order to work with underlying library
+int8_t _BME680_SoftwareSPI_MOSI; ///< Global SPI MOSI pin
+int8_t _BME680_SoftwareSPI_MISO; ///< Global SPI MISO pin
+int8_t _BME680_SoftwareSPI_SCK;  ///< Globak SPI Clock pin
 
 // Our hardware interface functions
 static int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
