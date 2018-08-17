@@ -65,7 +65,7 @@ public:
 
 */
 
-/** Adafruit_BME680 Class for both I2C and SPI usage. 
+/** Adafruit_BME680 Class for both I2C and SPI usage.
  *  Wraps the Bosch library for Arduino usage
  */
 
@@ -88,15 +88,29 @@ class Adafruit_BME680
     bool setIIRFilterSize(uint8_t fs);
     bool setGasHeater(uint16_t heaterTemp, uint16_t heaterTime);
 
+    /// Perform a reading in blocking mode.
     bool performReading(void);
 
-    /// Temperature (Celsius) assigned after calling performReading() 
-    float temperature;  
-    /// Pressure (Pascals) assigned after calling performReading() 
+    /** @brief Begin an asynchronous reading.
+     *  @return When the reading would be ready as absolute time in millis().
+     */
+    unsigned long beginReading(void);
+
+    /** @brief End an asynchronous reading.
+     *  @return Whether success.
+     *
+     *  If the asynchronous reading is still in progress, block until it ends.
+     *  If no asynchronous reading has started, this is equivalent to performReading().
+     */
+    bool endReading(void);
+
+    /// Temperature (Celsius) assigned after calling performReading() or endReading()
+    float temperature;
+    /// Pressure (Pascals) assigned after calling performReading() or endReading()
     float pressure;
-    /// Humidity (RH %) assigned after calling performReading()
+    /// Humidity (RH %) assigned after calling performReading() or endReading()
     float humidity;
-    /// Gas resistor (ohms) assigned after calling performReading()
+    /// Gas resistor (ohms) assigned after calling performReading() or endReading()
     float gas_resistance;
   private:
 
@@ -104,6 +118,7 @@ class Adafruit_BME680
     uint8_t _i2caddr;
     int32_t _sensorID;
     int8_t _cs;
+    unsigned long _meas_end;
 
     uint8_t spixfer(uint8_t x);
 
