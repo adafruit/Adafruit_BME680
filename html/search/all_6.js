@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['readaltitude',['readAltitude',['../class_adafruit___b_m_e680.html#a3caae92aa981508f0084b11b1fed4883',1,'Adafruit_BME680']]],
-  ['readgas',['readGas',['../class_adafruit___b_m_e680.html#ae0b55eb1049c5949ff186de86aaafb55',1,'Adafruit_BME680']]],
-  ['readhumidity',['readHumidity',['../class_adafruit___b_m_e680.html#a1402c97860f9c61bf133be7e7056658b',1,'Adafruit_BME680']]],
-  ['readpressure',['readPressure',['../class_adafruit___b_m_e680.html#afd081183a7845fee1d1c080cce20495e',1,'Adafruit_BME680']]],
-  ['readtemperature',['readTemperature',['../class_adafruit___b_m_e680.html#a7b554e6edf5cea06cf480e53bcb65aec',1,'Adafruit_BME680']]]
+  ['performreading',['performReading',['../class_adafruit___b_m_e680.html#aa58210864cad77b272669eb86f1d2a88',1,'Adafruit_BME680']]],
+  ['pressure',['pressure',['../class_adafruit___b_m_e680.html#a956b36e719ef0b37e59e6c3ecb8c5583',1,'Adafruit_BME680']]]
 ];

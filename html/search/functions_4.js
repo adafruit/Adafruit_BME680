@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['setgasheater',['setGasHeater',['../class_adafruit___b_m_e680.html#a2e6a61b5441c51bf5e44c3af3ee3fec8',1,'Adafruit_BME680']]],
-  ['sethumidityoversampling',['setHumidityOversampling',['../class_adafruit___b_m_e680.html#af1f05d2f024e946c1d7cbe3fb90b0859',1,'Adafruit_BME680']]],
-  ['setiirfiltersize',['setIIRFilterSize',['../class_adafruit___b_m_e680.html#a42f25a4f258aad9abad4abb6bd95ec77',1,'Adafruit_BME680']]],
-  ['setpressureoversampling',['setPressureOversampling',['../class_adafruit___b_m_e680.html#a73a9467c838951a187a268172a2b5d8c',1,'Adafruit_BME680']]],
-  ['settemperatureoversampling',['setTemperatureOversampling',['../class_adafruit___b_m_e680.html#a640ee0a0cb7ca57af30e8408260cc6e6',1,'Adafruit_BME680']]]
+  ['readaltitude',['readAltitude',['../class_adafruit___b_m_e680.html#a3caae92aa981508f0084b11b1fed4883',1,'Adafruit_BME680']]],
+  ['readgas',['readGas',['../class_adafruit___b_m_e680.html#ae0b55eb1049c5949ff186de86aaafb55',1,'Adafruit_BME680']]],
+  ['readhumidity',['readHumidity',['../class_adafruit___b_m_e680.html#a1402c97860f9c61bf133be7e7056658b',1,'Adafruit_BME680']]],
+  ['readpressure',['readPressure',['../class_adafruit___b_m_e680.html#afd081183a7845fee1d1c080cce20495e',1,'Adafruit_BME680']]],
+  ['readtemperature',['readTemperature',['../class_adafruit___b_m_e680.html#a7b554e6edf5cea06cf480e53bcb65aec',1,'Adafruit_BME680']]]
 ];
