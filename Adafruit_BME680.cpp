@@ -360,7 +360,7 @@ bool Adafruit_BME680::endReading(void) {
   }
 
   if (_presEnabled) {
-    //Serial.print("Pres: "); Serial.println(data.pressure / 100.0, 2);
+    //Serial.print("Pres: "); Serial.println(data.pressure, 2);
     pressure = data.pressure;
   } else {
     pressure = NAN;
