@@ -20,7 +20,10 @@ products from Adafruit!
 Check out the links above for our tutorials and wiring diagrams
 
 On-line documention for the APIs is available, too:
- * https://adafruit.github.io/Adafruit_BME680/html/index.html
+  * https://adafruit.github.io/Adafruit_BME680/html/index.html
+
+Requires installation of the Adafruit Unified Sensor library:
+  * https://github.com/adafruit/Adafruit_Sensor
 
 Written by Limor Fried/Ladyada for Adafruit Industries.
 BSD license, all text above must be included in any redistribution
