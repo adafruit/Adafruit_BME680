@@ -561,14 +561,14 @@ static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint1
   Serial.print("\tSPI $"); Serial.print(reg_addr, HEX); Serial.print(" => ");
 #endif
 
-  digitalWrite(cspin, LOW);
-
   // If hardware SPI we should use transactions!
   if (_BME680_SoftwareSPI_SCK == -1) {
     SPI.beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
   }
 
-  spi_transfer(reg_addr);
+  digitalWrite(cspin, LOW);
+
+  spi_transfer(reg_addr | 0x80);
 
   while (len--) {
     *reg_data = spi_transfer(0x00);
@@ -578,11 +578,11 @@ static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint1
     reg_data++;
   }
 
+  digitalWrite(cspin, HIGH);
+
   if (_BME680_SoftwareSPI_SCK == -1) {
     SPI.endTransaction();
   }
-
-  digitalWrite(cspin, HIGH);
 
 #ifdef BME680_DEBUG
   Serial.println("");
@@ -600,12 +600,12 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
   Serial.print("\tSPI $"); Serial.print(reg_addr, HEX); Serial.print(" <= ");
 #endif
 
-  digitalWrite(cspin, LOW);
-
   // If hardware SPI we should use transactions!
   if (_BME680_SoftwareSPI_SCK == -1) {
     SPI.beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
   }
+
+  digitalWrite(cspin, LOW);
 
   spi_transfer(reg_addr);
   while (len--) {
@@ -616,11 +616,11 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
     reg_data++;
   }
 
+  digitalWrite(cspin, HIGH);
+
   if (_BME680_SoftwareSPI_SCK == -1) {
     SPI.endTransaction();
   }
-
-  digitalWrite(cspin, HIGH);
 
 #ifdef BME680_DEBUG
   Serial.println("");
