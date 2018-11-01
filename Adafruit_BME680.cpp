@@ -375,6 +375,8 @@ bool Adafruit_BME680::endReading(void) {
       gas_resistance = 0;
       //Serial.println("Gas reading unstable!");
     }
+  } else {
+    gas_resistance = NAN;
   }
 
   return true;
