@@ -75,7 +75,7 @@ class Adafruit_BME680
     Adafruit_BME680(int8_t cspin = -1);
     Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
-    bool  begin(uint8_t addr = BME680_DEFAULT_ADDRESS);
+    bool  begin(uint8_t addr = BME680_DEFAULT_ADDRESS, bool initSettings = true);
     float readTemperature(void);
     float readPressure(void);
     float readHumidity(void);
