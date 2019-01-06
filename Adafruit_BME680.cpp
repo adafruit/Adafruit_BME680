@@ -93,6 +93,8 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, i
     calibration data in preparation for sensor reads.
 
     @param  addr Optional parameter for the I2C address of BME680. Default is 0x77
+    @param  initSettings Optional parameter for initializing the sensor settings.
+    Default is true.
     @return True on sensor initialization success. False on failure.
 */
 /**************************************************************************/

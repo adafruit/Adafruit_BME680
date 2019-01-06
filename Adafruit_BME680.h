@@ -50,7 +50,7 @@ class Adafruit_BME680_Unified : public Adafruit_Sensor
 public:
     Adafruit_BME680_Unified(int32_t sensorID = -1);
 
-    bool  begin(uint8_t addr = BME680_ADDRESS);
+    bool  begin(uint8_t addr = BME680_DEFAULT_ADDRESS, bool initSettings = true);
     void  getTemperature(float *temp);
     void  getPressure(float *pressure);
     float pressureToAltitude(float seaLevel, float atmospheric, float temp);
