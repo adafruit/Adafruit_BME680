@@ -77,9 +77,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e89aaed66497bb2dde7ab678aa81173"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8e89aaed66497bb2dde7ab678aa81173">Adafruit_BME680</a> (int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)</td></tr>
 <tr class="memdesc:a8e89aaed66497bb2dde7ab678aa81173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates sensor with Software (bit-bang) SPI.  <a href="#a8e89aaed66497bb2dde7ab678aa81173">More...</a><br /></td></tr>
 <tr class="separator:a8e89aaed66497bb2dde7ab678aa81173"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6d9d5dc90424c2c3c3a3b311c1141dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ac6d9d5dc90424c2c3c3a3b311c1141dc">begin</a> (uint8_t addr=<a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a>)</td></tr>
-<tr class="memdesc:ac6d9d5dc90424c2c3c3a3b311c1141dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sensor.  <a href="#ac6d9d5dc90424c2c3c3a3b311c1141dc">More...</a><br /></td></tr>
-<tr class="separator:ac6d9d5dc90424c2c3c3a3b311c1141dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">begin</a> (uint8_t addr=<a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a>, bool initSettings=true)</td></tr>
+<tr class="memdesc:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sensor.  <a href="#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">More...</a><br /></td></tr>
+<tr class="separator:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b554e6edf5cea06cf480e53bcb65aec"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a7b554e6edf5cea06cf480e53bcb65aec">readTemperature</a> (void)</td></tr>
 <tr class="memdesc:a7b554e6edf5cea06cf480e53bcb65aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the ambient temperature.  <a href="#a7b554e6edf5cea06cf480e53bcb65aec">More...</a><br /></td></tr>
 <tr class="separator:a7b554e6edf5cea06cf480e53bcb65aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,8 +220,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac6d9d5dc90424c2c3c3a3b311c1141dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac6d9d5dc90424c2c3c3a3b311c1141dc">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a8c34e1fd143f8d5ed22ac0d9afbe7c1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,8 +230,18 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
           <td class="memname">bool Adafruit_BME680::begin </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>addr</em> = <code><a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a></code></td><td>)</td>
+          <td class="paramname"><em>addr</em> = <code><a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>initSettings</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -241,6 +251,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cla
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>Optional parameter for the I2C address of BME680. Default is 0x77 </td></tr>
+    <tr><td class="paramname">initSettings</td><td>Optional parameter for initializing the sensor settings. Default is true. </td></tr>
   </table>
   </dd>
 </dl>
