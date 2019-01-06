@@ -93,10 +93,12 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, i
     calibration data in preparation for sensor reads.
 
     @param  addr Optional parameter for the I2C address of BME680. Default is 0x77
+    @param  initSettings Optional parameter for initializing the sensor settings.
+    Default is true.
     @return True on sensor initialization success. False on failure.
 */
 /**************************************************************************/
-bool Adafruit_BME680::begin(uint8_t addr) {
+bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
   _i2caddr = addr;
 
   if (_cs == -1) {
@@ -170,12 +172,15 @@ bool Adafruit_BME680::begin(uint8_t addr) {
   Serial.print("SW Error = "); Serial.println(gas_sensor.calib.range_sw_err);
 #endif
 
-  setTemperatureOversampling(BME680_OS_8X);
-  setHumidityOversampling(BME680_OS_2X);
-  setPressureOversampling(BME680_OS_4X);
-  setIIRFilterSize(BME680_FILTER_SIZE_3);
-  setGasHeater(320, 150); // 320*C for 150 ms
-
+  if (initSettings) {
+    setTemperatureOversampling(BME680_OS_8X);
+    setHumidityOversampling(BME680_OS_2X);
+    setPressureOversampling(BME680_OS_4X);
+    setIIRFilterSize(BME680_FILTER_SIZE_3);
+    setGasHeater(320, 150); // 320*C for 150 ms
+  } else {
+    setGasHeater(0, 0);
+  }
   // don't do anything till we request a reading
   gas_sensor.power_mode = BME680_FORCED_MODE;
 
@@ -375,6 +380,8 @@ bool Adafruit_BME680::endReading(void) {
       gas_resistance = 0;
       //Serial.println("Gas reading unstable!");
     }
+  } else {
+    gas_resistance = NAN; 
   }
 
   return true;
@@ -394,9 +401,11 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
 
   if ( (heaterTemp == 0) || (heaterTime == 0) ) {
     // disabled!
+    gas_sensor.gas_sett.heatr_ctrl = BME680_DISABLE_HEATER;
     gas_sensor.gas_sett.run_gas = BME680_DISABLE_GAS_MEAS;
     _gasEnabled = false;
   } else {
+    gas_sensor.gas_sett.heatr_ctrl = BME680_ENABLE_HEATER;
     gas_sensor.gas_sett.run_gas = BME680_ENABLE_GAS_MEAS;
     _gasEnabled = true;
   }
