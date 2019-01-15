@@ -56,7 +56,8 @@ static void delay_msec(uint32_t ms);
 /**************************************************************************/
 Adafruit_BME680::Adafruit_BME680(int8_t cspin)
   : _cs(cspin)
-  , _meas_end(0)
+  , _meas_start(0)
+  , _meas_period(0)
 {
   _BME680_SoftwareSPI_MOSI = -1;
   _BME680_SoftwareSPI_MISO = -1;
@@ -319,8 +320,9 @@ unsigned long Adafruit_BME680::beginReading(void) {
    * measurement is complete */
   uint16_t meas_period;
   bme680_get_profile_dur(&meas_period, &gas_sensor);
-  _meas_end = millis() + meas_period;
-  return _meas_end;
+  _meas_start = millis();
+  _meas_period = meas_period;
+  return _meas_start + _meas_period;
 }
 
 bool Adafruit_BME680::endReading(void) {
@@ -330,8 +332,9 @@ bool Adafruit_BME680::endReading(void) {
   }
 
   unsigned long now = millis();
-  if (meas_end > now) {
-    unsigned long meas_period = meas_end - now;
+  unsigned long elapsed = now - _meas_start;
+  if (elapsed < _meas_period) {
+    unsigned long meas_period = _meas_period - elapsed;
 #ifdef BME680_DEBUG
     Serial.print("Waiting (ms) "); Serial.println(meas_period);
 #endif

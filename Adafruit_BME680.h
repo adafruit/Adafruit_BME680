@@ -118,7 +118,8 @@ class Adafruit_BME680
     uint8_t _i2caddr;
     int32_t _sensorID;
     int8_t _cs;
-    unsigned long _meas_end;
+    unsigned long _meas_start;
+    uint16_t _meas_period;
 
     uint8_t spixfer(uint8_t x);
 
