@@ -132,8 +132,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
   gas_sensor.delay_ms = delay_msec;
 
-  int8_t rslt = BME680_OK;
-  rslt = bme680_init(&gas_sensor);
+  int8_t rslt = bme680_init(&gas_sensor);
 #ifdef BME680_DEBUG
   Serial.print("Result: "); Serial.println(rslt);
 #endif
@@ -276,9 +275,9 @@ bool Adafruit_BME680::performReading(void) {
 }
 
 unsigned long Adafruit_BME680::beginReading(void) {
-  if (_meas_end != 0) {
+  if (_meas_start != 0) {
     /* A measurement is already in progress */
-    return _meas_end;
+    return _meas_start + _meas_period;
   }
 
   uint8_t set_required_settings = 0;
@@ -331,16 +330,15 @@ bool Adafruit_BME680::endReading(void) {
     return false;
   }
 
-  unsigned long now = millis();
-  unsigned long elapsed = now - _meas_start;
-  if (elapsed < _meas_period) {
-    unsigned long meas_period = _meas_period - elapsed;
+  int remaining_millis = remainingReadingMillis();
+  if (remaining_millis > 0) {
 #ifdef BME680_DEBUG
     Serial.print("Waiting (ms) "); Serial.println(meas_period);
 #endif
-    delay(meas_period * 2); /* Delay till the measurement is ready */
+    delay(static_cast<unsigned int>(remaining_millis) * 2); /* Delay till the measurement is ready */
   }
-  _meas_end = 0; /* Allow new measurement to begin */
+  _meas_start = 0; /* Allow new measurement to begin */
+  _meas_period = 0;
 
 #ifdef BME680_DEBUG
   Serial.print("t_fine = "); Serial.println(gas_sensor.calib.t_fine);
@@ -371,7 +369,7 @@ bool Adafruit_BME680::endReading(void) {
     //Serial.print("Pres: "); Serial.println(data.pressure, 2);
     pressure = data.pressure;
   } else {
-    pressure = NAN;
+    pressure = 0;
   }
 
   /* Avoid using measurements from an unstable heating setup */
@@ -384,10 +382,20 @@ bool Adafruit_BME680::endReading(void) {
       //Serial.println("Gas reading unstable!");
     }
   } else {
-    gas_resistance = NAN; 
+    gas_resistance = 0;
   }
 
   return true;
+}
+
+int Adafruit_BME680::remainingReadingMillis(void)
+{
+    if (_meas_start != 0) {
+        /* A measurement is already in progress */
+        int remaing_time = (millis() - _meas_start) - (int)_meas_period;
+        return remaing_time < 0 ? reading_complete : remaing_time;
+    }
+    return reading_not_started;
 }
 
 /**************************************************************************/
