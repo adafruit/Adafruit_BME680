@@ -56,7 +56,8 @@ static void delay_msec(uint32_t ms);
 /**************************************************************************/
 Adafruit_BME680::Adafruit_BME680(int8_t cspin)
   : _cs(cspin)
-  , _meas_end(0)
+  , _meas_start(0)
+  , _meas_period(0)
 {
   _BME680_SoftwareSPI_MOSI = -1;
   _BME680_SoftwareSPI_MISO = -1;
@@ -76,6 +77,8 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin)
 /**************************************************************************/
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
   : _cs(cspin)
+  , _meas_start(0)
+  , _meas_period(0)
 {
   _BME680_SoftwareSPI_MOSI = mosipin;
   _BME680_SoftwareSPI_MISO = misopin;
@@ -131,8 +134,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
   gas_sensor.delay_ms = delay_msec;
 
-  int8_t rslt = BME680_OK;
-  rslt = bme680_init(&gas_sensor);
+  int8_t rslt = bme680_init(&gas_sensor);
 #ifdef BME680_DEBUG
   Serial.print("Result: "); Serial.println(rslt);
 #endif
@@ -275,9 +277,9 @@ bool Adafruit_BME680::performReading(void) {
 }
 
 unsigned long Adafruit_BME680::beginReading(void) {
-  if (_meas_end != 0) {
+  if (_meas_start != 0) {
     /* A measurement is already in progress */
-    return _meas_end;
+    return _meas_start + _meas_period;
   }
 
   uint8_t set_required_settings = 0;
@@ -319,8 +321,9 @@ unsigned long Adafruit_BME680::beginReading(void) {
    * measurement is complete */
   uint16_t meas_period;
   bme680_get_profile_dur(&meas_period, &gas_sensor);
-  _meas_end = millis() + meas_period;
-  return _meas_end;
+  _meas_start = millis();
+  _meas_period = meas_period;
+  return _meas_start + _meas_period;
 }
 
 bool Adafruit_BME680::endReading(void) {
@@ -329,15 +332,15 @@ bool Adafruit_BME680::endReading(void) {
     return false;
   }
 
-  unsigned long now = millis();
-  if (meas_end > now) {
-    unsigned long meas_period = meas_end - now;
+  int remaining_millis = remainingReadingMillis();
+  if (remaining_millis > 0) {
 #ifdef BME680_DEBUG
     Serial.print("Waiting (ms) "); Serial.println(meas_period);
 #endif
-    delay(meas_period * 2); /* Delay till the measurement is ready */
+    delay(static_cast<unsigned int>(remaining_millis) * 2); /* Delay till the measurement is ready */
   }
-  _meas_end = 0; /* Allow new measurement to begin */
+  _meas_start = 0; /* Allow new measurement to begin */
+  _meas_period = 0;
 
 #ifdef BME680_DEBUG
   Serial.print("t_fine = "); Serial.println(gas_sensor.calib.t_fine);
@@ -368,7 +371,7 @@ bool Adafruit_BME680::endReading(void) {
     //Serial.print("Pres: "); Serial.println(data.pressure, 2);
     pressure = data.pressure;
   } else {
-    pressure = NAN;
+    pressure = 0;
   }
 
   /* Avoid using measurements from an unstable heating setup */
@@ -381,10 +384,20 @@ bool Adafruit_BME680::endReading(void) {
       //Serial.println("Gas reading unstable!");
     }
   } else {
-    gas_resistance = NAN; 
+    gas_resistance = 0;
   }
 
   return true;
+}
+
+int Adafruit_BME680::remainingReadingMillis(void)
+{
+    if (_meas_start != 0) {
+        /* A measurement is already in progress */
+        int remaing_time = (millis() - _meas_start) - (int)_meas_period;
+        return remaing_time < 0 ? reading_complete : remaing_time;
+    }
+    return reading_not_started;
 }
 
 /**************************************************************************/

@@ -23,7 +23,7 @@
 #ifndef __BME680_H__
 #define __BME680_H__
 
-#if (ARDUINO >= 100)
+#if defined(ARDUINO) && (ARDUINO >= 100)
  #include "Arduino.h"
 #else
  #include "WProgram.h"
@@ -72,6 +72,11 @@ public:
 class Adafruit_BME680
 {
   public:
+    /// Value returned by remainingReadingMillis indicating no asynchronous reading has been initiated by beginReading.
+    static constexpr int reading_not_started = -1;
+    /// Value returned by remainingReadingMillis indicating asynchronous reading is complete and calling endReading will not block.
+    static constexpr int reading_complete = 0;
+
     Adafruit_BME680(int8_t cspin = -1);
     Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
@@ -104,21 +109,33 @@ class Adafruit_BME680
      */
     bool endReading(void);
 
+    /** @brief Get remaining time for an asynchronous reading.
+     *  @return Remaining millis until endReading will not block if invoked.
+     *
+     *  If the asynchronous reading is still in progress, how many millis until its completion.
+     *  If the asynchronous reading is completed, 0.
+     *  If no asynchronous reading has started, -1 or Adafruit_BME680::reading_not_started.
+     *
+     *  Does not block.
+     */
+    int remainingReadingMillis(void);
+
     /// Temperature (Celsius) assigned after calling performReading() or endReading()
     float temperature;
     /// Pressure (Pascals) assigned after calling performReading() or endReading()
-    float pressure;
+    uint32_t pressure;
     /// Humidity (RH %) assigned after calling performReading() or endReading()
     float humidity;
     /// Gas resistor (ohms) assigned after calling performReading() or endReading()
-    float gas_resistance;
+    uint32_t gas_resistance;
   private:
 
     bool _filterEnabled, _tempEnabled, _humEnabled, _presEnabled, _gasEnabled;
     uint8_t _i2caddr;
     int32_t _sensorID;
     int8_t _cs;
-    unsigned long _meas_end;
+    unsigned long _meas_start;
+    uint16_t _meas_period;
 
     uint8_t spixfer(uint8_t x);
 
