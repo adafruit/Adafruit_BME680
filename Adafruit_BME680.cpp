@@ -77,6 +77,8 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin)
 /**************************************************************************/
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
   : _cs(cspin)
+  , _meas_start(0)
+  , _meas_period(0)
 {
   _BME680_SoftwareSPI_MOSI = mosipin;
   _BME680_SoftwareSPI_MISO = misopin;
