@@ -72,7 +72,9 @@ public:
 class Adafruit_BME680
 {
   public:
+    /// Value returned by remainingReadingMillis indicating no asynchronous reading has been initiated by beginReading.
     static constexpr int reading_not_started = -1;
+    /// Value returned by remainingReadingMillis indicating asynchronous reading is complete and calling endReading will not block.
     static constexpr int reading_complete = 0;
 
     Adafruit_BME680(int8_t cspin = -1);
