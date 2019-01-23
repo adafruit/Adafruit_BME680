@@ -394,8 +394,8 @@ int Adafruit_BME680::remainingReadingMillis(void)
 {
     if (_meas_start != 0) {
         /* A measurement is already in progress */
-        int remaing_time = (millis() - _meas_start) - (int)_meas_period;
-        return remaing_time < 0 ? reading_complete : remaing_time;
+        int remaining_time = (int)_meas_period - (millis() - _meas_start);
+        return remaining_time < 0 ? reading_complete : remaining_time;
     }
     return reading_not_started;
 }
