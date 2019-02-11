@@ -335,7 +335,7 @@ bool Adafruit_BME680::endReading(void) {
   int remaining_millis = remainingReadingMillis();
   if (remaining_millis > 0) {
 #ifdef BME680_DEBUG
-    Serial.print("Waiting (ms) "); Serial.println(meas_period);
+    Serial.print("Waiting (ms) "); Serial.println(remaining_millis);
 #endif
     delay(static_cast<unsigned int>(remaining_millis) * 2); /* Delay till the measurement is ready */
   }
