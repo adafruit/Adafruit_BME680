@@ -33,6 +33,7 @@
 
 /** Wire object **/
 TwoWire *_wire; 
+
 /** SPI object **/
 SPIClass *_spi; 
 
