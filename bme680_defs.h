@@ -39,24 +39,16 @@
  * No license is granted by implication or otherwise under any patent or
  * patent rights of the copyright holder.
  *
- * @file	bme680_defs.h
- * @date	19 Jun 2018
+ * @file	  bme680_defs.h
+ * @date	  19 Jun 2018
  * @version	3.5.9
- * @brief
- *
+ * @brief   Sensor driver for BME680 sensor
  */
 
-/*! @file bme680_defs.h
- @brief Sensor driver for BME680 sensor */
-/*!
- * @defgroup BME680 SENSOR API
- * @brief
- * @{*/
 #ifndef BME680_DEFS_H_
 #define BME680_DEFS_H_
 
-/********************************************************/
-/* header includes */
+/** header includes **/
 #ifdef __KERNEL__
 #include <linux/types.h>
 #include <linux/kernel.h>
@@ -65,9 +57,7 @@
 #include <stddef.h>
 #endif
 
-/******************************************************************************/
-/*! @name		Common macros					      */
-/******************************************************************************/
+/** Common macros **/
 
 #if !defined(UINT8_C) && !defined(INT8_C)
 #define INT8_C(x)       S8_C(x)
@@ -89,9 +79,7 @@
 #define UINT64_C(x)     U64_C(x)
 #endif
 
-/**@}*/
-
-/**\name C standard macros */
+/** C standard macros **/
 #ifndef NULL
 #ifdef __cplusplus
 #define NULL   0
@@ -101,34 +89,34 @@
 #endif
 
 /** BME680 configuration macros */
-/** Enable or un-comment the macro to provide floating point data output */
+/** Enable or un-comment the macro to provide floating point data output **/
 #ifndef BME680_FLOAT_POINT_COMPENSATION
-/* #define BME680_FLOAT_POINT_COMPENSATION */
+/* #define BME680_FLOAT_POINT_COMPENSATION **/
 #endif
 
-/** BME680 General config */
+/** BME680 General config **/
 #define BME680_POLL_PERIOD_MS		UINT8_C(10)
 
-/** BME680 I2C addresses */
+/** BME680 I2C addresses **/
 #define BME680_I2C_ADDR_PRIMARY		UINT8_C(0x76)
 #define BME680_I2C_ADDR_SECONDARY	UINT8_C(0x77)
 
-/** BME680 unique chip identifier */
+/** BME680 unique chip identifier **/
 #define BME680_CHIP_ID  UINT8_C(0x61)
 
-/** BME680 coefficients related defines */
+/** BME680 coefficients related defines **/
 #define BME680_COEFF_SIZE		UINT8_C(41)
 #define BME680_COEFF_ADDR1_LEN		UINT8_C(25)
 #define BME680_COEFF_ADDR2_LEN		UINT8_C(16)
 
-/** BME680 field_x related defines */
+/** BME680 field_x related defines **/
 #define BME680_FIELD_LENGTH		UINT8_C(15)
 #define BME680_FIELD_ADDR_OFFSET	UINT8_C(17)
 
-/** Soft reset command */
+/** Soft reset command **/
 #define BME680_SOFT_RESET_CMD   UINT8_C(0xb6)
 
-/** Error code definitions */
+/** Error code definitions **/
 #define BME680_OK		INT8_C(0)
 /* Errors */
 #define BME680_E_NULL_PTR		    INT8_C(-1)
@@ -144,22 +132,22 @@
 #define BME680_I_MIN_CORRECTION		UINT8_C(1)
 #define BME680_I_MAX_CORRECTION		UINT8_C(2)
 
-/** Register map */
-/** Other coefficient's address */
+/** Register map **/
+/** Other coefficient's address **/
 #define BME680_ADDR_RES_HEAT_VAL_ADDR	UINT8_C(0x00)
 #define BME680_ADDR_RES_HEAT_RANGE_ADDR	UINT8_C(0x02)
 #define BME680_ADDR_RANGE_SW_ERR_ADDR	UINT8_C(0x04)
 #define BME680_ADDR_SENS_CONF_START	UINT8_C(0x5A)
 #define BME680_ADDR_GAS_CONF_START	UINT8_C(0x64)
 
-/** Field settings */
+/** Field settings **/
 #define BME680_FIELD0_ADDR		UINT8_C(0x1d)
 
-/** Heater settings */
+/** Heater settings **/
 #define BME680_RES_HEAT0_ADDR		UINT8_C(0x5a)
 #define BME680_GAS_WAIT0_ADDR		UINT8_C(0x64)
 
-/** Sensor configuration registers */
+/** Sensor configuration registers **/
 #define BME680_CONF_HEAT_CTRL_ADDR		UINT8_C(0x70)
 #define BME680_CONF_ODR_RUN_GAS_NBC_ADDR	UINT8_C(0x71)
 #define BME680_CONF_OS_H_ADDR			UINT8_C(0x72)
@@ -167,25 +155,25 @@
 #define BME680_CONF_T_P_MODE_ADDR		UINT8_C(0x74)
 #define BME680_CONF_ODR_FILT_ADDR		UINT8_C(0x75)
 
-/** Coefficient's address */
+/** Coefficient's address **/
 #define BME680_COEFF_ADDR1	UINT8_C(0x89)
 #define BME680_COEFF_ADDR2	UINT8_C(0xe1)
 
-/** Chip identifier */
+/** Chip identifier **/
 #define BME680_CHIP_ID_ADDR	UINT8_C(0xd0)
 
-/** Soft reset register */
+/** Soft reset register **/
 #define BME680_SOFT_RESET_ADDR		UINT8_C(0xe0)
 
-/** Heater control settings */
+/** Heater control settings **/
 #define BME680_ENABLE_HEATER		UINT8_C(0x00)
 #define BME680_DISABLE_HEATER		UINT8_C(0x08)
 
-/** Gas measurement settings */
+/** Gas measurement settings **/
 #define BME680_DISABLE_GAS_MEAS		UINT8_C(0x00)
 #define BME680_ENABLE_GAS_MEAS		UINT8_C(0x01)
 
-/** Over-sampling settings */
+/** Over-sampling settings **/
 #define BME680_OS_NONE		UINT8_C(0)
 #define BME680_OS_1X		UINT8_C(1)
 #define BME680_OS_2X		UINT8_C(2)
@@ -193,7 +181,7 @@
 #define BME680_OS_8X		UINT8_C(4)
 #define BME680_OS_16X		UINT8_C(5)
 
-/** IIR filter settings */
+/** IIR filter settings **/
 #define BME680_FILTER_SIZE_0	UINT8_C(0)
 #define BME680_FILTER_SIZE_1	UINT8_C(1)
 #define BME680_FILTER_SIZE_3	UINT8_C(2)
@@ -207,27 +195,27 @@
 #define BME680_SLEEP_MODE	UINT8_C(0)
 #define BME680_FORCED_MODE	UINT8_C(1)
 
-/** Delay related macro declaration */
+/** Delay related macro declaration **/
 #define BME680_RESET_PERIOD	UINT32_C(10)
 
-/** SPI memory page settings */
+/** SPI memory page settings **/
 #define BME680_MEM_PAGE0	UINT8_C(0x10)
 #define BME680_MEM_PAGE1	UINT8_C(0x00)
 
-/** Ambient humidity shift value for compensation */
+/** Ambient humidity shift value for compensation **/
 #define BME680_HUM_REG_SHIFT_VAL	UINT8_C(4)
 
-/** Run gas enable and disable settings */
+/** Run gas enable and disable settings **/
 #define BME680_RUN_GAS_DISABLE	UINT8_C(0)
 #define BME680_RUN_GAS_ENABLE	UINT8_C(1)
 
-/** Buffer length macro declaration */
+/** Buffer length macro declaration **/
 #define BME680_TMP_BUFFER_LENGTH	UINT8_C(40)
 #define BME680_REG_BUFFER_LENGTH	UINT8_C(6)
 #define BME680_FIELD_DATA_LENGTH	UINT8_C(3)
 #define BME680_GAS_REG_BUF_LENGTH	UINT8_C(20)
 
-/** Settings selector */
+/** Settings selector **/
 #define BME680_OST_SEL			UINT16_C(1)
 #define BME680_OSP_SEL			UINT16_C(2)
 #define BME680_OSH_SEL			UINT16_C(4)
@@ -238,11 +226,11 @@
 #define BME680_NBCONV_SEL		UINT16_C(128)
 #define BME680_GAS_SENSOR_SEL		(BME680_GAS_MEAS_SEL | BME680_RUN_GAS_SEL | BME680_NBCONV_SEL)
 
-/** Number of conversion settings*/
+/** Number of conversion settings **/
 #define BME680_NBCONV_MIN		UINT8_C(0)
 #define BME680_NBCONV_MAX		UINT8_C(10)
 
-/** Mask definitions */
+/** Mask definitions **/
 #define BME680_GAS_MEAS_MSK	UINT8_C(0x30)
 #define BME680_NBCONV_MSK	UINT8_C(0X0F)
 #define BME680_FILTER_MSK	UINT8_C(0X1C)
@@ -264,14 +252,14 @@
 #define BME680_SPI_WR_MSK	UINT8_C(0x7f)
 #define	BME680_BIT_H1_DATA_MSK	UINT8_C(0x0F)
 
-/** Bit position definitions for sensor settings */
+/** Bit position definitions for sensor settings **/
 #define BME680_GAS_MEAS_POS	UINT8_C(4)
 #define BME680_FILTER_POS	UINT8_C(2)
 #define BME680_OST_POS		UINT8_C(5)
 #define BME680_OSP_POS		UINT8_C(2)
 #define BME680_RUN_GAS_POS	UINT8_C(4)
 
-/** Array Index to Field data mapping for Calibration Data*/
+/** Array Index to Field data mapping for Calibration Data **/
 #define BME680_T2_LSB_REG	(1)
 #define BME680_T2_MSB_REG	(2)
 #define BME680_T3_REG		(3)
@@ -307,7 +295,7 @@
 #define BME680_GH1_REG		(37)
 #define BME680_GH3_REG		(38)
 
-/** BME680 register buffer index settings*/
+/** BME680 register buffer index settings **/
 #define BME680_REG_FILTER_INDEX		UINT8_C(5)
 #define BME680_REG_TEMP_INDEX		UINT8_C(4)
 #define BME680_REG_PRES_INDEX		UINT8_C(4)
@@ -316,46 +304,51 @@
 #define BME680_REG_RUN_GAS_INDEX	UINT8_C(1)
 #define BME680_REG_HCTRL_INDEX		UINT8_C(0)
 
-/** BME680 pressure calculation macros */
+/** BME680 pressure calculation macros **/
 /*! This max value is used to provide precedence to multiplication or division
- * in pressure compensation equation to achieve least loss of precision and
- * avoiding overflows.
- * i.e Comparing value, BME680_MAX_OVERFLOW_VAL = INT32_C(1 << 30)
+ *  in pressure compensation equation to achieve least loss of precision and
+ *  avoiding overflows.
+ *  i.e Comparing value, BME680_MAX_OVERFLOW_VAL = INT32_C(1 << 30)
  */
 #define BME680_MAX_OVERFLOW_VAL      INT32_C(0x40000000)
 
-/** Macro to combine two 8 bit data's to form a 16 bit data */
+/** Macro to combine two 8 bit data's to form a 16 bit data **/
 #define BME680_CONCAT_BYTES(msb, lsb)	(((uint16_t)msb << 8) | (uint16_t)lsb)
 
-/** Macro to SET and GET BITS of a register */
+/** Macro to SET and GET BITS of a register **/
 #define BME680_SET_BITS(reg_data, bitname, data) \
 		((reg_data & ~(bitname##_MSK)) | \
 		((data << bitname##_POS) & bitname##_MSK))
 #define BME680_GET_BITS(reg_data, bitname)	((reg_data & (bitname##_MSK)) >> \
 	(bitname##_POS))
 
-/** Macro variant to handle the bitname position if it is zero */
+/** Macro variant to handle the bitname position if it is zero **/
 #define BME680_SET_BITS_POS_0(reg_data, bitname, data) \
 				((reg_data & ~(bitname##_MSK)) | \
 				(data & bitname##_MSK))
 #define BME680_GET_BITS_POS_0(reg_data, bitname)  (reg_data & (bitname##_MSK))
 
-/** Type definitions */
+/** Type definitions **/
 /*!
- * Generic communication function pointer
- * @param[in] dev_id: Place holder to store the id of the device structure
- *                    Can be used to store the index of the Chip select or
- *                    I2C address of the device.
- * @param[in] reg_addr:	Used to select the register the where data needs to
- *                      be read from or written to.
- * @param[in/out] reg_data: Data array to read/write
- * @param[in] len: Length of the data array
+ * @brief         Generic communication function pointer
+ * @param[in]     dev_id
+ *                Place holder to store the id of the device structure
+ *                Can be used to store the index of the Chip select or
+ *                I2C address of the device.
+ * @param[in]     reg_addr
+ *                Used to select the register the where data needs to
+ *                be read from or written to.
+ * @param[in/out] reg_data
+ *                Data array to read/write
+ * @param[in]     len 
+ *                Length of the data array
  */
 typedef int8_t (*bme680_com_fptr_t)(uint8_t dev_id, uint8_t reg_addr, uint8_t *data, uint16_t len);
 
 /*!
- * Delay function pointer
- * @param[in] period: Time period in milliseconds
+ * @brief     Delay function pointer
+ * @param[in] period
+ *            Time period in milliseconds
  */
 typedef void (*bme680_delay_fptr_t)(uint32_t period);
 
@@ -369,7 +362,7 @@ enum bme680_intf {
 	BME680_I2C_INTF
 };
 
-/* structure definitions */
+/** structure definitions **/
 /*!
  * @brief Sensor field data structure
  */
@@ -472,7 +465,7 @@ struct	bme680_calib_data {
 
 /*!
  * @brief BME680 sensor settings structure which comprises of ODR,
- * over-sampling and filter settings.
+ *        over-sampling and filter settings.
  */
 struct	bme680_tph_sett {
 	/*! Humidity oversampling */
@@ -487,7 +480,7 @@ struct	bme680_tph_sett {
 
 /*!
  * @brief BME680 gas sensor which comprises of gas settings
- *  and status parameters
+ *        and status parameters
  */
 struct	bme680_gas_sett {
 	/*! Variable to store nb conversion */
