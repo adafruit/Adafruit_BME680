@@ -31,8 +31,9 @@
 
 //#define BME680_DEBUG
 
-/** Wire and SPI object to keep them in the same scope **/
+/** Wire object **/
 TwoWire *_wire; 
+/** SPI object **/
 SPIClass *_spi; 
 
 /** These SPI pins must be global in order to work with underlying library **/
