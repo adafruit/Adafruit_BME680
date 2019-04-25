@@ -31,6 +31,10 @@
 
 //#define BME680_DEBUG
 
+/** Wire and SPI object to keep them in the same scope **/
+TwoWire *_wire; 
+SPIClass *_spi; 
+
 /** These SPI pins must be global in order to work with underlying library **/
 int8_t _BME680_SoftwareSPI_MOSI; ///< Global SPI MOSI pin
 int8_t _BME680_SoftwareSPI_MISO; ///< Global SPI MISO pin
@@ -47,15 +51,35 @@ static void delay_msec(uint32_t ms);
 // PUBLIC FUNCTIONS
 
 /*!
- *  @brief  Instantiates sensor with Hardware SPI or I2C.
- *  @param  cspin 
- *          SPI chip select. If not passed in, I2C will be used
+ *  @brief  Instantiates sensor with i2c. 
+ *  @param  *theWire
+ *          optional Wire object
  */
-Adafruit_BME680::Adafruit_BME680(int8_t cspin)
+Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
+  : _cs(-1)
+  , _meas_start(0)
+  , _meas_period(0)
+{
+  _wire = theWire;
+  _BME680_SoftwareSPI_MOSI = -1;
+  _BME680_SoftwareSPI_MISO = -1;
+  _BME680_SoftwareSPI_SCK = -1;
+  _filterEnabled = _tempEnabled = _humEnabled = _presEnabled = _gasEnabled = false;
+}
+
+/*!
+ *  @brief  Instantiates sensor with Hardware SPI. 
+ *  @param  cspin 
+ *          SPI chip select.
+ *  @param  theSPI
+ *          optional SPI object
+ */
+Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
   : _cs(cspin)
   , _meas_start(0)
   , _meas_period(0)
 {
+  *_spi = *theSPI;
   _BME680_SoftwareSPI_MOSI = -1;
   _BME680_SoftwareSPI_MISO = -1;
   _BME680_SoftwareSPI_SCK = -1;
@@ -103,7 +127,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
   if (_cs == -1) {
     // i2c
-    Wire.begin();
+    _wire->begin();
 
     gas_sensor.dev_id = addr;
     gas_sensor.intf = BME680_I2C_INTF;
@@ -115,7 +139,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
     if (_BME680_SoftwareSPI_SCK == -1) {
       // hardware SPI
-      SPI.begin();
+      _spi->begin();
     } else {
       // software SPI
       pinMode(_BME680_SoftwareSPI_SCK, OUTPUT);
@@ -495,17 +519,17 @@ int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t le
   Serial.print("\tI2C $"); Serial.print(reg_addr, HEX); Serial.print(" => ");
 #endif
 
-  Wire.beginTransmission((uint8_t)dev_id);
-  Wire.write((uint8_t)reg_addr);
-  Wire.endTransmission();
-  if (len != Wire.requestFrom((uint8_t)dev_id, (byte)len)) {
+  _wire->beginTransmission((uint8_t)dev_id);
+  _wire->write((uint8_t)reg_addr);
+  _wire->endTransmission();
+  if (len != _wire->requestFrom((uint8_t)dev_id, (byte)len)) {
 #ifdef BME680_DEBUG
     Serial.print("Failed to read "); Serial.print(len); Serial.print(" bytes from "); Serial.println(dev_id, HEX);
 #endif
     return 1;
   }
   while (len--) {
-    *reg_data = (uint8_t)Wire.read();
+    *reg_data = (uint8_t)_wire->read();
 #ifdef BME680_DEBUG
     Serial.print("0x"); Serial.print(*reg_data, HEX); Serial.print(", ");
 #endif
@@ -524,16 +548,16 @@ int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t l
 #ifdef BME680_DEBUG
   Serial.print("\tI2C $"); Serial.print(reg_addr, HEX); Serial.print(" <= ");
 #endif
-  Wire.beginTransmission((uint8_t)dev_id);
-  Wire.write((uint8_t)reg_addr);
+  _wire->beginTransmission((uint8_t)dev_id);
+  _wire->write((uint8_t)reg_addr);
   while (len--) {
-    Wire.write(*reg_data);
+    _wire->write(*reg_data);
 #ifdef BME680_DEBUG
     Serial.print("0x"); Serial.print(*reg_data, HEX); Serial.print(", ");
 #endif
     reg_data++;
   }
-  Wire.endTransmission();
+  _wire->endTransmission();
 #ifdef BME680_DEBUG
   Serial.println("");
 #endif
@@ -552,7 +576,7 @@ static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint1
 
   // If hardware SPI we should use transactions!
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
+    _spi->beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
   }
 
   digitalWrite(cspin, LOW);
@@ -570,7 +594,7 @@ static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint1
   digitalWrite(cspin, HIGH);
 
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.endTransaction();
+    _spi->endTransaction();
   }
 
 #ifdef BME680_DEBUG
@@ -589,7 +613,7 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
 
   // If hardware SPI we should use transactions!
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
+    _spi->beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
   }
 
   digitalWrite(cspin, LOW);
@@ -606,7 +630,7 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
   digitalWrite(cspin, HIGH);
 
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.endTransaction();
+    _spi->endTransaction();
   }
 
 #ifdef BME680_DEBUG
@@ -618,7 +642,7 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
 
 static uint8_t spi_transfer(uint8_t x) {
   if (_BME680_SoftwareSPI_SCK == -1)
-    return SPI.transfer(x);
+    return _spi->transfer(x);
 
   // software spi
   //Serial.println("Software SPI");
