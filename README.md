@@ -1,7 +1,8 @@
 # Adafruit BME680 Library [![Build Status](https://travis-ci.org/adafruit/Adafruit_BME680.svg?branch=master)](https://travis-ci.org/adafruit/Adafruit_BME680)
 
-<a href="http://www.adafruit.com/products/3660
-"><img src="./assets/board.jpg" width="500px"/></a>
+<a href="http://www.adafruit.com/products/3660">
+  <img src="./assets/board.jpg" width="500px" />
+</a>
 
 The long awaited BME680 from Bosch gives you all the environmental sensing you want in one small package. This little sensor contains temperature, humidity, barometric pressure, and VOC gas sensing capabilities. All over SPI or I2C at a great price!
 
