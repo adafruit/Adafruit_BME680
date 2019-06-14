@@ -72,29 +72,32 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af147d564868b9eac61a2c7fcd8f614cd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#af147d564868b9eac61a2c7fcd8f614cd">Adafruit_BME680</a> (int8_t cspin=-1)</td></tr>
-<tr class="memdesc:af147d564868b9eac61a2c7fcd8f614cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates sensor with Hardware SPI or I2C.  <a href="#af147d564868b9eac61a2c7fcd8f614cd">More...</a><br /></td></tr>
-<tr class="separator:af147d564868b9eac61a2c7fcd8f614cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab61b5e1bc72e9fab8a2e63e86326eb9a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ab61b5e1bc72e9fab8a2e63e86326eb9a">Adafruit_BME680</a> (TwoWire *theWire=&amp;Wire)</td></tr>
+<tr class="memdesc:ab61b5e1bc72e9fab8a2e63e86326eb9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates sensor with i2c.  <a href="#ab61b5e1bc72e9fab8a2e63e86326eb9a">More...</a><br /></td></tr>
+<tr class="separator:ab61b5e1bc72e9fab8a2e63e86326eb9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0251724aa30376a65956d783f5a5a39"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ab0251724aa30376a65956d783f5a5a39">Adafruit_BME680</a> (int8_t cspin, SPIClass *theSPI=&amp;SPI)</td></tr>
+<tr class="memdesc:ab0251724aa30376a65956d783f5a5a39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates sensor with Hardware SPI.  <a href="#ab0251724aa30376a65956d783f5a5a39">More...</a><br /></td></tr>
+<tr class="separator:ab0251724aa30376a65956d783f5a5a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e89aaed66497bb2dde7ab678aa81173"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8e89aaed66497bb2dde7ab678aa81173">Adafruit_BME680</a> (int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)</td></tr>
 <tr class="memdesc:a8e89aaed66497bb2dde7ab678aa81173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates sensor with Software (bit-bang) SPI.  <a href="#a8e89aaed66497bb2dde7ab678aa81173">More...</a><br /></td></tr>
 <tr class="separator:a8e89aaed66497bb2dde7ab678aa81173"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">begin</a> (uint8_t addr=<a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a>, bool initSettings=true)</td></tr>
-<tr class="memdesc:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sensor.  <a href="#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">More...</a><br /></td></tr>
+<tr class="memdesc:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sensor Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads calibration data in preparation for sensor reads.  <a href="#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">More...</a><br /></td></tr>
 <tr class="separator:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b554e6edf5cea06cf480e53bcb65aec"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a7b554e6edf5cea06cf480e53bcb65aec">readTemperature</a> (void)</td></tr>
-<tr class="memdesc:a7b554e6edf5cea06cf480e53bcb65aec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the ambient temperature.  <a href="#a7b554e6edf5cea06cf480e53bcb65aec">More...</a><br /></td></tr>
-<tr class="separator:a7b554e6edf5cea06cf480e53bcb65aec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd081183a7845fee1d1c080cce20495e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#afd081183a7845fee1d1c080cce20495e">readPressure</a> (void)</td></tr>
-<tr class="memdesc:afd081183a7845fee1d1c080cce20495e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the barometric pressure.  <a href="#afd081183a7845fee1d1c080cce20495e">More...</a><br /></td></tr>
-<tr class="separator:afd081183a7845fee1d1c080cce20495e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1402c97860f9c61bf133be7e7056658b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a1402c97860f9c61bf133be7e7056658b">readHumidity</a> (void)</td></tr>
-<tr class="memdesc:a1402c97860f9c61bf133be7e7056658b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the relative humidity.  <a href="#a1402c97860f9c61bf133be7e7056658b">More...</a><br /></td></tr>
-<tr class="separator:a1402c97860f9c61bf133be7e7056658b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0b55eb1049c5949ff186de86aaafb55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ae0b55eb1049c5949ff186de86aaafb55">readGas</a> (void)</td></tr>
-<tr class="memdesc:ae0b55eb1049c5949ff186de86aaafb55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the resistance of the MOX gas sensor.  <a href="#ae0b55eb1049c5949ff186de86aaafb55">More...</a><br /></td></tr>
-<tr class="separator:ae0b55eb1049c5949ff186de86aaafb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9546f6f8a5e53d033bbb0cd26d6fc1c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ac9546f6f8a5e53d033bbb0cd26d6fc1c">readTemperature</a> ()</td></tr>
+<tr class="memdesc:ac9546f6f8a5e53d033bbb0cd26d6fc1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the ambient temperature.  <a href="#ac9546f6f8a5e53d033bbb0cd26d6fc1c">More...</a><br /></td></tr>
+<tr class="separator:ac9546f6f8a5e53d033bbb0cd26d6fc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82bb48e5eeb03b8cc07d0a5298c05166"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a82bb48e5eeb03b8cc07d0a5298c05166">readPressure</a> ()</td></tr>
+<tr class="memdesc:a82bb48e5eeb03b8cc07d0a5298c05166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the barometric pressure.  <a href="#a82bb48e5eeb03b8cc07d0a5298c05166">More...</a><br /></td></tr>
+<tr class="separator:a82bb48e5eeb03b8cc07d0a5298c05166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fd214a02735b0e1c80aabf63203410b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a2fd214a02735b0e1c80aabf63203410b">readHumidity</a> ()</td></tr>
+<tr class="memdesc:a2fd214a02735b0e1c80aabf63203410b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the relative humidity.  <a href="#a2fd214a02735b0e1c80aabf63203410b">More...</a><br /></td></tr>
+<tr class="separator:a2fd214a02735b0e1c80aabf63203410b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaae0839c68035001f491661cb2d012fc"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#aaae0839c68035001f491661cb2d012fc">readGas</a> ()</td></tr>
+<tr class="memdesc:aaae0839c68035001f491661cb2d012fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the resistance of the MOX gas sensor.  <a href="#aaae0839c68035001f491661cb2d012fc">More...</a><br /></td></tr>
+<tr class="separator:aaae0839c68035001f491661cb2d012fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3caae92aa981508f0084b11b1fed4883"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a3caae92aa981508f0084b11b1fed4883">readAltitude</a> (float seaLevel)</td></tr>
-<tr class="memdesc:a3caae92aa981508f0084b11b1fed4883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the altitude (in meters).  <a href="#a3caae92aa981508f0084b11b1fed4883">More...</a><br /></td></tr>
+<tr class="memdesc:a3caae92aa981508f0084b11b1fed4883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the altitude (in meters). Reads the current atmostpheric pressure (in hPa) from the sensor and calculates via the provided sea-level pressure (in hPa).  <a href="#a3caae92aa981508f0084b11b1fed4883">More...</a><br /></td></tr>
 <tr class="separator:a3caae92aa981508f0084b11b1fed4883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a640ee0a0cb7ca57af30e8408260cc6e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a640ee0a0cb7ca57af30e8408260cc6e6">setTemperatureOversampling</a> (uint8_t os)</td></tr>
 <tr class="memdesc:a640ee0a0cb7ca57af30e8408260cc6e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for Temperature oversampling.  <a href="#a640ee0a0cb7ca57af30e8408260cc6e6">More...</a><br /></td></tr>
@@ -111,54 +114,68 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e6a61b5441c51bf5e44c3af3ee3fec8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a2e6a61b5441c51bf5e44c3af3ee3fec8">setGasHeater</a> (uint16_t heaterTemp, uint16_t heaterTime)</td></tr>
 <tr class="memdesc:a2e6a61b5441c51bf5e44c3af3ee3fec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable and configure gas reading + heater.  <a href="#a2e6a61b5441c51bf5e44c3af3ee3fec8">More...</a><br /></td></tr>
 <tr class="separator:a2e6a61b5441c51bf5e44c3af3ee3fec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa58210864cad77b272669eb86f1d2a88"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#aa58210864cad77b272669eb86f1d2a88">performReading</a> (void)</td></tr>
-<tr class="memdesc:aa58210864cad77b272669eb86f1d2a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a reading in blocking mode.  <a href="#aa58210864cad77b272669eb86f1d2a88">More...</a><br /></td></tr>
-<tr class="separator:aa58210864cad77b272669eb86f1d2a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1917fecd8330fa6de9572826c502b772"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a1917fecd8330fa6de9572826c502b772">beginReading</a> (void)</td></tr>
-<tr class="memdesc:a1917fecd8330fa6de9572826c502b772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin an asynchronous reading.  <a href="#a1917fecd8330fa6de9572826c502b772">More...</a><br /></td></tr>
-<tr class="separator:a1917fecd8330fa6de9572826c502b772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a943f0af102010038cf5ee6ce4ccc04c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a943f0af102010038cf5ee6ce4ccc04c6">endReading</a> (void)</td></tr>
-<tr class="memdesc:a943f0af102010038cf5ee6ce4ccc04c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">End an asynchronous reading.  <a href="#a943f0af102010038cf5ee6ce4ccc04c6">More...</a><br /></td></tr>
-<tr class="separator:a943f0af102010038cf5ee6ce4ccc04c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac60efbfa040f99d8bd36cfbbded8404a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ac60efbfa040f99d8bd36cfbbded8404a">remainingReadingMillis</a> (void)</td></tr>
-<tr class="memdesc:ac60efbfa040f99d8bd36cfbbded8404a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get remaining time for an asynchronous reading.  <a href="#ac60efbfa040f99d8bd36cfbbded8404a">More...</a><br /></td></tr>
-<tr class="separator:ac60efbfa040f99d8bd36cfbbded8404a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96489aa0c1c9bbbf066a0c915bc215b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9">performReading</a> ()</td></tr>
+<tr class="memdesc:a96489aa0c1c9bbbf066a0c915bc215b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a full reading of all 4 sensors in the BME680. Assigns the internal <a class="el" href="class_adafruit___b_m_e680.html#a074501406d2bf249551e3e489cb9316e">Adafruit_BME680::temperature</a>, <a class="el" href="class_adafruit___b_m_e680.html#a1630ed8945a52438c9f1b40e17d6bfd0">Adafruit_BME680::pressure</a>, <a class="el" href="class_adafruit___b_m_e680.html#a442787f3ad0f2ab9087535ba9c22102b">Adafruit_BME680::humidity</a> and <a class="el" href="class_adafruit___b_m_e680.html#a7e8e32861906af3bc07f748cf19ebfa8">Adafruit_BME680::gas_resistance</a> member variables.  <a href="#a96489aa0c1c9bbbf066a0c915bc215b9">More...</a><br /></td></tr>
+<tr class="separator:a96489aa0c1c9bbbf066a0c915bc215b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a569c735cf07ef92d79315799468473cb"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a569c735cf07ef92d79315799468473cb">beginReading</a> ()</td></tr>
+<tr class="memdesc:a569c735cf07ef92d79315799468473cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin an asynchronous reading.  <a href="#a569c735cf07ef92d79315799468473cb">More...</a><br /></td></tr>
+<tr class="separator:a569c735cf07ef92d79315799468473cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7840c05a63b0b814866f7ccb6dccf767"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a7840c05a63b0b814866f7ccb6dccf767">endReading</a> ()</td></tr>
+<tr class="memdesc:a7840c05a63b0b814866f7ccb6dccf767"><td class="mdescLeft">&#160;</td><td class="mdescRight">End an asynchronous reading. If the asynchronous reading is still in progress, block until it ends. If no asynchronous reading has started, this is equivalent to <a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9" title="Performs a full reading of all 4 sensors in the BME680. Assigns the internal Adafruit_BME680::tempera...">performReading()</a>.  <a href="#a7840c05a63b0b814866f7ccb6dccf767">More...</a><br /></td></tr>
+<tr class="separator:a7840c05a63b0b814866f7ccb6dccf767"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a730292265955935a2c968288f71bb216"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a730292265955935a2c968288f71bb216">remainingReadingMillis</a> ()</td></tr>
+<tr class="memdesc:a730292265955935a2c968288f71bb216"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get remaining time for an asynchronous reading. If the asynchronous reading is still in progress, how many millis until its completion. If the asynchronous reading is completed, 0. If no asynchronous reading has started, -1 or <a class="el" href="class_adafruit___b_m_e680.html#a8799e4404fb03ccd1c34f8f659b946b6">Adafruit_BME680::reading_not_started</a>. Does not block.  <a href="#a730292265955935a2c968288f71bb216">More...</a><br /></td></tr>
+<tr class="separator:a730292265955935a2c968288f71bb216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a074501406d2bf249551e3e489cb9316e"><td class="memItemLeft" align="right" valign="top"><a id="a074501406d2bf249551e3e489cb9316e"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a074501406d2bf249551e3e489cb9316e">temperature</a></td></tr>
-<tr class="memdesc:a074501406d2bf249551e3e489cb9316e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature (Celsius) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#aa58210864cad77b272669eb86f1d2a88" title="Perform a reading in blocking mode. ">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a943f0af102010038cf5ee6ce4ccc04c6" title="End an asynchronous reading. ">endReading()</a> <br /></td></tr>
+<tr class="memitem:a074501406d2bf249551e3e489cb9316e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a074501406d2bf249551e3e489cb9316e">temperature</a></td></tr>
 <tr class="separator:a074501406d2bf249551e3e489cb9316e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1630ed8945a52438c9f1b40e17d6bfd0"><td class="memItemLeft" align="right" valign="top"><a id="a1630ed8945a52438c9f1b40e17d6bfd0"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a1630ed8945a52438c9f1b40e17d6bfd0">pressure</a></td></tr>
-<tr class="memdesc:a1630ed8945a52438c9f1b40e17d6bfd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pressure (Pascals) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#aa58210864cad77b272669eb86f1d2a88" title="Perform a reading in blocking mode. ">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a943f0af102010038cf5ee6ce4ccc04c6" title="End an asynchronous reading. ">endReading()</a> <br /></td></tr>
+<tr class="memitem:a1630ed8945a52438c9f1b40e17d6bfd0"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a1630ed8945a52438c9f1b40e17d6bfd0">pressure</a></td></tr>
 <tr class="separator:a1630ed8945a52438c9f1b40e17d6bfd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a442787f3ad0f2ab9087535ba9c22102b"><td class="memItemLeft" align="right" valign="top"><a id="a442787f3ad0f2ab9087535ba9c22102b"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a442787f3ad0f2ab9087535ba9c22102b">humidity</a></td></tr>
-<tr class="memdesc:a442787f3ad0f2ab9087535ba9c22102b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Humidity (RH %) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#aa58210864cad77b272669eb86f1d2a88" title="Perform a reading in blocking mode. ">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a943f0af102010038cf5ee6ce4ccc04c6" title="End an asynchronous reading. ">endReading()</a> <br /></td></tr>
+<tr class="memitem:a442787f3ad0f2ab9087535ba9c22102b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a442787f3ad0f2ab9087535ba9c22102b">humidity</a></td></tr>
 <tr class="separator:a442787f3ad0f2ab9087535ba9c22102b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e8e32861906af3bc07f748cf19ebfa8"><td class="memItemLeft" align="right" valign="top"><a id="a7e8e32861906af3bc07f748cf19ebfa8"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a7e8e32861906af3bc07f748cf19ebfa8">gas_resistance</a></td></tr>
-<tr class="memdesc:a7e8e32861906af3bc07f748cf19ebfa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gas resistor (ohms) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#aa58210864cad77b272669eb86f1d2a88" title="Perform a reading in blocking mode. ">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a943f0af102010038cf5ee6ce4ccc04c6" title="End an asynchronous reading. ">endReading()</a> <br /></td></tr>
+<tr class="memitem:a7e8e32861906af3bc07f748cf19ebfa8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a7e8e32861906af3bc07f748cf19ebfa8">gas_resistance</a></td></tr>
 <tr class="separator:a7e8e32861906af3bc07f748cf19ebfa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a8799e4404fb03ccd1c34f8f659b946b6"><td class="memItemLeft" align="right" valign="top"><a id="a8799e4404fb03ccd1c34f8f659b946b6"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8799e4404fb03ccd1c34f8f659b946b6">reading_not_started</a> = -1</td></tr>
-<tr class="memdesc:a8799e4404fb03ccd1c34f8f659b946b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value returned by remainingReadingMillis indicating no asynchronous reading has been initiated by beginReading. <br /></td></tr>
+<tr class="memitem:a8799e4404fb03ccd1c34f8f659b946b6"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8799e4404fb03ccd1c34f8f659b946b6">reading_not_started</a> = -1</td></tr>
 <tr class="separator:a8799e4404fb03ccd1c34f8f659b946b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8bb890c6dac567d5fdc3e20dfbd7bc7"><td class="memItemLeft" align="right" valign="top"><a id="af8bb890c6dac567d5fdc3e20dfbd7bc7"></a>
-static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#af8bb890c6dac567d5fdc3e20dfbd7bc7">reading_complete</a> = 0</td></tr>
-<tr class="memdesc:af8bb890c6dac567d5fdc3e20dfbd7bc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value returned by remainingReadingMillis indicating asynchronous reading is complete and calling endReading will not block. <br /></td></tr>
+<tr class="memitem:af8bb890c6dac567d5fdc3e20dfbd7bc7"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#af8bb890c6dac567d5fdc3e20dfbd7bc7">reading_complete</a> = 0</td></tr>
 <tr class="separator:af8bb890c6dac567d5fdc3e20dfbd7bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_adafruit___b_m_e680.html">Adafruit_BME680</a> Class for both I2C and SPI usage. Wraps the Bosch library for Arduino usage </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af147d564868b9eac61a2c7fcd8f614cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af147d564868b9eac61a2c7fcd8f614cd">&#9670;&nbsp;</a></span>Adafruit_BME680() <span class="overload">[1/2]</span></h2>
+<a id="ab61b5e1bc72e9fab8a2e63e86326eb9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab61b5e1bc72e9fab8a2e63e86326eb9a">&#9670;&nbsp;</a></span>Adafruit_BME680() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Adafruit_BME680::Adafruit_BME680 </td>
+          <td>(</td>
+          <td class="paramtype">TwoWire *&#160;</td>
+          <td class="paramname"><em>theWire</em> = <code>&amp;Wire</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instantiates sensor with i2c. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*theWire</td><td>optional Wire object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ab0251724aa30376a65956d783f5a5a39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0251724aa30376a65956d783f5a5a39">&#9670;&nbsp;</a></span>Adafruit_BME680() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -167,16 +184,27 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
           <td class="memname">Adafruit_BME680::Adafruit_BME680 </td>
           <td>(</td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>cspin</em> = <code>-1</code></td><td>)</td>
+          <td class="paramname"><em>cspin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">SPIClass *&#160;</td>
+          <td class="paramname"><em>theSPI</em> = <code>&amp;SPI</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Instantiates sensor with Hardware SPI or I2C. </p>
+<p>Instantiates sensor with Hardware SPI. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cspin</td><td>SPI chip select. If not passed in, I2C will be used </td></tr>
+    <tr><td class="paramname">cspin</td><td>SPI chip select. </td></tr>
+    <tr><td class="paramname">theSPI</td><td>optional SPI object </td></tr>
   </table>
   </dd>
 </dl>
@@ -184,7 +212,7 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 </div>
 </div>
 <a id="a8e89aaed66497bb2dde7ab678aa81173"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e89aaed66497bb2dde7ab678aa81173">&#9670;&nbsp;</a></span>Adafruit_BME680() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e89aaed66497bb2dde7ab678aa81173">&#9670;&nbsp;</a></span>Adafruit_BME680() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,8 +289,7 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the sensor. </p>
-<p>Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads calibration data in preparation for sensor reads.</p>
+<p>Initializes the sensor Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads calibration data in preparation for sensor reads. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>Optional parameter for the I2C address of BME680. Default is 0x77 </td></tr>
@@ -274,8 +301,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
-<a id="a7b554e6edf5cea06cf480e53bcb65aec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b554e6edf5cea06cf480e53bcb65aec">&#9670;&nbsp;</a></span>readTemperature()</h2>
+<a id="ac9546f6f8a5e53d033bbb0cd26d6fc1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9546f6f8a5e53d033bbb0cd26d6fc1c">&#9670;&nbsp;</a></span>readTemperature()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,8 +322,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
-<a id="afd081183a7845fee1d1c080cce20495e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd081183a7845fee1d1c080cce20495e">&#9670;&nbsp;</a></span>readPressure()</h2>
+<a id="a82bb48e5eeb03b8cc07d0a5298c05166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82bb48e5eeb03b8cc07d0a5298c05166">&#9670;&nbsp;</a></span>readPressure()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -316,8 +343,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
-<a id="a1402c97860f9c61bf133be7e7056658b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1402c97860f9c61bf133be7e7056658b">&#9670;&nbsp;</a></span>readHumidity()</h2>
+<a id="a2fd214a02735b0e1c80aabf63203410b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fd214a02735b0e1c80aabf63203410b">&#9670;&nbsp;</a></span>readHumidity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -337,8 +364,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
-<a id="ae0b55eb1049c5949ff186de86aaafb55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0b55eb1049c5949ff186de86aaafb55">&#9670;&nbsp;</a></span>readGas()</h2>
+<a id="aaae0839c68035001f491661cb2d012fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaae0839c68035001f491661cb2d012fc">&#9670;&nbsp;</a></span>readGas()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -374,8 +401,7 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
       </table>
 </div><div class="memdoc">
 
-<p>Calculates the altitude (in meters). </p>
-<p>Reads the current atmostpheric pressure (in hPa) from the sensor and calculates via the provided sea-level pressure (in hPa).</p>
+<p>Calculates the altitude (in meters). Reads the current atmostpheric pressure (in hPa) from the sensor and calculates via the provided sea-level pressure (in hPa). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">seaLevel</td><td>Sea-level pressure in hPa </td></tr>
@@ -532,8 +558,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
-<a id="aa58210864cad77b272669eb86f1d2a88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa58210864cad77b272669eb86f1d2a88">&#9670;&nbsp;</a></span>performReading()</h2>
+<a id="a96489aa0c1c9bbbf066a0c915bc215b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96489aa0c1c9bbbf066a0c915bc215b9">&#9670;&nbsp;</a></span>performReading()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -548,15 +574,13 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
       </table>
 </div><div class="memdoc">
 
-<p>Perform a reading in blocking mode. </p>
-<p>Performs a full reading of all 4 sensors in the BME680.</p>
-<p>Assigns the internal <a class="el" href="class_adafruit___b_m_e680.html#a074501406d2bf249551e3e489cb9316e" title="Temperature (Celsius) assigned after calling performReading() or endReading() ">Adafruit_BME680::temperature</a>, <a class="el" href="class_adafruit___b_m_e680.html#a1630ed8945a52438c9f1b40e17d6bfd0" title="Pressure (Pascals) assigned after calling performReading() or endReading() ">Adafruit_BME680::pressure</a>, <a class="el" href="class_adafruit___b_m_e680.html#a442787f3ad0f2ab9087535ba9c22102b" title="Humidity (RH %) assigned after calling performReading() or endReading() ">Adafruit_BME680::humidity</a> and <a class="el" href="class_adafruit___b_m_e680.html#a7e8e32861906af3bc07f748cf19ebfa8" title="Gas resistor (ohms) assigned after calling performReading() or endReading() ">Adafruit_BME680::gas_resistance</a> member variables</p>
+<p>Performs a full reading of all 4 sensors in the BME680. Assigns the internal <a class="el" href="class_adafruit___b_m_e680.html#a074501406d2bf249551e3e489cb9316e">Adafruit_BME680::temperature</a>, <a class="el" href="class_adafruit___b_m_e680.html#a1630ed8945a52438c9f1b40e17d6bfd0">Adafruit_BME680::pressure</a>, <a class="el" href="class_adafruit___b_m_e680.html#a442787f3ad0f2ab9087535ba9c22102b">Adafruit_BME680::humidity</a> and <a class="el" href="class_adafruit___b_m_e680.html#a7e8e32861906af3bc07f748cf19ebfa8">Adafruit_BME680::gas_resistance</a> member variables. </p>
 <dl class="section return"><dt>Returns</dt><dd>True on success, False on failure </dd></dl>
 
 </div>
 </div>
-<a id="a1917fecd8330fa6de9572826c502b772"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1917fecd8330fa6de9572826c502b772">&#9670;&nbsp;</a></span>beginReading()</h2>
+<a id="a569c735cf07ef92d79315799468473cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a569c735cf07ef92d79315799468473cb">&#9670;&nbsp;</a></span>beginReading()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -576,8 +600,8 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
 
 </div>
 </div>
-<a id="a943f0af102010038cf5ee6ce4ccc04c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a943f0af102010038cf5ee6ce4ccc04c6">&#9670;&nbsp;</a></span>endReading()</h2>
+<a id="a7840c05a63b0b814866f7ccb6dccf767"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7840c05a63b0b814866f7ccb6dccf767">&#9670;&nbsp;</a></span>endReading()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -592,14 +616,13 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
       </table>
 </div><div class="memdoc">
 
-<p>End an asynchronous reading. </p>
-<dl class="section return"><dt>Returns</dt><dd>Whether success.</dd></dl>
-<p>If the asynchronous reading is still in progress, block until it ends. If no asynchronous reading has started, this is equivalent to <a class="el" href="class_adafruit___b_m_e680.html#aa58210864cad77b272669eb86f1d2a88" title="Perform a reading in blocking mode. ">performReading()</a>. </p>
+<p>End an asynchronous reading. If the asynchronous reading is still in progress, block until it ends. If no asynchronous reading has started, this is equivalent to <a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9" title="Performs a full reading of all 4 sensors in the BME680. Assigns the internal Adafruit_BME680::tempera...">performReading()</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Whether success. </dd></dl>
 
 </div>
 </div>
-<a id="ac60efbfa040f99d8bd36cfbbded8404a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac60efbfa040f99d8bd36cfbbded8404a">&#9670;&nbsp;</a></span>remainingReadingMillis()</h2>
+<a id="a730292265955935a2c968288f71bb216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a730292265955935a2c968288f71bb216">&#9670;&nbsp;</a></span>remainingReadingMillis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -614,10 +637,115 @@ static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class
       </table>
 </div><div class="memdoc">
 
-<p>Get remaining time for an asynchronous reading. </p>
-<dl class="section return"><dt>Returns</dt><dd>Remaining millis until endReading will not block if invoked.</dd></dl>
-<p>If the asynchronous reading is still in progress, how many millis until its completion. If the asynchronous reading is completed, 0. If no asynchronous reading has started, -1 or <a class="el" href="class_adafruit___b_m_e680.html#a8799e4404fb03ccd1c34f8f659b946b6" title="Value returned by remainingReadingMillis indicating no asynchronous reading has been initiated by beg...">Adafruit_BME680::reading_not_started</a>.</p>
-<p>Does not block. </p>
+<p>Get remaining time for an asynchronous reading. If the asynchronous reading is still in progress, how many millis until its completion. If the asynchronous reading is completed, 0. If no asynchronous reading has started, -1 or <a class="el" href="class_adafruit___b_m_e680.html#a8799e4404fb03ccd1c34f8f659b946b6">Adafruit_BME680::reading_not_started</a>. Does not block. </p>
+<dl class="section return"><dt>Returns</dt><dd>Remaining millis until endReading will not block if invoked. </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a8799e4404fb03ccd1c34f8f659b946b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8799e4404fb03ccd1c34f8f659b946b6">&#9670;&nbsp;</a></span>reading_not_started</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Adafruit_BME680::reading_not_started = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Value returned by remainingReadingMillis indicating no asynchronous reading has been initiated by beginReading. </p>
+
+</div>
+</div>
+<a id="af8bb890c6dac567d5fdc3e20dfbd7bc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8bb890c6dac567d5fdc3e20dfbd7bc7">&#9670;&nbsp;</a></span>reading_complete</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr int Adafruit_BME680::reading_complete = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Value returned by remainingReadingMillis indicating asynchronous reading is complete and calling endReading will not block. </p>
+
+</div>
+</div>
+<a id="a074501406d2bf249551e3e489cb9316e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a074501406d2bf249551e3e489cb9316e">&#9670;&nbsp;</a></span>temperature</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Adafruit_BME680::temperature</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Temperature (Celsius) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9" title="Performs a full reading of all 4 sensors in the BME680. Assigns the internal Adafruit_BME680::tempera...">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a7840c05a63b0b814866f7ccb6dccf767" title="End an asynchronous reading. If the asynchronous reading is still in progress, block until it ends...">endReading()</a> </p>
+
+</div>
+</div>
+<a id="a1630ed8945a52438c9f1b40e17d6bfd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1630ed8945a52438c9f1b40e17d6bfd0">&#9670;&nbsp;</a></span>pressure</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Adafruit_BME680::pressure</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pressure (Pascals) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9" title="Performs a full reading of all 4 sensors in the BME680. Assigns the internal Adafruit_BME680::tempera...">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a7840c05a63b0b814866f7ccb6dccf767" title="End an asynchronous reading. If the asynchronous reading is still in progress, block until it ends...">endReading()</a> </p>
+
+</div>
+</div>
+<a id="a442787f3ad0f2ab9087535ba9c22102b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a442787f3ad0f2ab9087535ba9c22102b">&#9670;&nbsp;</a></span>humidity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Adafruit_BME680::humidity</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Humidity (RH %) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9" title="Performs a full reading of all 4 sensors in the BME680. Assigns the internal Adafruit_BME680::tempera...">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a7840c05a63b0b814866f7ccb6dccf767" title="End an asynchronous reading. If the asynchronous reading is still in progress, block until it ends...">endReading()</a> </p>
+
+</div>
+</div>
+<a id="a7e8e32861906af3bc07f748cf19ebfa8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e8e32861906af3bc07f748cf19ebfa8">&#9670;&nbsp;</a></span>gas_resistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Adafruit_BME680::gas_resistance</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gas resistor (ohms) assigned after calling <a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9" title="Performs a full reading of all 4 sensors in the BME680. Assigns the internal Adafruit_BME680::tempera...">performReading()</a> or <a class="el" href="class_adafruit___b_m_e680.html#a7840c05a63b0b814866f7ccb6dccf767" title="End an asynchronous reading. If the asynchronous reading is still in progress, block until it ends...">endReading()</a> </p>
 
 </div>
 </div>
