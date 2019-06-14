@@ -6,6 +6,15 @@ branches:
   except:
     - gh-pages
 
+cache:
+  directories:
+    - ~/arduino_ide
+    - ~/.arduino15/packages/
+
+git:
+  depth: false
+  quiet: true
+
 env:
   global:
     - PRETTYNAME="Adafruit BME680 Arduino Library"

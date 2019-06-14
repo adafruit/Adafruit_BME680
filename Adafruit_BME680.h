@@ -23,68 +23,37 @@
 #ifndef __BME680_H__
 #define __BME680_H__
 
-#if defined(ARDUINO) && (ARDUINO >= 100)
- #include "Arduino.h"
-#else
- #include "WProgram.h"
-#endif
+#include "Arduino.h"
+
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 #include "bme680.h"
 
-
-/*=========================================================================
-    I2C ADDRESS/BITS
-    -----------------------------------------------------------------------*/
 #define BME680_DEFAULT_ADDRESS       (0x77)     ///< The default I2C address
-/*=========================================================================*/
 #define BME680_DEFAULT_SPIFREQ       (1000000)  ///< The default SPI Clock speed
 
-
-
-/*
-class Adafruit_BME680_Unified : public Adafruit_Sensor
-{
-public:
-    Adafruit_BME680_Unified(int32_t sensorID = -1);
-
-    bool  begin(uint8_t addr = BME680_DEFAULT_ADDRESS, bool initSettings = true);
-    void  getTemperature(float *temp);
-    void  getPressure(float *pressure);
-    float pressureToAltitude(float seaLevel, float atmospheric, float temp);
-    float seaLevelForAltitude(float altitude, float atmospheric, float temp);
-    void  getEvent(sensors_event_t*);
-    void  getSensor(sensor_t*);
-
-  private:
-    uint8_t   _i2c_addr;
-    int32_t   _sensorID;
-};
-
-*/
-
-/** Adafruit_BME680 Class for both I2C and SPI usage.
+/*! Adafruit_BME680 Class for both I2C and SPI usage.
  *  Wraps the Bosch library for Arduino usage
  */
-
 class Adafruit_BME680
 {
   public:
-    /// Value returned by remainingReadingMillis indicating no asynchronous reading has been initiated by beginReading.
+    /** Value returned by remainingReadingMillis indicating no asynchronous reading has been initiated by beginReading. **/
     static constexpr int reading_not_started = -1;
-    /// Value returned by remainingReadingMillis indicating asynchronous reading is complete and calling endReading will not block.
+    /** Value returned by remainingReadingMillis indicating asynchronous reading is complete and calling endReading will not block. **/
     static constexpr int reading_complete = 0;
 
-    Adafruit_BME680(int8_t cspin = -1);
+    Adafruit_BME680(TwoWire *theWire = &Wire);
+    Adafruit_BME680(int8_t cspin, SPIClass *theSPI = &SPI);
     Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
     bool  begin(uint8_t addr = BME680_DEFAULT_ADDRESS, bool initSettings = true);
-    float readTemperature(void);
-    float readPressure(void);
-    float readHumidity(void);
-    uint32_t readGas(void);
+    float readTemperature();
+    float readPressure();
+    float readHumidity();
+    uint32_t readGas();
     float readAltitude(float seaLevel);
 
     bool setTemperatureOversampling(uint8_t os);
@@ -93,43 +62,40 @@ class Adafruit_BME680
     bool setIIRFilterSize(uint8_t fs);
     bool setGasHeater(uint16_t heaterTemp, uint16_t heaterTime);
 
-    /// Perform a reading in blocking mode.
-    bool performReading(void);
+    // Perform a reading in blocking mode.
+    bool performReading();
 
-    /** @brief Begin an asynchronous reading.
+    /*! @brief Begin an asynchronous reading.
      *  @return When the reading would be ready as absolute time in millis().
      */
-    unsigned long beginReading(void);
+    unsigned long beginReading();
 
-    /** @brief End an asynchronous reading.
+    /*! @brief  End an asynchronous reading.
+     *          If the asynchronous reading is still in progress, block until it ends.
+     *          If no asynchronous reading has started, this is equivalent to performReading().
      *  @return Whether success.
-     *
-     *  If the asynchronous reading is still in progress, block until it ends.
-     *  If no asynchronous reading has started, this is equivalent to performReading().
      */
-    bool endReading(void);
+    bool endReading();
 
-    /** @brief Get remaining time for an asynchronous reading.
+    /*! @brief  Get remaining time for an asynchronous reading.
+     *          If the asynchronous reading is still in progress, how many millis until its completion.
+     *          If the asynchronous reading is completed, 0.
+     *          If no asynchronous reading has started, -1 or Adafruit_BME680::reading_not_started.
+     *          Does not block.
      *  @return Remaining millis until endReading will not block if invoked.
-     *
-     *  If the asynchronous reading is still in progress, how many millis until its completion.
-     *  If the asynchronous reading is completed, 0.
-     *  If no asynchronous reading has started, -1 or Adafruit_BME680::reading_not_started.
-     *
-     *  Does not block.
      */
-    int remainingReadingMillis(void);
+    int remainingReadingMillis();
 
-    /// Temperature (Celsius) assigned after calling performReading() or endReading()
+    /** Temperature (Celsius) assigned after calling performReading() or endReading() **/
     float temperature;
-    /// Pressure (Pascals) assigned after calling performReading() or endReading()
+    /** Pressure (Pascals) assigned after calling performReading() or endReading() **/
     uint32_t pressure;
-    /// Humidity (RH %) assigned after calling performReading() or endReading()
+    /** Humidity (RH %) assigned after calling performReading() or endReading() **/
     float humidity;
-    /// Gas resistor (ohms) assigned after calling performReading() or endReading()
+    /** Gas resistor (ohms) assigned after calling performReading() or endReading() **/
     uint32_t gas_resistance;
-  private:
 
+  private:
     bool _filterEnabled, _tempEnabled, _humEnabled, _presEnabled, _gasEnabled;
     uint8_t _i2caddr;
     int32_t _sensorID;

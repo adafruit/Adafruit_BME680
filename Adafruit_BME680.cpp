@@ -31,12 +31,18 @@
 
 //#define BME680_DEBUG
 
-///! These SPI pins must be global in order to work with underlying library
+/** Wire object **/
+TwoWire *_wire; 
+
+/** SPI object **/
+SPIClass *_spi; 
+
+/** These SPI pins must be global in order to work with underlying library **/
 int8_t _BME680_SoftwareSPI_MOSI; ///< Global SPI MOSI pin
 int8_t _BME680_SoftwareSPI_MISO; ///< Global SPI MISO pin
 int8_t _BME680_SoftwareSPI_SCK;  ///< Globak SPI Clock pin
 
-// Our hardware interface functions
+/** Our hardware interface functions **/
 static int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 static int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
 static int8_t spi_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len);
@@ -44,21 +50,38 @@ static int8_t spi_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uin
 static uint8_t spi_transfer(uint8_t x);
 static void delay_msec(uint32_t ms);
 
-/***************************************************************************
- PUBLIC FUNCTIONS
- ***************************************************************************/
+// PUBLIC FUNCTIONS
 
-/**************************************************************************/
 /*!
-    @brief  Instantiates sensor with Hardware SPI or I2C.
-    @param  cspin SPI chip select. If not passed in, I2C will be used
-*/
-/**************************************************************************/
-Adafruit_BME680::Adafruit_BME680(int8_t cspin)
+ *  @brief  Instantiates sensor with i2c. 
+ *  @param  *theWire
+ *          optional Wire object
+ */
+Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
+  : _cs(-1)
+  , _meas_start(0)
+  , _meas_period(0)
+{
+  _wire = theWire;
+  _BME680_SoftwareSPI_MOSI = -1;
+  _BME680_SoftwareSPI_MISO = -1;
+  _BME680_SoftwareSPI_SCK = -1;
+  _filterEnabled = _tempEnabled = _humEnabled = _presEnabled = _gasEnabled = false;
+}
+
+/*!
+ *  @brief  Instantiates sensor with Hardware SPI. 
+ *  @param  cspin 
+ *          SPI chip select.
+ *  @param  theSPI
+ *          optional SPI object
+ */
+Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
   : _cs(cspin)
   , _meas_start(0)
   , _meas_period(0)
 {
+  *_spi = *theSPI;
   _BME680_SoftwareSPI_MOSI = -1;
   _BME680_SoftwareSPI_MISO = -1;
   _BME680_SoftwareSPI_SCK = -1;
@@ -66,15 +89,17 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin)
 }
 
 
-/**************************************************************************/
 /*!
-    @brief  Instantiates sensor with Software (bit-bang) SPI.
-    @param  cspin SPI chip select
-    @param  mosipin SPI MOSI (Data from microcontroller to sensor)
-    @param  misopin SPI MISO (Data to microcontroller from sensor)
-    @param  sckpin SPI Clock
-*/
-/**************************************************************************/
+ *  @brief  Instantiates sensor with Software (bit-bang) SPI.
+ *  @param  cspin 
+ *          SPI chip select
+ *  @param  mosipin 
+ *          SPI MOSI (Data from microcontroller to sensor)
+ *  @param  misopin 
+ *          SPI MISO (Data to microcontroller from sensor)
+ *  @param  sckpin 
+ *          SPI Clock
+ */
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)
   : _cs(cspin)
   , _meas_start(0)
@@ -88,25 +113,23 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, i
 
 
 
-/**************************************************************************/
 /*!
-    @brief Initializes the sensor
-
-    Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads
-    calibration data in preparation for sensor reads.
-
-    @param  addr Optional parameter for the I2C address of BME680. Default is 0x77
-    @param  initSettings Optional parameter for initializing the sensor settings.
-    Default is true.
-    @return True on sensor initialization success. False on failure.
-*/
-/**************************************************************************/
+ *  @brief  Initializes the sensor
+ *          Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads
+ *          calibration data in preparation for sensor reads.
+ *  @param  addr 
+ *          Optional parameter for the I2C address of BME680. Default is 0x77
+ *  @param  initSettings 
+ *          Optional parameter for initializing the sensor settings.
+ *          Default is true.
+ *  @return True on sensor initialization success. False on failure.
+ */
 bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
   _i2caddr = addr;
 
   if (_cs == -1) {
     // i2c
-    Wire.begin();
+    _wire->begin();
 
     gas_sensor.dev_id = addr;
     gas_sensor.intf = BME680_I2C_INTF;
@@ -118,7 +141,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
     if (_BME680_SoftwareSPI_SCK == -1) {
       // hardware SPI
-      SPI.begin();
+      _spi->begin();
     } else {
       // software SPI
       pinMode(_BME680_SoftwareSPI_SCK, OUTPUT);
@@ -189,66 +212,51 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
   return true;
 }
 
-
-
-/**************************************************************************/
 /*!
-    @brief Performs a reading and returns the ambient temperature.
-    @return Temperature in degrees Centigrade
-*/
-/**************************************************************************/
+ *  @brief  Performs a reading and returns the ambient temperature.
+ *  @return Temperature in degrees Centigrade
+ */
 float Adafruit_BME680::readTemperature(void) {
   performReading();
   return temperature;
 }
 
-
-/**************************************************************************/
 /*!
-    @brief Performs a reading and returns the barometric pressure.
-    @return Barometic pressure in Pascals
-*/
-/**************************************************************************/
+ *  @brief Performs a reading and returns the barometric pressure.
+ *  @return Barometic pressure in Pascals
+ */
 float Adafruit_BME680::readPressure(void) {
   performReading();
   return pressure;
 }
 
 
-/**************************************************************************/
 /*!
-    @brief Performs a reading and returns the relative humidity.
-    @return Relative humidity as floating point
-*/
-/**************************************************************************/
+ *  @brief  Performs a reading and returns the relative humidity.
+ *  @return Relative humidity as floating point
+ */
 float Adafruit_BME680::readHumidity(void) {
   performReading();
   return humidity;
 }
 
-/**************************************************************************/
 /*!
-    @brief Calculates the resistance of the MOX gas sensor.
-    @return Resistance in Ohms
-*/
-/**************************************************************************/
+ *  @brief Calculates the resistance of the MOX gas sensor.
+ *  @return Resistance in Ohms
+ */
 uint32_t Adafruit_BME680::readGas(void) {
   performReading();
   return gas_resistance;
 }
 
-
-/**************************************************************************/
 /*!
-    @brief Calculates the altitude (in meters).
-
-    Reads the current atmostpheric pressure (in hPa) from the sensor and calculates
-    via the provided sea-level pressure (in hPa).
-
-    @param  seaLevel      Sea-level pressure in hPa
-    @return Altitude in meters
-*/
-/**************************************************************************/
+ *  @brief  Calculates the altitude (in meters).
+ *          Reads the current atmostpheric pressure (in hPa) from the sensor and calculates
+ *          via the provided sea-level pressure (in hPa).
+ *  @param  seaLevel
+ *          Sea-level pressure in hPa
+ *  @return Altitude in meters
+ */
 float Adafruit_BME680::readAltitude(float seaLevel)
 {
     // Equation taken from BMP180 datasheet (page 16):
@@ -262,16 +270,12 @@ float Adafruit_BME680::readAltitude(float seaLevel)
     return 44330.0 * (1.0 - pow(atmospheric / seaLevel, 0.1903));
 }
 
-/**************************************************************************/
 /*!
-    @brief Performs a full reading of all 4 sensors in the BME680.
-
-    Assigns the internal Adafruit_BME680#temperature, Adafruit_BME680#pressure, Adafruit_BME680#humidity
-    and Adafruit_BME680#gas_resistance member variables
-
-    @return True on success, False on failure
-*/
-/**************************************************************************/
+ *  @brief  Performs a full reading of all 4 sensors in the BME680.
+ *          Assigns the internal Adafruit_BME680#temperature, Adafruit_BME680#pressure, Adafruit_BME680#humidity
+ *          and Adafruit_BME680#gas_resistance member variables
+ *  @return True on success, False on failure
+ */
 bool Adafruit_BME680::performReading(void) {
   return endReading();
 }
@@ -384,7 +388,7 @@ bool Adafruit_BME680::endReading(void) {
       //Serial.println("Gas reading unstable!");
     }
   } else {
-    gas_resistance = 0;
+    gas_resistance = NAN;
   }
 
   return true;
@@ -400,14 +404,14 @@ int Adafruit_BME680::remainingReadingMillis(void)
     return reading_not_started;
 }
 
-/**************************************************************************/
 /*!
-    @brief  Enable and configure gas reading + heater
-    @param  heaterTemp Desired temperature in degrees Centigrade
-    @param  heaterTime Time to keep heater on in milliseconds
-    @return True on success, False on failure
-*/
-/**************************************************************************/
+ *  @brief  Enable and configure gas reading + heater
+ *  @param  heaterTemp 
+ *          Desired temperature in degrees Centigrade
+ *  @param  heaterTime 
+ *          Time to keep heater on in milliseconds
+ *  @return True on success, False on failure
+ */
 bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
   gas_sensor.gas_sett.heatr_temp = heaterTemp;
   gas_sensor.gas_sett.heatr_dur = heaterTime;
@@ -426,14 +430,13 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
 }
 
 
-/**************************************************************************/
 /*!
-    @brief  Setter for Temperature oversampling
-    @param  oversample Oversampling setting, can be BME680_OS_NONE (turn off Temperature reading),
-    BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
-    @return True on success, False on failure
-*/
-/**************************************************************************/
+ *  @brief  Setter for Temperature oversampling
+ *  @param  oversample 
+ *          Oversampling setting, can be BME680_OS_NONE (turn off Temperature reading),
+ *          BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
+ *  @return True on success, False on failure
+ */
 
 bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
   if (oversample > BME680_OS_16X) return false;
@@ -449,15 +452,13 @@ bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
 }
 
 
-/**************************************************************************/
 /*!
-    @brief  Setter for Humidity oversampling
-    @param  oversample Oversampling setting, can be BME680_OS_NONE (turn off Humidity reading),
-    BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
-    @return True on success, False on failure
-*/
-/**************************************************************************/
-
+ *  @brief  Setter for Humidity oversampling
+ *  @param  oversample 
+ *          Oversampling setting, can be BME680_OS_NONE (turn off Humidity reading),
+ *          BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
+ *  @return True on success, False on failure
+ */
 bool Adafruit_BME680::setHumidityOversampling(uint8_t oversample) {
   if (oversample > BME680_OS_16X) return false;
 
@@ -472,14 +473,13 @@ bool Adafruit_BME680::setHumidityOversampling(uint8_t oversample) {
 }
 
 
-/**************************************************************************/
 /*!
-    @brief  Setter for Pressure oversampling
-    @param  oversample Oversampling setting, can be BME680_OS_NONE (turn off Pressure reading),
-    BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
-    @return True on success, False on failure
-*/
-/**************************************************************************/
+ *  @brief  Setter for Pressure oversampling
+ *  @param  oversample 
+ *          Oversampling setting, can be BME680_OS_NONE (turn off Pressure reading),
+ *          BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X
+ *  @return True on success, False on failure
+ */
 bool Adafruit_BME680::setPressureOversampling(uint8_t oversample) {
   if (oversample > BME680_OS_16X) return false;
 
@@ -493,14 +493,13 @@ bool Adafruit_BME680::setPressureOversampling(uint8_t oversample) {
   return true;
 }
 
-/**************************************************************************/
 /*!
-    @brief  Setter for IIR filter.
-    @param filtersize Size of the filter (in samples). Can be BME680_FILTER_SIZE_0 (no filtering), BME680_FILTER_SIZE_1, BME680_FILTER_SIZE_3, BME680_FILTER_SIZE_7, BME680_FILTER_SIZE_15, BME680_FILTER_SIZE_31, BME680_FILTER_SIZE_63, BME680_FILTER_SIZE_127
-    @return True on success, False on failure
-
-*/
-/**************************************************************************/
+ *  @brief  Setter for IIR filter.
+ *  @param  filtersize 
+ *          Size of the filter (in samples). 
+ *          Can be BME680_FILTER_SIZE_0 (no filtering), BME680_FILTER_SIZE_1, BME680_FILTER_SIZE_3, BME680_FILTER_SIZE_7, BME680_FILTER_SIZE_15, BME680_FILTER_SIZE_31, BME680_FILTER_SIZE_63, BME680_FILTER_SIZE_127
+ *  @return True on success, False on failure
+ */
 bool Adafruit_BME680::setIIRFilterSize(uint8_t filtersize) {
   if (filtersize > BME680_FILTER_SIZE_127) return false;
 
@@ -514,27 +513,25 @@ bool Adafruit_BME680::setIIRFilterSize(uint8_t filtersize) {
   return true;
 }
 
-/**************************************************************************/
 /*!
-    @brief  Reads 8 bit values over I2C
-*/
-/**************************************************************************/
+ *  @brief  Reads 8 bit values over I2C
+ */
 int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len) {
 #ifdef BME680_DEBUG
   Serial.print("\tI2C $"); Serial.print(reg_addr, HEX); Serial.print(" => ");
 #endif
 
-  Wire.beginTransmission((uint8_t)dev_id);
-  Wire.write((uint8_t)reg_addr);
-  Wire.endTransmission();
-  if (len != Wire.requestFrom((uint8_t)dev_id, (byte)len)) {
+  _wire->beginTransmission((uint8_t)dev_id);
+  _wire->write((uint8_t)reg_addr);
+  _wire->endTransmission();
+  if (len != _wire->requestFrom((uint8_t)dev_id, (byte)len)) {
 #ifdef BME680_DEBUG
     Serial.print("Failed to read "); Serial.print(len); Serial.print(" bytes from "); Serial.println(dev_id, HEX);
 #endif
     return 1;
   }
   while (len--) {
-    *reg_data = (uint8_t)Wire.read();
+    *reg_data = (uint8_t)_wire->read();
 #ifdef BME680_DEBUG
     Serial.print("0x"); Serial.print(*reg_data, HEX); Serial.print(", ");
 #endif
@@ -546,25 +543,23 @@ int8_t i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t le
   return 0;
 }
 
-/**************************************************************************/
 /*!
-    @brief  Writes 8 bit values over I2C
-*/
-/**************************************************************************/
+ *  @brief  Writes 8 bit values over I2C
+ */
 int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len) {
 #ifdef BME680_DEBUG
   Serial.print("\tI2C $"); Serial.print(reg_addr, HEX); Serial.print(" <= ");
 #endif
-  Wire.beginTransmission((uint8_t)dev_id);
-  Wire.write((uint8_t)reg_addr);
+  _wire->beginTransmission((uint8_t)dev_id);
+  _wire->write((uint8_t)reg_addr);
   while (len--) {
-    Wire.write(*reg_data);
+    _wire->write(*reg_data);
 #ifdef BME680_DEBUG
     Serial.print("0x"); Serial.print(*reg_data, HEX); Serial.print(", ");
 #endif
     reg_data++;
   }
-  Wire.endTransmission();
+  _wire->endTransmission();
 #ifdef BME680_DEBUG
   Serial.println("");
 #endif
@@ -573,11 +568,9 @@ int8_t i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t l
 
 
 
-/**************************************************************************/
 /*!
-    @brief  Reads 8 bit values over SPI
-*/
-/**************************************************************************/
+ *  @brief  Reads 8 bit values over SPI
+ */
 static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint16_t len) {
 #ifdef BME680_DEBUG
   Serial.print("\tSPI $"); Serial.print(reg_addr, HEX); Serial.print(" => ");
@@ -585,7 +578,7 @@ static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint1
 
   // If hardware SPI we should use transactions!
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
+    _spi->beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
   }
 
   digitalWrite(cspin, LOW);
@@ -603,7 +596,7 @@ static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint1
   digitalWrite(cspin, HIGH);
 
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.endTransaction();
+    _spi->endTransaction();
   }
 
 #ifdef BME680_DEBUG
@@ -612,11 +605,9 @@ static int8_t spi_read(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint1
   return 0;
 }
 
-/**************************************************************************/
 /*!
-    @brief  Writes 8 bit values over SPI
-*/
-/**************************************************************************/
+ *  @brief  Writes 8 bit values over SPI
+ */
 static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint16_t len) {
 #ifdef BME680_DEBUG
   Serial.print("\tSPI $"); Serial.print(reg_addr, HEX); Serial.print(" <= ");
@@ -624,7 +615,7 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
 
   // If hardware SPI we should use transactions!
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
+    _spi->beginTransaction(SPISettings(BME680_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
   }
 
   digitalWrite(cspin, LOW);
@@ -641,7 +632,7 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
   digitalWrite(cspin, HIGH);
 
   if (_BME680_SoftwareSPI_SCK == -1) {
-    SPI.endTransaction();
+    _spi->endTransaction();
   }
 
 #ifdef BME680_DEBUG
@@ -653,7 +644,7 @@ static int8_t spi_write(uint8_t cspin, uint8_t reg_addr, uint8_t *reg_data, uint
 
 static uint8_t spi_transfer(uint8_t x) {
   if (_BME680_SoftwareSPI_SCK == -1)
-    return SPI.transfer(x);
+    return _spi->transfer(x);
 
   // software spi
   //Serial.println("Software SPI");
