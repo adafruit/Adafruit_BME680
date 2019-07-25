@@ -1,4 +1,4 @@
-# Adafruit BME680 Library [![Build Status](https://travis-ci.org/adafruit/Adafruit_BME680.svg?branch=master)](https://travis-ci.org/adafruit/Adafruit_BME680)
+# Adafruit BME680 Library [![Build Status](https://travis-ci.com/adafruit/Adafruit_BME680.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_BME680)
 
 <a href="http://www.adafruit.com/products/3660">
   <img src="./assets/board.jpg" width="500px" />
