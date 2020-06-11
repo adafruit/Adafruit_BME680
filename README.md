@@ -1,4 +1,4 @@
-# Adafruit BME680 Library [![Build Status](https://travis-ci.com/adafruit/Adafruit_BME680.svg?branch=master)](https://travis-ci.com/adafruit/Adafruit_BME680)
+# Adafruit BME680 Library [![Build Status](https://github.com/adafruit/Adafruit_BME680/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_BMPE680/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_BME680/html/index.html)
 
 <a href="http://www.adafruit.com/products/3660">
   <img src="./assets/board.jpg" width="500px" />
