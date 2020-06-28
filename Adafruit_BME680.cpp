@@ -33,10 +33,10 @@
 //#define BME680_DEBUG
 
 /** Wire object **/
-TwoWire *_wire;
+TwoWire *_wire=NULL;
 
 /** SPI object **/
-SPIClass *_spi;
+SPIClass *_spi=NULL;
 
 /** These SPI pins must be global in order to work with underlying library **/
 int8_t _BME680_SoftwareSPI_MOSI; ///< Global SPI MOSI pin
@@ -81,7 +81,7 @@ Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
  */
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
     : _cs(cspin), _meas_start(0), _meas_period(0) {
-  *_spi = *theSPI;
+  _spi = theSPI;
   _BME680_SoftwareSPI_MOSI = -1;
   _BME680_SoftwareSPI_MISO = -1;
   _BME680_SoftwareSPI_SCK = -1;
