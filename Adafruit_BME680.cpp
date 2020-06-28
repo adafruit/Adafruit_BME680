@@ -33,10 +33,10 @@
 //#define BME680_DEBUG
 
 /** Wire object **/
-TwoWire *_wire=NULL;
+TwoWire *_wire = NULL;
 
 /** SPI object **/
-SPIClass *_spi=NULL;
+SPIClass *_spi = NULL;
 
 /** These SPI pins must be global in order to work with underlying library **/
 int8_t _BME680_SoftwareSPI_MOSI; ///< Global SPI MOSI pin
