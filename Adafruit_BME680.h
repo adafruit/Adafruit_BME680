@@ -26,14 +26,31 @@
 
 #include "Arduino.h"
 
-#include "bme680.h"
+#include "bme68x.h"
 #include <Adafruit_Sensor.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <Adafruit_I2CDevice.h>
 
-#define BME680_DEFAULT_ADDRESS (0x77)    ///< The default I2C address
-#define BME680_DEFAULT_SPIFREQ (1000000) ///< The default SPI Clock speed
+#define BME68X_DEFAULT_ADDRESS (0x77)    ///< The default I2C address
+#define BME68X_DEFAULT_SPIFREQ (1000000) ///< The default SPI Clock speed
 
+#define BME680_OS_16X BME68X_OS_16X
+#define BME680_OS_8X BME68X_OS_8X
+#define BME680_OS_4X BME68X_OS_4X
+#define BME680_OS_2X BME68X_OS_2X
+#define BME680_OS_1X BME68X_OS_1X
+#define BME680_OS_NONE BME68X_OS_NONE
+
+#define BME680_FILTER_SIZE_127 BME68X_FILTER_SIZE_127
+#define BME680_FILTER_SIZE_63 BME68X_FILTER_SIZE_63
+#define BME680_FILTER_SIZE_31 BME68X_FILTER_SIZE_31
+#define BME680_FILTER_SIZE_15 BME68X_FILTER_SIZE_15
+#define BME680_FILTER_SIZE_7 BME68X_FILTER_SIZE_7
+#define BME680_FILTER_SIZE_3 BME68X_FILTER_SIZE_3
+#define BME680_FILTER_SIZE_1 BME68X_FILTER_SIZE_1
+#define BME680_FILTER_SIZE_0 BME68X_FILTER_OFF
+ 
 /*! Adafruit_BME680 Class for both I2C and SPI usage.
  *  Wraps the Bosch library for Arduino usage
  */
@@ -50,7 +67,7 @@ public:
   Adafruit_BME680(int8_t cspin, SPIClass *theSPI = &SPI);
   Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
-  bool begin(uint8_t addr = BME680_DEFAULT_ADDRESS, bool initSettings = true);
+  bool begin(uint8_t addr = BME68X_DEFAULT_ADDRESS, bool initSettings = true);
   float readTemperature();
   float readPressure();
   float readHumidity();
@@ -103,6 +120,8 @@ public:
 
 private:
   bool _filterEnabled, _tempEnabled, _humEnabled, _presEnabled, _gasEnabled;
+  Adafruit_I2CDevice *_i2cdev;
+
   uint8_t _i2caddr;
   int32_t _sensorID;
   int8_t _cs;
@@ -111,7 +130,7 @@ private:
 
   uint8_t spixfer(uint8_t x);
 
-  struct bme680_dev gas_sensor;
+  struct bme68x_dev gas_sensor;
 };
 
 #endif
