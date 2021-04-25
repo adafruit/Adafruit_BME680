@@ -30,10 +30,7 @@
 #include "Adafruit_BME680.h"
 #include "Arduino.h"
 
-//#define BME680_DEBUG
-
-/** Wire object **/
-TwoWire *_wire = NULL;
+#define BME680_DEBUG
 
 /** SPI object **/
 SPIClass *_spi = NULL;
@@ -164,7 +161,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
   rslt = bme68x_init(&gas_sensor);
 #ifdef BME680_DEBUG
-  Serial.print("Result: ");
+  Serial.print(F("Init Result: "));
   Serial.println(rslt);
 #endif
 
@@ -576,40 +573,13 @@ bool Adafruit_BME680::setIIRFilterSize(uint8_t filtersize) {
  *  @brief  Reads 8 bit values over I2C
  */
 int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf) {
+
   Adafruit_I2CDevice *_dev = (Adafruit_I2CDevice *)intf;
-#ifdef BME680_DEBUG
-  Serial.print("\tI2C $");
-  Serial.print(reg_addr, HEX);
-  Serial.print(" => ");
-#endif
 
-  /*
+  if (! _dev->write_then_read(&reg_addr, 1, reg_data, len, true)) {
+    return -1;
+  }
 
-  _wire->beginTransmission((uint8_t)dev_id);
-  _wire->write((uint8_t)reg_addr);
-  _wire->endTransmission();
-  if (len != _wire->requestFrom((uint8_t)dev_id, (byte)len)) {
-#ifdef BME680_DEBUG
-    Serial.print("Failed to read ");
-    Serial.print(len);
-    Serial.print(" bytes from ");
-    Serial.println(dev_id, HEX);
-#endif
-    return 1;
-  }
-  while (len--) {
-    *reg_data = (uint8_t)_wire->read();
-#ifdef BME680_DEBUG
-    Serial.print("0x");
-    Serial.print(*reg_data, HEX);
-    Serial.print(", ");
-#endif
-    reg_data++;
-  }
-#ifdef BME680_DEBUG
-  Serial.println("");
-#endif
-*/
   return 0;
 }
 
@@ -618,29 +588,10 @@ int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf) {
  */
 int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, void *intf) {
   Adafruit_I2CDevice *_dev = (Adafruit_I2CDevice *)intf;
-#ifdef BME680_DEBUG
-  Serial.print("\tI2C $");
-  Serial.print(reg_addr, HEX);
-  Serial.print(" <= ");
-#endif
 
-  /*
-  _wire->beginTransmission((uint8_t)dev_id);
-  _wire->write((uint8_t)reg_addr);
-  while (len--) {
-    _wire->write(*reg_data);
-#ifdef BME680_DEBUG
-    Serial.print("0x");
-    Serial.print(*reg_data, HEX);
-    Serial.print(", ");
-#endif
-    reg_data++;
+  if (! _dev->write(reg_data, len, true, &reg_addr, 1)) {
+    return -1;
   }
-  _wire->endTransmission();
-#ifdef BME680_DEBUG
-  Serial.println("");
-#endif
-*/
   return 0;
 }
 

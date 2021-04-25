@@ -120,7 +120,8 @@ public:
 
 private:
   bool _filterEnabled, _tempEnabled, _humEnabled, _presEnabled, _gasEnabled;
-  Adafruit_I2CDevice *_i2cdev;
+  Adafruit_I2CDevice *_i2cdev = NULL;
+  TwoWire *_wire = NULL;
 
   uint8_t _i2caddr;
   int32_t _sensorID;
