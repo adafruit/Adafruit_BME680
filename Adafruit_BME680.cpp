@@ -350,7 +350,7 @@ bool Adafruit_BME680::endReading(void) {
 #endif
 
   struct bme68x_data data;
-  int8_t n_fields;
+  uint8_t n_fields;
 
 #ifdef BME680_DEBUG
   Serial.println(F("Getting sensor data"));
@@ -552,7 +552,7 @@ int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf) {
 int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, void *intf) {
   Adafruit_I2CDevice *_dev = (Adafruit_I2CDevice *)intf;
 
-  if (! _dev->write(reg_data, len, true, &reg_addr, 1)) {
+  if (! _dev->write((uint8_t *)reg_data, len, true, &reg_addr, 1)) {
     return -1;
   }
   return 0;
@@ -581,7 +581,7 @@ static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data,
                         uint32_t len, void *intf_ptr) {
   Adafruit_SPIDevice *_dev = (Adafruit_SPIDevice *)intf_ptr;
 
-  if (! _dev->write(reg_data, len, &reg_addr, 1)) {
+  if (! _dev->write((uint8_t *)reg_data, len, &reg_addr, 1)) {
     return -1;
   }
 
