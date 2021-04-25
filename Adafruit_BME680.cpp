@@ -33,14 +33,14 @@
 //#define BME680_DEBUG
 
 /** Our hardware interface functions **/
-static int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data,
-                       uint32_t len, void *interface);
-static int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data,
-                        uint32_t len, void *interface);
-static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data,
-                       uint32_t len, void *interface);
-static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data,
-                        uint32_t len, void *interface);
+static int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len,
+                       void *interface);
+static int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
+                        void *interface);
+static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len,
+                       void *interface);
+static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
+                        void *interface);
 static void delay_usec(uint32_t us, void *intf_ptr);
 
 // PUBLIC FUNCTIONS
@@ -63,8 +63,9 @@ Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
  *          optional SPI object
  */
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
-    :  _meas_start(0), _meas_period(0) {
-  _spidev = new Adafruit_SPIDevice(cspin, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, theSPI);
+    : _meas_start(0), _meas_period(0) {
+  _spidev = new Adafruit_SPIDevice(cspin, 1000000, SPI_BITORDER_MSBFIRST,
+                                   SPI_MODE0, theSPI);
 }
 
 /*!
@@ -81,8 +82,8 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin,
                                  int8_t sckpin)
     : _meas_start(0), _meas_period(0) {
-  _spidev = new Adafruit_SPIDevice(cspin, sckpin, misopin, mosipin,
-                                   1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0);
+  _spidev = new Adafruit_SPIDevice(cspin, sckpin, misopin, mosipin, 1000000,
+                                   SPI_BITORDER_MSBFIRST, SPI_MODE0);
 }
 
 /*!
@@ -98,13 +99,13 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin,
  */
 bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
   int8_t rslt;
- 
-  if (! _spidev) {    // i2c
+
+  if (!_spidev) { // i2c
     if (_i2cdev) {
       delete _i2cdev;
     }
     _i2cdev = new Adafruit_I2CDevice(addr, _wire);
-    if (! _i2cdev->begin()) {
+    if (!_i2cdev->begin()) {
       return false;
     }
 
@@ -115,7 +116,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
     gas_sensor.write = &i2c_write;
 
   } else {
-    if (! _spidev->begin()) {
+    if (!_spidev->begin()) {
       return false;
     }
 
@@ -126,7 +127,8 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
     gas_sensor.write = &spi_write;
   }
 
-  gas_sensor.amb_temp = 25; /* The ambient temperature in deg C is used for defining the heater temperature */
+  gas_sensor.amb_temp = 25; /* The ambient temperature in deg C is used for
+                               defining the heater temperature */
   gas_sensor.delay_us = delay_usec;
 
   rslt = bme68x_init(&gas_sensor);
@@ -211,7 +213,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
   }
   // don't do anything till we request a reading
   rslt = bme68x_set_op_mode(BME68X_FORCED_MODE, &gas_sensor);
- 
+
 #ifdef BME680_DEBUG
   Serial.print(F("Opmode Result: "));
   Serial.println(rslt);
@@ -286,9 +288,7 @@ float Adafruit_BME680::readAltitude(float seaLevel) {
  * Adafruit_BME680#gas_resistance member variables
  *  @return True on success, False on failure
  */
-bool Adafruit_BME680::performReading(void) { 
-  return endReading();
-}
+bool Adafruit_BME680::performReading(void) { return endReading(); }
 
 /*! @brief Begin an asynchronous reading.
  *  @return When the reading would be ready as absolute time in millis().
@@ -308,9 +308,13 @@ uint32_t Adafruit_BME680::beginReading(void) {
     return false;
 
   /* Calculate delay period in microseconds */
-  uint32_t delayus_period = (uint32_t)bme68x_get_meas_dur(BME68X_FORCED_MODE, &gas_conf, &gas_sensor) + ((uint32_t)gas_heatr_conf.heatr_dur * 1000);
-  //Serial.print("measure: "); Serial.println(bme68x_get_meas_dur(BME68X_FORCED_MODE, &gas_conf, &gas_sensor));
-  //Serial.print("heater: "); Serial.println((uint32_t)gas_heatr_conf.heatr_dur * 1000);
+  uint32_t delayus_period = (uint32_t)bme68x_get_meas_dur(
+                                BME68X_FORCED_MODE, &gas_conf, &gas_sensor) +
+                            ((uint32_t)gas_heatr_conf.heatr_dur * 1000);
+  // Serial.print("measure: ");
+  // Serial.println(bme68x_get_meas_dur(BME68X_FORCED_MODE, &gas_conf,
+  // &gas_sensor)); Serial.print("heater: ");
+  // Serial.println((uint32_t)gas_heatr_conf.heatr_dur * 1000);
 
   _meas_start = millis();
   _meas_period = delayus_period / 1000;
@@ -356,7 +360,8 @@ bool Adafruit_BME680::endReading(void) {
   Serial.println(F("Getting sensor data"));
 #endif
 
-  int8_t rslt = bme68x_get_data(BME68X_FORCED_MODE, &data, &n_fields, &gas_sensor);
+  int8_t rslt =
+      bme68x_get_data(BME68X_FORCED_MODE, &data, &n_fields, &gas_sensor);
 #ifdef BME680_DEBUG
   Serial.print(F("GetData Result: "));
   Serial.println(rslt);
@@ -374,11 +379,11 @@ bool Adafruit_BME680::endReading(void) {
     Serial.println(data.status, HEX);
 #endif
     if (data.status & (BME68X_HEAT_STAB_MSK | BME68X_GASM_VALID_MSK)) {
-      //Serial.print("Gas resistance: "); Serial.println(data.gas_resistance);
+      // Serial.print("Gas resistance: "); Serial.println(data.gas_resistance);
       gas_resistance = data.gas_resistance;
     } else {
       gas_resistance = 0;
-      //Serial.println("Gas reading unstable!");
+      // Serial.println("Gas reading unstable!");
     }
   }
 
@@ -419,14 +424,14 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
     gas_heatr_conf.heatr_dur = heaterTime;
   }
 
-  int8_t rslt = bme68x_set_heatr_conf(BME68X_FORCED_MODE, &gas_heatr_conf, &gas_sensor);
+  int8_t rslt =
+      bme68x_set_heatr_conf(BME68X_FORCED_MODE, &gas_heatr_conf, &gas_sensor);
 #ifdef BME680_DEBUG
   Serial.print(F("SetHeaterConf Result: "));
   Serial.println(rslt);
 #endif
   return rslt == 0;
 }
-
 
 bool Adafruit_BME680::setODR(uint8_t odr) {
   if (odr > BME68X_ODR_NONE)
@@ -441,7 +446,6 @@ bool Adafruit_BME680::setODR(uint8_t odr) {
 #endif
   return rslt == 0;
 }
-
 
 /*!
  *  @brief  Setter for Temperature oversampling
@@ -477,7 +481,7 @@ bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
 bool Adafruit_BME680::setHumidityOversampling(uint8_t oversample) {
   if (oversample > BME68X_OS_16X)
     return false;
-  
+
   gas_conf.os_hum = oversample;
 
   int8_t rslt = bme68x_set_conf(&gas_conf, &gas_sensor);
@@ -539,7 +543,7 @@ int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf) {
 
   Adafruit_I2CDevice *_dev = (Adafruit_I2CDevice *)intf;
 
-  if (! _dev->write_then_read(&reg_addr, 1, reg_data, len, true)) {
+  if (!_dev->write_then_read(&reg_addr, 1, reg_data, len, true)) {
     return -1;
   }
 
@@ -549,10 +553,11 @@ int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf) {
 /*!
  *  @brief  Writes 8 bit values over I2C
  */
-int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, void *intf) {
+int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
+                 void *intf) {
   Adafruit_I2CDevice *_dev = (Adafruit_I2CDevice *)intf;
 
-  if (! _dev->write((uint8_t *)reg_data, len, true, &reg_addr, 1)) {
+  if (!_dev->write((uint8_t *)reg_data, len, true, &reg_addr, 1)) {
     return -1;
   }
   return 0;
@@ -561,13 +566,13 @@ int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, void *
 /*!
  *  @brief  Reads 8 bit values over SPI
  */
-static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data,
-                       uint32_t len, void *intf_ptr) {
+static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len,
+                       void *intf_ptr) {
   Adafruit_SPIDevice *_dev = (Adafruit_SPIDevice *)intf_ptr;
 
   reg_addr |= 0x80;
 
-  if (! _dev->write_then_read(&reg_addr, 1, reg_data, len, 0x0)) {
+  if (!_dev->write_then_read(&reg_addr, 1, reg_data, len, 0x0)) {
     return -1;
   }
 
@@ -577,16 +582,18 @@ static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data,
 /*!
  *  @brief  Writes 8 bit values over SPI
  */
-static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data,
-                        uint32_t len, void *intf_ptr) {
+static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
+                        void *intf_ptr) {
   Adafruit_SPIDevice *_dev = (Adafruit_SPIDevice *)intf_ptr;
 
-  if (! _dev->write((uint8_t *)reg_data, len, &reg_addr, 1)) {
+  if (!_dev->write((uint8_t *)reg_data, len, &reg_addr, 1)) {
     return -1;
   }
 
   return 0;
 }
 
-
-static void delay_usec(uint32_t us, void *intf_ptr) { delayMicroseconds(us); yield(); }
+static void delay_usec(uint32_t us, void *intf_ptr) {
+  delayMicroseconds(us);
+  yield();
+}

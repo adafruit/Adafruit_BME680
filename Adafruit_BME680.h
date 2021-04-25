@@ -27,11 +27,10 @@
 #include "Arduino.h"
 
 #include "bme68x.h"
-#include <Adafruit_Sensor.h>
-#include <Wire.h>
 #include <Adafruit_I2CDevice.h>
 #include <Adafruit_SPIDevice.h>
-
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
 
 #define BME68X_DEFAULT_ADDRESS (0x77)    ///< The default I2C address
 #define BME68X_DEFAULT_SPIFREQ (1000000) ///< The default SPI Clock speed
@@ -51,7 +50,7 @@
 #define BME680_FILTER_SIZE_3 BME68X_FILTER_SIZE_3
 #define BME680_FILTER_SIZE_1 BME68X_FILTER_SIZE_1
 #define BME680_FILTER_SIZE_0 BME68X_FILTER_OFF
- 
+
 /*! Adafruit_BME680 Class for both I2C and SPI usage.
  *  Wraps the Bosch library for Arduino usage
  */
@@ -85,9 +84,7 @@ public:
   // Perform a reading in blocking mode.
   bool performReading();
 
-
   uint32_t beginReading();
-
 
   bool endReading();
 
