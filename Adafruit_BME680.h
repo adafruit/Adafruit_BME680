@@ -86,7 +86,7 @@ public:
   bool performReading();
 
 
-  unsigned long beginReading();
+  uint32_t beginReading();
 
 
   bool endReading();
