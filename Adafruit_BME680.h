@@ -84,26 +84,12 @@ public:
   // Perform a reading in blocking mode.
   bool performReading();
 
-  /*! @brief Begin an asynchronous reading.
-   *  @return When the reading would be ready as absolute time in millis().
-   */
+
   unsigned long beginReading();
 
-  /*! @brief  End an asynchronous reading.
-   *          If the asynchronous reading is still in progress, block until it
-   * ends. If no asynchronous reading has started, this is equivalent to
-   * performReading().
-   *  @return Whether success.
-   */
+
   bool endReading();
 
-  /*! @brief  Get remaining time for an asynchronous reading.
-   *          If the asynchronous reading is still in progress, how many millis
-   * until its completion. If the asynchronous reading is completed, 0. If no
-   * asynchronous reading has started, -1 or
-   * Adafruit_BME680::reading_not_started. Does not block.
-   *  @return Remaining millis until endReading will not block if invoked.
-   */
   int remainingReadingMillis();
 
   /** Temperature (Celsius) assigned after calling performReading() or

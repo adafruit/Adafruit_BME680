@@ -30,7 +30,7 @@
 #include "Adafruit_BME680.h"
 #include "Arduino.h"
 
-#define BME680_DEBUG
+//#define BME680_DEBUG
 
 /** SPI object **/
 SPIClass *_spi = NULL;
@@ -311,74 +311,56 @@ float Adafruit_BME680::readAltitude(float seaLevel) {
  * Adafruit_BME680#gas_resistance member variables
  *  @return True on success, False on failure
  */
-bool Adafruit_BME680::performReading(void) { return endReading(); }
+bool Adafruit_BME680::performReading(void) { 
+  return endReading();
+}
 
-unsigned long Adafruit_BME680::beginReading(void) {
+/*! @brief Begin an asynchronous reading.
+ *  @return When the reading would be ready as absolute time in millis().
+ */
+uint32_t Adafruit_BME680::beginReading(void) {
   if (_meas_start != 0) {
     /* A measurement is already in progress */
     return _meas_start + _meas_period;
   }
 
-  uint8_t set_required_settings = 0;
-  struct bme68x_conf conf;
-  struct bme68x_heatr_conf heatr_conf;
-  int8_t rslt;
-
-  /* Select the power mode */
-  /* Must be set before writing the sensor configuration */
-  rslt = bme68x_set_op_mode(BME68X_FORCED_MODE, &gas_sensor);
-
-  /* Set the required sensor settings needed
-  if (_tempEnabled)
-    set_required_settings |= BME68X_OST_SEL;
-  if (_humEnabled)
-    set_required_settings |= BME68X_OSH_SEL;
-  if (_presEnabled)
-    set_required_settings |= BME68X_OSP_SEL;
-  if (_filterEnabled)
-    set_required_settings |= BME68X_FILTER_SEL;
-  if (_gasEnabled)
-    set_required_settings |= BME68X_GAS_SENSOR_SEL;
- */
-    /* Set the desired sensor configuration
+  int8_t rslt = bme68x_set_op_mode(BME68X_FORCED_MODE, &gas_sensor);
 #ifdef BME680_DEBUG
-  Serial.println("Setting sensor settings");
+  Serial.print(F("Opmode Result: "));
+  Serial.println(rslt);
 #endif
-  rslt = bme680_set_sensor_settings(set_required_settings, &gas_sensor);
   if (rslt != BME68X_OK)
-    return 0;
- */
-    /* Set the power mode
-#ifdef BME680_DEBUG
-  Serial.println("Setting power mode");
-#endif
-  rslt = bme680_set_sensor_mode(&gas_sensor);
-  if (rslt != BME68X_OK)
-    return 0;
- */
-  /* Get the total measurement duration so as to sleep or wait till the
-   * measurement is complete 
-  uint16_t meas_period;
-  bme680_get_profile_dur(&meas_period, &gas_sensor);
+    return false;
+
+  /* Calculate delay period in microseconds */
+  uint32_t delayus_period = (uint32_t)bme68x_get_meas_dur(BME68X_FORCED_MODE, &gas_conf, &gas_sensor) + ((uint32_t)gas_heatr_conf.heatr_dur * 1000);
+  //Serial.print("measure: "); Serial.println(bme68x_get_meas_dur(BME68X_FORCED_MODE, &gas_conf, &gas_sensor));
+  //Serial.print("heater: "); Serial.println((uint32_t)gas_heatr_conf.heatr_dur * 1000);
+
   _meas_start = millis();
-  _meas_period = meas_period;
+  _meas_period = delayus_period / 1000;
 
   return _meas_start + _meas_period;
- */
-    return 0;
-
 }
 
+/*! @brief  End an asynchronous reading.
+ *          If the asynchronous reading is still in progress, block until it
+ * ends. If no asynchronous reading has started, this is equivalent to
+ * performReading().
+ *  @return Whether success.
+ */
 bool Adafruit_BME680::endReading(void) {
-  unsigned long meas_end = beginReading();
+  uint32_t meas_end = beginReading();
+
   if (meas_end == 0) {
     return false;
   }
 
   int remaining_millis = remainingReadingMillis();
+
   if (remaining_millis > 0) {
 #ifdef BME680_DEBUG
-    Serial.print("Waiting (ms) ");
+    Serial.print(F("Waiting (ms) "));
     Serial.println(remaining_millis);
 #endif
     delay(static_cast<unsigned int>(remaining_millis) *
@@ -388,55 +370,53 @@ bool Adafruit_BME680::endReading(void) {
   _meas_period = 0;
 
 #ifdef BME680_DEBUG
-  Serial.print("t_fine = ");
+  Serial.print(F("t_fine = "));
   Serial.println(gas_sensor.calib.t_fine);
 #endif
 
-  /*
-  struct bme680_field_data data;
+  struct bme68x_data data;
+  int8_t n_fields;
 
-  // Serial.println("Getting sensor data");
-  int8_t rslt = bme680_get_sensor_data(&data, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.println(F("Getting sensor data"));
+#endif
+
+  int8_t rslt = bme68x_get_data(BME68X_FORCED_MODE, &data, &n_fields, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.print(F("GetData Result: "));
+  Serial.println(rslt);
+#endif
   if (rslt != BME68X_OK)
     return false;
 
-  if (_tempEnabled) {
-    // Serial.print("Temp: "); Serial.println(data.temperature / 100.0, 2);
-    temperature = data.temperature / 100.0;
-  } else {
-    temperature = NAN;
-  }
-
-  if (_humEnabled) {
-    // Serial.print("Hum:  "); Serial.println(data.humidity / 1000.0, 2);
-    humidity = data.humidity / 1000.0;
-  } else {
-    humidity = NAN;
-  }
-
-  if (_presEnabled) {
-    // Serial.print("Pres: "); Serial.println(data.pressure, 2);
+  if (n_fields) {
+    temperature = data.temperature;
+    humidity = data.humidity;
     pressure = data.pressure;
-  } else {
-    pressure = 0;
-  }
 
-  /* Avoid using measurements from an unstable heating setup
-  if (_gasEnabled) {
-    if (data.status & BME68X_HEAT_STAB_MSK) {
-      // Serial.print("Gas resistance: "); Serial.println(data.gas_resistance);
+#ifdef BME680_DEBUG
+    Serial.print(F("data.status 0x"));
+    Serial.println(data.status, HEX);
+#endif
+    if (data.status & (BME68X_HEAT_STAB_MSK | BME68X_GASM_VALID_MSK)) {
+      //Serial.print("Gas resistance: "); Serial.println(data.gas_resistance);
       gas_resistance = data.gas_resistance;
     } else {
       gas_resistance = 0;
-      // Serial.println("Gas reading unstable!");
+      //Serial.println("Gas reading unstable!");
     }
-  } else {
-    gas_resistance = NAN;
   }
- */
+
   return true;
 }
 
+/*! @brief  Get remaining time for an asynchronous reading.
+ *          If the asynchronous reading is still in progress, how many millis
+ * until its completion. If the asynchronous reading is completed, 0. If no
+ * asynchronous reading has started, -1 or
+ * Adafruit_BME680::reading_not_started. Does not block.
+ *  @return Remaining millis until endReading will not block if invoked.
+ */
 int Adafruit_BME680::remainingReadingMillis(void) {
   if (_meas_start != 0) {
     /* A measurement is already in progress */
@@ -455,22 +435,21 @@ int Adafruit_BME680::remainingReadingMillis(void) {
  *  @return True on success, False on failure
  */
 bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
-/********
-  gas_sensor.gas_sett.heatr_temp = heaterTemp;
-  gas_sensor.gas_sett.heatr_dur = heaterTime;
 
   if ((heaterTemp == 0) || (heaterTime == 0)) {
-    // disabled!
-    gas_sensor.gas_sett.heatr_ctrl = BME68X_DISABLE_HEATER;
-    gas_sensor.gas_sett.run_gas = BME68X_DISABLE_GAS_MEAS;
-    _gasEnabled = false;
+    gas_heatr_conf.enable = BME68X_DISABLE;
   } else {
-    gas_sensor.gas_sett.heatr_ctrl = BME68X_ENABLE_HEATER;
-    gas_sensor.gas_sett.run_gas = BME68X_ENABLE_GAS_MEAS;
-    _gasEnabled = true;
+    gas_heatr_conf.enable = BME68X_ENABLE;
+    gas_heatr_conf.heatr_temp = heaterTemp;
+    gas_heatr_conf.heatr_dur = heaterTime;
   }
-  */
-  return true;
+
+  int8_t rslt = bme68x_set_heatr_conf(BME68X_FORCED_MODE, &gas_heatr_conf, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.print(F("SetHeaterConf Result: "));
+  Serial.println(rslt);
+#endif
+  return rslt == 0;
 }
 
 
