@@ -79,6 +79,7 @@ public:
   bool setHumidityOversampling(uint8_t os);
   bool setIIRFilterSize(uint8_t fs);
   bool setGasHeater(uint16_t heaterTemp, uint16_t heaterTime);
+  bool setODR(uint8_t odr);
 
   // Perform a reading in blocking mode.
   bool performReading();
@@ -119,11 +120,10 @@ public:
   uint32_t gas_resistance;
 
 private:
-  bool _filterEnabled, _tempEnabled, _humEnabled, _presEnabled, _gasEnabled;
+  bool _gasEnabled;
   Adafruit_I2CDevice *_i2cdev = NULL;
   TwoWire *_wire = NULL;
 
-  uint8_t _i2caddr;
   int32_t _sensorID;
   int8_t _cs;
   unsigned long _meas_start;
@@ -132,6 +132,8 @@ private:
   uint8_t spixfer(uint8_t x);
 
   struct bme68x_dev gas_sensor;
+  struct bme68x_conf gas_conf;
+  struct bme68x_heatr_conf gas_heatr_conf;
 };
 
 #endif

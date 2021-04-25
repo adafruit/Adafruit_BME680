@@ -65,8 +65,6 @@ Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
   _BME68X_SoftwareSPI_MOSI = -1;
   _BME68X_SoftwareSPI_MISO = -1;
   _BME68X_SoftwareSPI_SCK = -1;
-  _filterEnabled = _tempEnabled = _humEnabled = _presEnabled = _gasEnabled =
-      false;
 }
 
 /*!
@@ -82,8 +80,6 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
   _BME68X_SoftwareSPI_MOSI = -1;
   _BME68X_SoftwareSPI_MISO = -1;
   _BME68X_SoftwareSPI_SCK = -1;
-  _filterEnabled = _tempEnabled = _humEnabled = _presEnabled = _gasEnabled =
-      false;
 }
 
 /*!
@@ -103,8 +99,6 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin,
   _BME68X_SoftwareSPI_MOSI = mosipin;
   _BME68X_SoftwareSPI_MISO = misopin;
   _BME68X_SoftwareSPI_SCK = sckpin;
-  _filterEnabled = _tempEnabled = _humEnabled = _presEnabled = _gasEnabled =
-      false;
 }
 
 /*!
@@ -119,11 +113,12 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin,
  *  @return True on sensor initialization success. False on failure.
  */
 bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
-  _i2caddr = addr;
   int8_t rslt;
  
-  if (_cs == -1) {
-    // i2c
+  if (_cs == -1) {    // i2c
+    if (_i2cdev) {
+      delete _i2cdev;
+    }
     _i2cdev = new Adafruit_I2CDevice(addr, _wire);
     if (! _i2cdev->begin()) {
       return false;
@@ -134,7 +129,6 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
     gas_sensor.intf_ptr = (void *)_i2cdev;
     gas_sensor.read = &i2c_read;
     gas_sensor.write = &i2c_write;
-
 
   } else {
     digitalWrite(_cs, HIGH);
@@ -157,6 +151,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
     gas_sensor.write = &spi_write;
   }
 
+  gas_sensor.amb_temp = 25; /* The ambient temperature in deg C is used for defining the heater temperature */
   gas_sensor.delay_us = delay_usec;
 
   rslt = bme68x_init(&gas_sensor);
@@ -231,6 +226,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
   if (initSettings) {
     setIIRFilterSize(BME68X_FILTER_SIZE_3);
+    setODR(BME68X_ODR_NONE);
     setHumidityOversampling(BME68X_OS_2X);
     setPressureOversampling(BME68X_OS_4X);
     setTemperatureOversampling(BME68X_OS_8X);
@@ -477,6 +473,22 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
   return true;
 }
 
+
+bool Adafruit_BME680::setODR(uint8_t odr) {
+  if (odr > BME68X_ODR_NONE)
+    return false;
+
+  gas_conf.odr = odr;
+
+  int8_t rslt = bme68x_set_conf(&gas_conf, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.print(F("SetConf Result: "));
+  Serial.println(rslt);
+#endif
+  return rslt == 0;
+}
+
+
 /*!
  *  @brief  Setter for Temperature oversampling
  *  @param  oversample
@@ -489,15 +501,15 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
 bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
   if (oversample > BME68X_OS_16X)
     return false;
-  /*
-  gas_sensor.tph_sett.os_temp = oversample;
 
-  if (oversample == BME68X_OS_NONE)
-    _tempEnabled = false;
-  else
-    _tempEnabled = true;
-    */
-  return true;
+  gas_conf.os_temp = oversample;
+
+  int8_t rslt = bme68x_set_conf(&gas_conf, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.print(F("SetConf Result: "));
+  Serial.println(rslt);
+#endif
+  return rslt == 0;
 }
 
 /*!
@@ -511,15 +523,15 @@ bool Adafruit_BME680::setTemperatureOversampling(uint8_t oversample) {
 bool Adafruit_BME680::setHumidityOversampling(uint8_t oversample) {
   if (oversample > BME68X_OS_16X)
     return false;
-  /*
-  gas_sensor.tph_sett.os_hum = oversample;
+  
+  gas_conf.os_hum = oversample;
 
-  if (oversample == BME68X_OS_NONE)
-    _humEnabled = false;
-  else
-    _humEnabled = true;
-    */
-  return true;
+  int8_t rslt = bme68x_set_conf(&gas_conf, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.print(F("SetConf Result: "));
+  Serial.println(rslt);
+#endif
+  return rslt == 0;
 }
 
 /*!
@@ -534,16 +546,14 @@ bool Adafruit_BME680::setPressureOversampling(uint8_t oversample) {
   if (oversample > BME68X_OS_16X)
     return false;
 
-  /*
-  gas_sensor.tph_sett.os_pres = oversample;
+  gas_conf.os_pres = oversample;
 
-  if (oversample == BME68X_OS_NONE)
-    _presEnabled = false;
-  else
-    _presEnabled = true;
-    */
-
-  return true;
+  int8_t rslt = bme68x_set_conf(&gas_conf, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.print(F("SetConf Result: "));
+  Serial.println(rslt);
+#endif
+  return rslt == 0;
 }
 
 /*!
@@ -558,15 +568,14 @@ bool Adafruit_BME680::setPressureOversampling(uint8_t oversample) {
 bool Adafruit_BME680::setIIRFilterSize(uint8_t filtersize) {
   if (filtersize > BME68X_FILTER_SIZE_127)
     return false;
-  /*
-  gas_sensor.tph_sett.filter = filtersize;
+  gas_conf.filter = filtersize;
 
-  if (filtersize == BME68X_FILTER_OFF)
-    _filterEnabled = false;
-  else
-    _filterEnabled = true;
-    */
-  return true;
+  int8_t rslt = bme68x_set_conf(&gas_conf, &gas_sensor);
+#ifdef BME680_DEBUG
+  Serial.print(F("SetConf Result: "));
+  Serial.println(rslt);
+#endif
+  return rslt == 0;
 }
 
 /*!
