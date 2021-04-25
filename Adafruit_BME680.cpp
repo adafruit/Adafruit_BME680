@@ -433,6 +433,15 @@ bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
   return rslt == 0;
 }
 
+/*!
+ *  @brief  Setter for Output Data Rate
+ *  @param  odr
+ *          Output data rate setting, can be BME68X_ODR_NONE,
+ * BME68X_ODR_0_59_MS, BME68X_ODR_10_MS, BME68X_ODR_20_MS, BME68X_ODR_62_5_MS,
+ * BME68X_ODR_125_MS, BME68X_ODR_250_MS, BME68X_ODR_500_MS, BME68X_ODR_1000_MS
+ *  @return True on success, False on failure
+ */
+
 bool Adafruit_BME680::setODR(uint8_t odr) {
   if (odr > BME68X_ODR_NONE)
     return false;

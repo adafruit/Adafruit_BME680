@@ -35,21 +35,29 @@
 #define BME68X_DEFAULT_ADDRESS (0x77)    ///< The default I2C address
 #define BME68X_DEFAULT_SPIFREQ (1000000) ///< The default SPI Clock speed
 
-#define BME680_OS_16X BME68X_OS_16X
-#define BME680_OS_8X BME68X_OS_8X
-#define BME680_OS_4X BME68X_OS_4X
-#define BME680_OS_2X BME68X_OS_2X
-#define BME680_OS_1X BME68X_OS_1X
-#define BME680_OS_NONE BME68X_OS_NONE
+#define BME680_OS_16X BME68X_OS_16X   ///< Alias for BME680 existing examples
+#define BME680_OS_8X BME68X_OS_8X     ///< Alias for BME680 existing examples
+#define BME680_OS_4X BME68X_OS_4X     ///< Alias for BME680 existing examples
+#define BME680_OS_2X BME68X_OS_2X     ///< Alias for BME680 existing examples
+#define BME680_OS_1X BME68X_OS_1X     ///< Alias for BME680 existing examples
+#define BME680_OS_NONE BME68X_OS_NONE ///< Alias for BME680 existing examples
 
-#define BME680_FILTER_SIZE_127 BME68X_FILTER_SIZE_127
-#define BME680_FILTER_SIZE_63 BME68X_FILTER_SIZE_63
-#define BME680_FILTER_SIZE_31 BME68X_FILTER_SIZE_31
-#define BME680_FILTER_SIZE_15 BME68X_FILTER_SIZE_15
-#define BME680_FILTER_SIZE_7 BME68X_FILTER_SIZE_7
-#define BME680_FILTER_SIZE_3 BME68X_FILTER_SIZE_3
-#define BME680_FILTER_SIZE_1 BME68X_FILTER_SIZE_1
-#define BME680_FILTER_SIZE_0 BME68X_FILTER_OFF
+#define BME680_FILTER_SIZE_127                                                 \
+  BME68X_FILTER_SIZE_127 ///< Alias for BME680 existing examples
+#define BME680_FILTER_SIZE_63                                                  \
+  BME68X_FILTER_SIZE_63 ///< Alias for BME680 existing examples
+#define BME680_FILTER_SIZE_31                                                  \
+  BME68X_FILTER_SIZE_31 ///< Alias for BME680 existing examples
+#define BME680_FILTER_SIZE_15                                                  \
+  BME68X_FILTER_SIZE_15 ///< Alias for BME680 existing examples
+#define BME680_FILTER_SIZE_7                                                   \
+  BME68X_FILTER_SIZE_7 ///< Alias for BME680 existing examples
+#define BME680_FILTER_SIZE_3                                                   \
+  BME68X_FILTER_SIZE_3 ///< Alias for BME680 existing examples
+#define BME680_FILTER_SIZE_1                                                   \
+  BME68X_FILTER_SIZE_1 ///< Alias for BME680 existing examples
+#define BME680_FILTER_SIZE_0                                                   \
+  BME68X_FILTER_OFF ///< Alias for BME680 existing examples
 
 /*! Adafruit_BME680 Class for both I2C and SPI usage.
  *  Wraps the Bosch library for Arduino usage
