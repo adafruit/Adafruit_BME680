@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['endreading',['endReading',['../class_adafruit___b_m_e680.html#a7840c05a63b0b814866f7ccb6dccf767',1,'Adafruit_BME680']]]
+  ['gas_5fresistance',['gas_resistance',['../class_adafruit___b_m_e680.html#a7e8e32861906af3bc07f748cf19ebfa8',1,'Adafruit_BME680']]]
 ];

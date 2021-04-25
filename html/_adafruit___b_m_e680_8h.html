@@ -66,9 +66,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;Arduino.h&quot;</code><br />
-<code>#include &quot;bme680.h&quot;</code><br />
+<code>#include &quot;bme68x.h&quot;</code><br />
+<code>#include &lt;Adafruit_I2CDevice.h&gt;</code><br />
+<code>#include &lt;Adafruit_SPIDevice.h&gt;</code><br />
 <code>#include &lt;Adafruit_Sensor.h&gt;</code><br />
-<code>#include &lt;SPI.h&gt;</code><br />
 <code>#include &lt;Wire.h&gt;</code><br />
 </div>
 <p><a href="_adafruit___b_m_e680_8h_source.html">Go to the source code of this file.</a></p>
@@ -80,14 +81,70 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a66e0a51ad137d54ae56179e537c51f2e"><td class="memItemLeft" align="right" valign="top"><a id="a66e0a51ad137d54ae56179e537c51f2e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a>&#160;&#160;&#160;(0x77)</td></tr>
-<tr class="memdesc:a66e0a51ad137d54ae56179e537c51f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default I2C address. <br /></td></tr>
-<tr class="separator:a66e0a51ad137d54ae56179e537c51f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86ab99360e3b0d443493e63697280001"><td class="memItemLeft" align="right" valign="top"><a id="a86ab99360e3b0d443493e63697280001"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a86ab99360e3b0d443493e63697280001">BME680_DEFAULT_SPIFREQ</a>&#160;&#160;&#160;(1000000)</td></tr>
-<tr class="memdesc:a86ab99360e3b0d443493e63697280001"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default SPI Clock speed. <br /></td></tr>
-<tr class="separator:a86ab99360e3b0d443493e63697280001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a574eacb90d6c968c0b40006936d1c75e"><td class="memItemLeft" align="right" valign="top"><a id="a574eacb90d6c968c0b40006936d1c75e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a574eacb90d6c968c0b40006936d1c75e">BME68X_DEFAULT_ADDRESS</a>&#160;&#160;&#160;(0x77)</td></tr>
+<tr class="memdesc:a574eacb90d6c968c0b40006936d1c75e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default I2C address. <br /></td></tr>
+<tr class="separator:a574eacb90d6c968c0b40006936d1c75e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a028def1ac97b26332617604d01db2b00"><td class="memItemLeft" align="right" valign="top"><a id="a028def1ac97b26332617604d01db2b00"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a028def1ac97b26332617604d01db2b00">BME68X_DEFAULT_SPIFREQ</a>&#160;&#160;&#160;(1000000)</td></tr>
+<tr class="memdesc:a028def1ac97b26332617604d01db2b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default SPI Clock speed. <br /></td></tr>
+<tr class="separator:a028def1ac97b26332617604d01db2b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abba27bfd061689ca82ee9bac3a11f31e"><td class="memItemLeft" align="right" valign="top"><a id="abba27bfd061689ca82ee9bac3a11f31e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#abba27bfd061689ca82ee9bac3a11f31e">BME680_OS_16X</a>&#160;&#160;&#160;BME68X_OS_16X</td></tr>
+<tr class="memdesc:abba27bfd061689ca82ee9bac3a11f31e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:abba27bfd061689ca82ee9bac3a11f31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae262407360d48abca904e671cc824466"><td class="memItemLeft" align="right" valign="top"><a id="ae262407360d48abca904e671cc824466"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#ae262407360d48abca904e671cc824466">BME680_OS_8X</a>&#160;&#160;&#160;BME68X_OS_8X</td></tr>
+<tr class="memdesc:ae262407360d48abca904e671cc824466"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:ae262407360d48abca904e671cc824466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c3caae2c0b27b0abf1dec7cddcd5c8d"><td class="memItemLeft" align="right" valign="top"><a id="a4c3caae2c0b27b0abf1dec7cddcd5c8d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a4c3caae2c0b27b0abf1dec7cddcd5c8d">BME680_OS_4X</a>&#160;&#160;&#160;BME68X_OS_4X</td></tr>
+<tr class="memdesc:a4c3caae2c0b27b0abf1dec7cddcd5c8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a4c3caae2c0b27b0abf1dec7cddcd5c8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52e63cfbad8239eefa594fc823306dfb"><td class="memItemLeft" align="right" valign="top"><a id="a52e63cfbad8239eefa594fc823306dfb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a52e63cfbad8239eefa594fc823306dfb">BME680_OS_2X</a>&#160;&#160;&#160;BME68X_OS_2X</td></tr>
+<tr class="memdesc:a52e63cfbad8239eefa594fc823306dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a52e63cfbad8239eefa594fc823306dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90f5a043c6dcb6382136d674bdddaf9f"><td class="memItemLeft" align="right" valign="top"><a id="a90f5a043c6dcb6382136d674bdddaf9f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a90f5a043c6dcb6382136d674bdddaf9f">BME680_OS_1X</a>&#160;&#160;&#160;BME68X_OS_1X</td></tr>
+<tr class="memdesc:a90f5a043c6dcb6382136d674bdddaf9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a90f5a043c6dcb6382136d674bdddaf9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ba113b3902da4c9baf45da5f32958d0"><td class="memItemLeft" align="right" valign="top"><a id="a5ba113b3902da4c9baf45da5f32958d0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a5ba113b3902da4c9baf45da5f32958d0">BME680_OS_NONE</a>&#160;&#160;&#160;BME68X_OS_NONE</td></tr>
+<tr class="memdesc:a5ba113b3902da4c9baf45da5f32958d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a5ba113b3902da4c9baf45da5f32958d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b5941f3e4e6344b6e2b3e28e6356074"><td class="memItemLeft" align="right" valign="top"><a id="a5b5941f3e4e6344b6e2b3e28e6356074"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a5b5941f3e4e6344b6e2b3e28e6356074">BME680_FILTER_SIZE_127</a>&#160;&#160;&#160;BME68X_FILTER_SIZE_127</td></tr>
+<tr class="memdesc:a5b5941f3e4e6344b6e2b3e28e6356074"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a5b5941f3e4e6344b6e2b3e28e6356074"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f71fe46cd0b97165d8dd4fce562dbf8"><td class="memItemLeft" align="right" valign="top"><a id="a6f71fe46cd0b97165d8dd4fce562dbf8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a6f71fe46cd0b97165d8dd4fce562dbf8">BME680_FILTER_SIZE_63</a>&#160;&#160;&#160;BME68X_FILTER_SIZE_63</td></tr>
+<tr class="memdesc:a6f71fe46cd0b97165d8dd4fce562dbf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a6f71fe46cd0b97165d8dd4fce562dbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f3b3c9a71391d53ca2649ab6d823592"><td class="memItemLeft" align="right" valign="top"><a id="a2f3b3c9a71391d53ca2649ab6d823592"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a2f3b3c9a71391d53ca2649ab6d823592">BME680_FILTER_SIZE_31</a>&#160;&#160;&#160;BME68X_FILTER_SIZE_31</td></tr>
+<tr class="memdesc:a2f3b3c9a71391d53ca2649ab6d823592"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a2f3b3c9a71391d53ca2649ab6d823592"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb92ac0b2821a64b8fd76f24a1e60485"><td class="memItemLeft" align="right" valign="top"><a id="aeb92ac0b2821a64b8fd76f24a1e60485"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#aeb92ac0b2821a64b8fd76f24a1e60485">BME680_FILTER_SIZE_15</a>&#160;&#160;&#160;BME68X_FILTER_SIZE_15</td></tr>
+<tr class="memdesc:aeb92ac0b2821a64b8fd76f24a1e60485"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:aeb92ac0b2821a64b8fd76f24a1e60485"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5678e5df2163711af64b392bff862b9"><td class="memItemLeft" align="right" valign="top"><a id="ab5678e5df2163711af64b392bff862b9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#ab5678e5df2163711af64b392bff862b9">BME680_FILTER_SIZE_7</a>&#160;&#160;&#160;BME68X_FILTER_SIZE_7</td></tr>
+<tr class="memdesc:ab5678e5df2163711af64b392bff862b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:ab5678e5df2163711af64b392bff862b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8827e54c9ae9a50b5b86024369428fa4"><td class="memItemLeft" align="right" valign="top"><a id="a8827e54c9ae9a50b5b86024369428fa4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a8827e54c9ae9a50b5b86024369428fa4">BME680_FILTER_SIZE_3</a>&#160;&#160;&#160;BME68X_FILTER_SIZE_3</td></tr>
+<tr class="memdesc:a8827e54c9ae9a50b5b86024369428fa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a8827e54c9ae9a50b5b86024369428fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a577fdee6366e9677903cc5b80be9348d"><td class="memItemLeft" align="right" valign="top"><a id="a577fdee6366e9677903cc5b80be9348d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a577fdee6366e9677903cc5b80be9348d">BME680_FILTER_SIZE_1</a>&#160;&#160;&#160;BME68X_FILTER_SIZE_1</td></tr>
+<tr class="memdesc:a577fdee6366e9677903cc5b80be9348d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a577fdee6366e9677903cc5b80be9348d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5edcb9fcb77440f52d2b2865a89b5475"><td class="memItemLeft" align="right" valign="top"><a id="a5edcb9fcb77440f52d2b2865a89b5475"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_adafruit___b_m_e680_8h.html#a5edcb9fcb77440f52d2b2865a89b5475">BME680_FILTER_SIZE_0</a>&#160;&#160;&#160;BME68X_FILTER_OFF</td></tr>
+<tr class="memdesc:a5edcb9fcb77440f52d2b2865a89b5475"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for BME680 existing examples. <br /></td></tr>
+<tr class="separator:a5edcb9fcb77440f52d2b2865a89b5475"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Adafruit BME680 temperature, humidity, barometric pressure and gas sensor driver</p>

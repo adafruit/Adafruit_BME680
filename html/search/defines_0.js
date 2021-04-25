@@ -1,5 +1,19 @@
 var searchData=
 [
-  ['bme680_5fdefault_5faddress',['BME680_DEFAULT_ADDRESS',['../_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e',1,'Adafruit_BME680.h']]],
-  ['bme680_5fdefault_5fspifreq',['BME680_DEFAULT_SPIFREQ',['../_adafruit___b_m_e680_8h.html#a86ab99360e3b0d443493e63697280001',1,'Adafruit_BME680.h']]]
+  ['bme680_5ffilter_5fsize_5f0',['BME680_FILTER_SIZE_0',['../_adafruit___b_m_e680_8h.html#a5edcb9fcb77440f52d2b2865a89b5475',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f1',['BME680_FILTER_SIZE_1',['../_adafruit___b_m_e680_8h.html#a577fdee6366e9677903cc5b80be9348d',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f127',['BME680_FILTER_SIZE_127',['../_adafruit___b_m_e680_8h.html#a5b5941f3e4e6344b6e2b3e28e6356074',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f15',['BME680_FILTER_SIZE_15',['../_adafruit___b_m_e680_8h.html#aeb92ac0b2821a64b8fd76f24a1e60485',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f3',['BME680_FILTER_SIZE_3',['../_adafruit___b_m_e680_8h.html#a8827e54c9ae9a50b5b86024369428fa4',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f31',['BME680_FILTER_SIZE_31',['../_adafruit___b_m_e680_8h.html#a2f3b3c9a71391d53ca2649ab6d823592',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f63',['BME680_FILTER_SIZE_63',['../_adafruit___b_m_e680_8h.html#a6f71fe46cd0b97165d8dd4fce562dbf8',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f7',['BME680_FILTER_SIZE_7',['../_adafruit___b_m_e680_8h.html#ab5678e5df2163711af64b392bff862b9',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f16x',['BME680_OS_16X',['../_adafruit___b_m_e680_8h.html#abba27bfd061689ca82ee9bac3a11f31e',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f1x',['BME680_OS_1X',['../_adafruit___b_m_e680_8h.html#a90f5a043c6dcb6382136d674bdddaf9f',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f2x',['BME680_OS_2X',['../_adafruit___b_m_e680_8h.html#a52e63cfbad8239eefa594fc823306dfb',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f4x',['BME680_OS_4X',['../_adafruit___b_m_e680_8h.html#a4c3caae2c0b27b0abf1dec7cddcd5c8d',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f8x',['BME680_OS_8X',['../_adafruit___b_m_e680_8h.html#ae262407360d48abca904e671cc824466',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5fnone',['BME680_OS_NONE',['../_adafruit___b_m_e680_8h.html#a5ba113b3902da4c9baf45da5f32958d0',1,'Adafruit_BME680.h']]],
+  ['bme68x_5fdefault_5faddress',['BME68X_DEFAULT_ADDRESS',['../_adafruit___b_m_e680_8h.html#a574eacb90d6c968c0b40006936d1c75e',1,'Adafruit_BME680.h']]],
+  ['bme68x_5fdefault_5fspifreq',['BME68X_DEFAULT_SPIFREQ',['../_adafruit___b_m_e680_8h.html#a028def1ac97b26332617604d01db2b00',1,'Adafruit_BME680.h']]]
 ];

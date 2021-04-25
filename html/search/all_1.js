@@ -1,7 +1,21 @@
 var searchData=
 [
-  ['adafruit_5fbme680',['Adafruit_BME680',['../class_adafruit___b_m_e680.html',1,'Adafruit_BME680'],['../class_adafruit___b_m_e680.html#ab61b5e1bc72e9fab8a2e63e86326eb9a',1,'Adafruit_BME680::Adafruit_BME680(TwoWire *theWire=&amp;Wire)'],['../class_adafruit___b_m_e680.html#ab0251724aa30376a65956d783f5a5a39',1,'Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI=&amp;SPI)'],['../class_adafruit___b_m_e680.html#a8e89aaed66497bb2dde7ab678aa81173',1,'Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)']]],
-  ['adafruit_5fbme680_2ecpp',['Adafruit_BME680.cpp',['../_adafruit___b_m_e680_8cpp.html',1,'']]],
-  ['adafruit_5fbme680_2eh',['Adafruit_BME680.h',['../_adafruit___b_m_e680_8h.html',1,'']]],
-  ['adafruit_20bme680_20temperature_2c_20humidity_2c_20barometric_20pressure_20and_20gas',['Adafruit BME680 temperature, humidity, barometric pressure and gas',['../index.html',1,'']]]
+  ['begin',['begin',['../class_adafruit___b_m_e680.html#a902242a4ff4fee842c04243434a4873f',1,'Adafruit_BME680']]],
+  ['beginreading',['beginReading',['../class_adafruit___b_m_e680.html#ae9d8a69b05e77a12a13e413f05d57367',1,'Adafruit_BME680']]],
+  ['bme680_5ffilter_5fsize_5f0',['BME680_FILTER_SIZE_0',['../_adafruit___b_m_e680_8h.html#a5edcb9fcb77440f52d2b2865a89b5475',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f1',['BME680_FILTER_SIZE_1',['../_adafruit___b_m_e680_8h.html#a577fdee6366e9677903cc5b80be9348d',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f127',['BME680_FILTER_SIZE_127',['../_adafruit___b_m_e680_8h.html#a5b5941f3e4e6344b6e2b3e28e6356074',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f15',['BME680_FILTER_SIZE_15',['../_adafruit___b_m_e680_8h.html#aeb92ac0b2821a64b8fd76f24a1e60485',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f3',['BME680_FILTER_SIZE_3',['../_adafruit___b_m_e680_8h.html#a8827e54c9ae9a50b5b86024369428fa4',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f31',['BME680_FILTER_SIZE_31',['../_adafruit___b_m_e680_8h.html#a2f3b3c9a71391d53ca2649ab6d823592',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f63',['BME680_FILTER_SIZE_63',['../_adafruit___b_m_e680_8h.html#a6f71fe46cd0b97165d8dd4fce562dbf8',1,'Adafruit_BME680.h']]],
+  ['bme680_5ffilter_5fsize_5f7',['BME680_FILTER_SIZE_7',['../_adafruit___b_m_e680_8h.html#ab5678e5df2163711af64b392bff862b9',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f16x',['BME680_OS_16X',['../_adafruit___b_m_e680_8h.html#abba27bfd061689ca82ee9bac3a11f31e',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f1x',['BME680_OS_1X',['../_adafruit___b_m_e680_8h.html#a90f5a043c6dcb6382136d674bdddaf9f',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f2x',['BME680_OS_2X',['../_adafruit___b_m_e680_8h.html#a52e63cfbad8239eefa594fc823306dfb',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f4x',['BME680_OS_4X',['../_adafruit___b_m_e680_8h.html#a4c3caae2c0b27b0abf1dec7cddcd5c8d',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5f8x',['BME680_OS_8X',['../_adafruit___b_m_e680_8h.html#ae262407360d48abca904e671cc824466',1,'Adafruit_BME680.h']]],
+  ['bme680_5fos_5fnone',['BME680_OS_NONE',['../_adafruit___b_m_e680_8h.html#a5ba113b3902da4c9baf45da5f32958d0',1,'Adafruit_BME680.h']]],
+  ['bme68x_5fdefault_5faddress',['BME68X_DEFAULT_ADDRESS',['../_adafruit___b_m_e680_8h.html#a574eacb90d6c968c0b40006936d1c75e',1,'Adafruit_BME680.h']]],
+  ['bme68x_5fdefault_5fspifreq',['BME68X_DEFAULT_SPIFREQ',['../_adafruit___b_m_e680_8h.html#a028def1ac97b26332617604d01db2b00',1,'Adafruit_BME680.h']]]
 ];

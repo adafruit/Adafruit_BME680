@@ -1,10 +1,10 @@
 var indexSectionsWithContent =
 {
-  0: "_abeghprst",
+  0: "abeghprst",
   1: "a",
   2: "a",
   3: "abeprs",
-  4: "_ghprt",
+  4: "ghprt",
   5: "b",
   6: "a"
 };

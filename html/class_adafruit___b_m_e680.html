@@ -81,9 +81,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8e89aaed66497bb2dde7ab678aa81173"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8e89aaed66497bb2dde7ab678aa81173">Adafruit_BME680</a> (int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin)</td></tr>
 <tr class="memdesc:a8e89aaed66497bb2dde7ab678aa81173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates sensor with Software (bit-bang) SPI.  <a href="#a8e89aaed66497bb2dde7ab678aa81173">More...</a><br /></td></tr>
 <tr class="separator:a8e89aaed66497bb2dde7ab678aa81173"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">begin</a> (uint8_t addr=<a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a>, bool initSettings=true)</td></tr>
-<tr class="memdesc:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sensor Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads calibration data in preparation for sensor reads.  <a href="#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">More...</a><br /></td></tr>
-<tr class="separator:a8c34e1fd143f8d5ed22ac0d9afbe7c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902242a4ff4fee842c04243434a4873f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a902242a4ff4fee842c04243434a4873f">begin</a> (uint8_t addr=<a class="el" href="_adafruit___b_m_e680_8h.html#a574eacb90d6c968c0b40006936d1c75e">BME68X_DEFAULT_ADDRESS</a>, bool initSettings=true)</td></tr>
+<tr class="memdesc:a902242a4ff4fee842c04243434a4873f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the sensor Hardware ss initialized, verifies it is in the I2C or SPI bus, then reads calibration data in preparation for sensor reads.  <a href="#a902242a4ff4fee842c04243434a4873f">More...</a><br /></td></tr>
+<tr class="separator:a902242a4ff4fee842c04243434a4873f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9546f6f8a5e53d033bbb0cd26d6fc1c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ac9546f6f8a5e53d033bbb0cd26d6fc1c">readTemperature</a> ()</td></tr>
 <tr class="memdesc:ac9546f6f8a5e53d033bbb0cd26d6fc1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a reading and returns the ambient temperature.  <a href="#ac9546f6f8a5e53d033bbb0cd26d6fc1c">More...</a><br /></td></tr>
 <tr class="separator:ac9546f6f8a5e53d033bbb0cd26d6fc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -114,12 +114,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2e6a61b5441c51bf5e44c3af3ee3fec8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a2e6a61b5441c51bf5e44c3af3ee3fec8">setGasHeater</a> (uint16_t heaterTemp, uint16_t heaterTime)</td></tr>
 <tr class="memdesc:a2e6a61b5441c51bf5e44c3af3ee3fec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable and configure gas reading + heater.  <a href="#a2e6a61b5441c51bf5e44c3af3ee3fec8">More...</a><br /></td></tr>
 <tr class="separator:a2e6a61b5441c51bf5e44c3af3ee3fec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10a41f3f7255ccac795ab3c1bd530de2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a10a41f3f7255ccac795ab3c1bd530de2">setODR</a> (uint8_t odr)</td></tr>
+<tr class="memdesc:a10a41f3f7255ccac795ab3c1bd530de2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setter for Output Data Rate.  <a href="#a10a41f3f7255ccac795ab3c1bd530de2">More...</a><br /></td></tr>
+<tr class="separator:a10a41f3f7255ccac795ab3c1bd530de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96489aa0c1c9bbbf066a0c915bc215b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9">performReading</a> ()</td></tr>
 <tr class="memdesc:a96489aa0c1c9bbbf066a0c915bc215b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a full reading of all 4 sensors in the BME680. Assigns the internal <a class="el" href="class_adafruit___b_m_e680.html#a074501406d2bf249551e3e489cb9316e">Adafruit_BME680::temperature</a>, <a class="el" href="class_adafruit___b_m_e680.html#a1630ed8945a52438c9f1b40e17d6bfd0">Adafruit_BME680::pressure</a>, <a class="el" href="class_adafruit___b_m_e680.html#a442787f3ad0f2ab9087535ba9c22102b">Adafruit_BME680::humidity</a> and <a class="el" href="class_adafruit___b_m_e680.html#a7e8e32861906af3bc07f748cf19ebfa8">Adafruit_BME680::gas_resistance</a> member variables.  <a href="#a96489aa0c1c9bbbf066a0c915bc215b9">More...</a><br /></td></tr>
 <tr class="separator:a96489aa0c1c9bbbf066a0c915bc215b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a569c735cf07ef92d79315799468473cb"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a569c735cf07ef92d79315799468473cb">beginReading</a> ()</td></tr>
-<tr class="memdesc:a569c735cf07ef92d79315799468473cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin an asynchronous reading.  <a href="#a569c735cf07ef92d79315799468473cb">More...</a><br /></td></tr>
-<tr class="separator:a569c735cf07ef92d79315799468473cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9d8a69b05e77a12a13e413f05d57367"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#ae9d8a69b05e77a12a13e413f05d57367">beginReading</a> ()</td></tr>
+<tr class="memdesc:ae9d8a69b05e77a12a13e413f05d57367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Begin an asynchronous reading.  <a href="#ae9d8a69b05e77a12a13e413f05d57367">More...</a><br /></td></tr>
+<tr class="separator:ae9d8a69b05e77a12a13e413f05d57367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7840c05a63b0b814866f7ccb6dccf767"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adafruit___b_m_e680.html#a7840c05a63b0b814866f7ccb6dccf767">endReading</a> ()</td></tr>
 <tr class="memdesc:a7840c05a63b0b814866f7ccb6dccf767"><td class="mdescLeft">&#160;</td><td class="mdescRight">End an asynchronous reading. If the asynchronous reading is still in progress, block until it ends. If no asynchronous reading has started, this is equivalent to <a class="el" href="class_adafruit___b_m_e680.html#a96489aa0c1c9bbbf066a0c915bc215b9" title="Performs a full reading of all 4 sensors in the BME680. Assigns the internal Adafruit_BME680::tempera...">performReading()</a>.  <a href="#a7840c05a63b0b814866f7ccb6dccf767">More...</a><br /></td></tr>
 <tr class="separator:a7840c05a63b0b814866f7ccb6dccf767"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -263,8 +266,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8c34e1fd143f8d5ed22ac0d9afbe7c1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c34e1fd143f8d5ed22ac0d9afbe7c1a">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a902242a4ff4fee842c04243434a4873f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a902242a4ff4fee842c04243434a4873f">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -273,7 +276,7 @@ Static Public Attributes</h2></td></tr>
           <td class="memname">bool Adafruit_BME680::begin </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>addr</em> = <code><a class="el" href="_adafruit___b_m_e680_8h.html#a66e0a51ad137d54ae56179e537c51f2e">BME680_DEFAULT_ADDRESS</a></code>, </td>
+          <td class="paramname"><em>addr</em> = <code><a class="el" href="_adafruit___b_m_e680_8h.html#a574eacb90d6c968c0b40006936d1c75e">BME68X_DEFAULT_ADDRESS</a></code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -431,7 +434,7 @@ Static Public Attributes</h2></td></tr>
 <p>Setter for Temperature oversampling. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">oversample</td><td>Oversampling setting, can be BME680_OS_NONE (turn off Temperature reading), BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X </td></tr>
+    <tr><td class="paramname">oversample</td><td>Oversampling setting, can be BME68X_OS_NONE (turn off Temperature reading), BME68X_OS_1X, BME68X_OS_2X, BME68X_OS_4X, BME68X_OS_8X or BME68X_OS_16X </td></tr>
   </table>
   </dd>
 </dl>
@@ -458,7 +461,7 @@ Static Public Attributes</h2></td></tr>
 <p>Setter for Pressure oversampling. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">oversample</td><td>Oversampling setting, can be BME680_OS_NONE (turn off Pressure reading), BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X </td></tr>
+    <tr><td class="paramname">oversample</td><td>Oversampling setting, can be BME68X_OS_NONE (turn off Pressure reading), BME68X_OS_1X, BME68X_OS_2X, BME68X_OS_4X, BME68X_OS_8X or BME68X_OS_16X </td></tr>
   </table>
   </dd>
 </dl>
@@ -485,7 +488,7 @@ Static Public Attributes</h2></td></tr>
 <p>Setter for Humidity oversampling. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">oversample</td><td>Oversampling setting, can be BME680_OS_NONE (turn off Humidity reading), BME680_OS_1X, BME680_OS_2X, BME680_OS_4X, BME680_OS_8X or BME680_OS_16X </td></tr>
+    <tr><td class="paramname">oversample</td><td>Oversampling setting, can be BME68X_OS_NONE (turn off Humidity reading), BME68X_OS_1X, BME68X_OS_2X, BME68X_OS_4X, BME68X_OS_8X or BME68X_OS_16X </td></tr>
   </table>
   </dd>
 </dl>
@@ -512,7 +515,7 @@ Static Public Attributes</h2></td></tr>
 <p>Setter for IIR filter. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filtersize</td><td>Size of the filter (in samples). Can be BME680_FILTER_SIZE_0 (no filtering), BME680_FILTER_SIZE_1, BME680_FILTER_SIZE_3, BME680_FILTER_SIZE_7, BME680_FILTER_SIZE_15, BME680_FILTER_SIZE_31, BME680_FILTER_SIZE_63, BME680_FILTER_SIZE_127 </td></tr>
+    <tr><td class="paramname">filtersize</td><td>Size of the filter (in samples). Can be BME68X_FILTER_SIZE_0 (no filtering), BME68X_FILTER_SIZE_1, BME68X_FILTER_SIZE_3, BME68X_FILTER_SIZE_7, BME68X_FILTER_SIZE_15, BME68X_FILTER_SIZE_31, BME68X_FILTER_SIZE_63, BME68X_FILTER_SIZE_127 </td></tr>
   </table>
   </dd>
 </dl>
@@ -558,6 +561,33 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a10a41f3f7255ccac795ab3c1bd530de2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10a41f3f7255ccac795ab3c1bd530de2">&#9670;&nbsp;</a></span>setODR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Adafruit_BME680::setODR </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>odr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setter for Output Data Rate. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">odr</td><td>Output data rate setting, can be BME68X_ODR_NONE, BME68X_ODR_0_59_MS, BME68X_ODR_10_MS, BME68X_ODR_20_MS, BME68X_ODR_62_5_MS, BME68X_ODR_125_MS, BME68X_ODR_250_MS, BME68X_ODR_500_MS, BME68X_ODR_1000_MS </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True on success, False on failure </dd></dl>
+
+</div>
+</div>
 <a id="a96489aa0c1c9bbbf066a0c915bc215b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a96489aa0c1c9bbbf066a0c915bc215b9">&#9670;&nbsp;</a></span>performReading()</h2>
 
@@ -579,14 +609,14 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a569c735cf07ef92d79315799468473cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a569c735cf07ef92d79315799468473cb">&#9670;&nbsp;</a></span>beginReading()</h2>
+<a id="ae9d8a69b05e77a12a13e413f05d57367"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9d8a69b05e77a12a13e413f05d57367">&#9670;&nbsp;</a></span>beginReading()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned long Adafruit_BME680::beginReading </td>
+          <td class="memname">uint32_t Adafruit_BME680::beginReading </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
