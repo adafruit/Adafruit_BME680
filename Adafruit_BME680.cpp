@@ -32,14 +32,6 @@
 
 //#define BME680_DEBUG
 
-/** SPI object **/
-SPIClass *_spi = NULL;
-
-/** These SPI pins must be global in order to work with underlying library **/
-int8_t _BME68X_SoftwareSPI_MOSI; ///< Global SPI MOSI pin
-int8_t _BME68X_SoftwareSPI_MISO; ///< Global SPI MISO pin
-int8_t _BME68X_SoftwareSPI_SCK;  ///< Globak SPI Clock pin
-
 /** Our hardware interface functions **/
 static int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data,
                        uint32_t len, void *interface);
@@ -49,7 +41,6 @@ static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data,
                        uint32_t len, void *interface);
 static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data,
                         uint32_t len, void *interface);
-static uint8_t spi_transfer(uint8_t x);
 static void delay_usec(uint32_t us, void *intf_ptr);
 
 // PUBLIC FUNCTIONS
@@ -60,11 +51,8 @@ static void delay_usec(uint32_t us, void *intf_ptr);
  *          optional Wire object
  */
 Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
-    : _cs(-1), _meas_start(0), _meas_period(0) {
+    : _meas_start(0), _meas_period(0) {
   _wire = theWire;
-  _BME68X_SoftwareSPI_MOSI = -1;
-  _BME68X_SoftwareSPI_MISO = -1;
-  _BME68X_SoftwareSPI_SCK = -1;
 }
 
 /*!
@@ -75,11 +63,8 @@ Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
  *          optional SPI object
  */
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
-    : _cs(cspin), _meas_start(0), _meas_period(0) {
-  _spi = theSPI;
-  _BME68X_SoftwareSPI_MOSI = -1;
-  _BME68X_SoftwareSPI_MISO = -1;
-  _BME68X_SoftwareSPI_SCK = -1;
+    :  _meas_start(0), _meas_period(0) {
+  _spidev = new Adafruit_SPIDevice(cspin, 1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0, theSPI);
 }
 
 /*!
@@ -95,10 +80,9 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
  */
 Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin,
                                  int8_t sckpin)
-    : _cs(cspin), _meas_start(0), _meas_period(0) {
-  _BME68X_SoftwareSPI_MOSI = mosipin;
-  _BME68X_SoftwareSPI_MISO = misopin;
-  _BME68X_SoftwareSPI_SCK = sckpin;
+    : _meas_start(0), _meas_period(0) {
+  _spidev = new Adafruit_SPIDevice(cspin, sckpin, misopin, mosipin,
+                                   1000000, SPI_BITORDER_MSBFIRST, SPI_MODE0);
 }
 
 /*!
@@ -115,7 +99,7 @@ Adafruit_BME680::Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin,
 bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
   int8_t rslt;
  
-  if (_cs == -1) {    // i2c
+  if (! _spidev) {    // i2c
     if (_i2cdev) {
       delete _i2cdev;
     }
@@ -131,22 +115,13 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
     gas_sensor.write = &i2c_write;
 
   } else {
-    digitalWrite(_cs, HIGH);
-    pinMode(_cs, OUTPUT);
-
-    if (_BME68X_SoftwareSPI_SCK == -1) {
-      // hardware SPI
-      _spi->begin();
-    } else {
-      // software SPI
-      pinMode(_BME68X_SoftwareSPI_SCK, OUTPUT);
-      pinMode(_BME68X_SoftwareSPI_MOSI, OUTPUT);
-      pinMode(_BME68X_SoftwareSPI_MISO, INPUT);
+    if (! _spidev->begin()) {
+      return false;
     }
 
-    gas_sensor.chip_id = _cs;
+    gas_sensor.chip_id = 0;
     gas_sensor.intf = BME68X_SPI_INTF;
-    gas_sensor.intf_ptr = NULL;
+    gas_sensor.intf_ptr = (void *)_spidev;
     gas_sensor.read = &spi_read;
     gas_sensor.write = &spi_write;
   }
@@ -588,43 +563,14 @@ int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, void *
  */
 static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data,
                        uint32_t len, void *intf_ptr) {
-  /*
-#ifdef BME680_DEBUG
-  Serial.print("\tSPI $");
-  Serial.print(reg_addr, HEX);
-  Serial.print(" => ");
-#endif
+  Adafruit_SPIDevice *_dev = (Adafruit_SPIDevice *)intf_ptr;
 
-  // If hardware SPI we should use transactions!
-  if (_BME68X_SoftwareSPI_SCK == -1) {
-    _spi->beginTransaction(
-        SPISettings(BME68X_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
+  reg_addr |= 0x80;
+
+  if (! _dev->write_then_read(&reg_addr, 1, reg_data, len, 0x0)) {
+    return -1;
   }
 
-  digitalWrite(cspin, LOW);
-
-  spi_transfer(reg_addr | 0x80);
-
-  while (len--) {
-    *reg_data = spi_transfer(0x00);
-#ifdef BME680_DEBUG
-    Serial.print("0x");
-    Serial.print(*reg_data, HEX);
-    Serial.print(", ");
-#endif
-    reg_data++;
-  }
-
-  digitalWrite(cspin, HIGH);
-
-  if (_BME68X_SoftwareSPI_SCK == -1) {
-    _spi->endTransaction();
-  }
-
-#ifdef BME680_DEBUG
-  Serial.println("");
-#endif
-*/
   return 0;
 }
 
@@ -633,62 +579,14 @@ static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data,
  */
 static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data,
                         uint32_t len, void *intf_ptr) {
-  /*
+  Adafruit_SPIDevice *_dev = (Adafruit_SPIDevice *)intf_ptr;
 
-#ifdef BME680_DEBUG
-  Serial.print("\tSPI $");
-  Serial.print(reg_addr, HEX);
-  Serial.print(" <= ");
-#endif
-
-  // If hardware SPI we should use transactions!
-  if (_BME68X_SoftwareSPI_SCK == -1) {
-    _spi->beginTransaction(
-        SPISettings(BME68X_DEFAULT_SPIFREQ, MSBFIRST, SPI_MODE0));
+  if (! _dev->write(reg_data, len, &reg_addr, 1)) {
+    return -1;
   }
 
-  digitalWrite(cspin, LOW);
-
-  spi_transfer(reg_addr);
-  while (len--) {
-    spi_transfer(*reg_data);
-#ifdef BME680_DEBUG
-    Serial.print("0x");
-    Serial.print(*reg_data, HEX);
-    Serial.print(", ");
-#endif
-    reg_data++;
-  }
-
-  digitalWrite(cspin, HIGH);
-
-  if (_BME68X_SoftwareSPI_SCK == -1) {
-    _spi->endTransaction();
-  }
-
-#ifdef BME680_DEBUG
-  Serial.println("");
-#endif
-*/
   return 0;
 }
 
-static uint8_t spi_transfer(uint8_t x) {
-  if (_BME68X_SoftwareSPI_SCK == -1)
-    return _spi->transfer(x);
-
-  // software spi
-  // Serial.println("Software SPI");
-  uint8_t reply = 0;
-  for (int i = 7; i >= 0; i--) {
-    reply <<= 1;
-    digitalWrite(_BME68X_SoftwareSPI_SCK, LOW);
-    digitalWrite(_BME68X_SoftwareSPI_MOSI, x & (1 << i));
-    digitalWrite(_BME68X_SoftwareSPI_SCK, HIGH);
-    if (digitalRead(_BME68X_SoftwareSPI_MISO))
-      reply |= 1;
-  }
-  return reply;
-}
 
 static void delay_usec(uint32_t us, void *intf_ptr) { delayMicroseconds(us); yield(); }

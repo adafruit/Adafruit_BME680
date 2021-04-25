@@ -28,9 +28,10 @@
 
 #include "bme68x.h"
 #include <Adafruit_Sensor.h>
-#include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_I2CDevice.h>
+#include <Adafruit_SPIDevice.h>
+
 
 #define BME68X_DEFAULT_ADDRESS (0x77)    ///< The default I2C address
 #define BME68X_DEFAULT_SPIFREQ (1000000) ///< The default SPI Clock speed
@@ -106,16 +107,13 @@ public:
   uint32_t gas_resistance;
 
 private:
-  bool _gasEnabled;
   Adafruit_I2CDevice *_i2cdev = NULL;
+  Adafruit_SPIDevice *_spidev = NULL;
   TwoWire *_wire = NULL;
 
   int32_t _sensorID;
-  int8_t _cs;
-  unsigned long _meas_start;
-  uint16_t _meas_period;
-
-  uint8_t spixfer(uint8_t x);
+  uint32_t _meas_start = 0;
+  uint16_t _meas_period = 0;
 
   struct bme68x_dev gas_sensor;
   struct bme68x_conf gas_conf;
