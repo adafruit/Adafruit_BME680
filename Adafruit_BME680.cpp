@@ -603,6 +603,7 @@ static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
 }
 
 static void delay_usec(uint32_t us, void *intf_ptr) {
+  (void)intf_ptr; // Unused parameter
   delayMicroseconds(us);
   yield();
 }
