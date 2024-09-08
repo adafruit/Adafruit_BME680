@@ -29,6 +29,7 @@
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME680 bme(WIRE); // I2C
+//Adafruit_BME680 bme(&Wire1); // I2C on specified bus, ex: Wire1
 //Adafruit_BME680 bme(BME_CS); // hardware SPI
 //Adafruit_BME680 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
 
