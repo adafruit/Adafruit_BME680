@@ -27,7 +27,8 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-Adafruit_BME680 bme; // I2C
+Adafruit_BME680 bme(&Wire); // I2C
+//Adafruit_BME680 bme(&Wire1); // example of I2C on another bus
 //Adafruit_BME680 bme(BME_CS); // hardware SPI
 //Adafruit_BME680 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
 
