@@ -24,13 +24,13 @@
 #ifndef __BME680_H__
 #define __BME680_H__
 
-#include "Arduino.h"
-
-#include "bme68x.h"
 #include <Adafruit_I2CDevice.h>
 #include <Adafruit_SPIDevice.h>
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
+
+#include "Arduino.h"
+#include "bme68x.h"
 
 #define BME68X_DEFAULT_ADDRESS (0x77)    ///< The default I2C address
 #define BME68X_DEFAULT_SPIFREQ (1000000) ///< The default SPI Clock speed
@@ -42,28 +42,28 @@
 #define BME680_OS_1X BME68X_OS_1X     ///< Alias for BME680 existing examples
 #define BME680_OS_NONE BME68X_OS_NONE ///< Alias for BME680 existing examples
 
-#define BME680_FILTER_SIZE_127                                                 \
+#define BME680_FILTER_SIZE_127 \
   BME68X_FILTER_SIZE_127 ///< Alias for BME680 existing examples
-#define BME680_FILTER_SIZE_63                                                  \
+#define BME680_FILTER_SIZE_63 \
   BME68X_FILTER_SIZE_63 ///< Alias for BME680 existing examples
-#define BME680_FILTER_SIZE_31                                                  \
+#define BME680_FILTER_SIZE_31 \
   BME68X_FILTER_SIZE_31 ///< Alias for BME680 existing examples
-#define BME680_FILTER_SIZE_15                                                  \
+#define BME680_FILTER_SIZE_15 \
   BME68X_FILTER_SIZE_15 ///< Alias for BME680 existing examples
-#define BME680_FILTER_SIZE_7                                                   \
+#define BME680_FILTER_SIZE_7 \
   BME68X_FILTER_SIZE_7 ///< Alias for BME680 existing examples
-#define BME680_FILTER_SIZE_3                                                   \
+#define BME680_FILTER_SIZE_3 \
   BME68X_FILTER_SIZE_3 ///< Alias for BME680 existing examples
-#define BME680_FILTER_SIZE_1                                                   \
+#define BME680_FILTER_SIZE_1 \
   BME68X_FILTER_SIZE_1 ///< Alias for BME680 existing examples
-#define BME680_FILTER_SIZE_0                                                   \
+#define BME680_FILTER_SIZE_0 \
   BME68X_FILTER_OFF ///< Alias for BME680 existing examples
 
 /*! Adafruit_BME680 Class for both I2C and SPI usage.
  *  Wraps the Bosch library for Arduino usage
  */
 class Adafruit_BME680 {
-public:
+ public:
   /** Value returned by remainingReadingMillis indicating no asynchronous
    * reading has been initiated by beginReading. **/
   static constexpr int reading_not_started = -1;
@@ -71,8 +71,8 @@ public:
    * is complete and calling endReading will not block. **/
   static constexpr int reading_complete = 0;
 
-  Adafruit_BME680(TwoWire *theWire = &Wire);
-  Adafruit_BME680(int8_t cspin, SPIClass *theSPI = &SPI);
+  Adafruit_BME680(TwoWire* theWire = &Wire);
+  Adafruit_BME680(int8_t cspin, SPIClass* theSPI = &SPI);
   Adafruit_BME680(int8_t cspin, int8_t mosipin, int8_t misopin, int8_t sckpin);
 
   bool begin(uint8_t addr = BME68X_DEFAULT_ADDRESS, bool initSettings = true);
@@ -111,10 +111,10 @@ public:
    * endReading() **/
   uint32_t gas_resistance;
 
-private:
-  Adafruit_I2CDevice *_i2cdev = NULL;
-  Adafruit_SPIDevice *_spidev = NULL;
-  TwoWire *_wire = NULL;
+ private:
+  Adafruit_I2CDevice* _i2cdev = NULL;
+  Adafruit_SPIDevice* _spidev = NULL;
+  TwoWire* _wire = NULL;
 
   int32_t _sensorID;
   uint32_t _meas_start = 0;
