@@ -28,20 +28,21 @@
  */
 
 #include "Adafruit_BME680.h"
+
 #include "Arduino.h"
 
-//#define BME680_DEBUG
+// #define BME680_DEBUG
 
 /** Our hardware interface functions **/
-static int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len,
-                       void *interface);
-static int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
-                        void *interface);
-static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len,
-                       void *interface);
-static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
-                        void *interface);
-static void delay_usec(uint32_t us, void *intf_ptr);
+static int8_t i2c_read(uint8_t reg_addr, uint8_t* reg_data, uint32_t len,
+                       void* interface);
+static int8_t i2c_write(uint8_t reg_addr, const uint8_t* reg_data, uint32_t len,
+                        void* interface);
+static int8_t spi_read(uint8_t reg_addr, uint8_t* reg_data, uint32_t len,
+                       void* interface);
+static int8_t spi_write(uint8_t reg_addr, const uint8_t* reg_data, uint32_t len,
+                        void* interface);
+static void delay_usec(uint32_t us, void* intf_ptr);
 
 // PUBLIC FUNCTIONS
 
@@ -50,7 +51,7 @@ static void delay_usec(uint32_t us, void *intf_ptr);
  *  @param  *theWire
  *          optional Wire object
  */
-Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
+Adafruit_BME680::Adafruit_BME680(TwoWire* theWire)
     : _meas_start(0), _meas_period(0) {
   _wire = theWire;
 }
@@ -62,7 +63,7 @@ Adafruit_BME680::Adafruit_BME680(TwoWire *theWire)
  *  @param  theSPI
  *          optional SPI object
  */
-Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass *theSPI)
+Adafruit_BME680::Adafruit_BME680(int8_t cspin, SPIClass* theSPI)
     : _meas_start(0), _meas_period(0) {
   _spidev = new Adafruit_SPIDevice(cspin, 1000000, SPI_BITORDER_MSBFIRST,
                                    SPI_MODE0, theSPI);
@@ -111,7 +112,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
     gas_sensor.chip_id = addr;
     gas_sensor.intf = BME68X_I2C_INTF;
-    gas_sensor.intf_ptr = (void *)_i2cdev;
+    gas_sensor.intf_ptr = (void*)_i2cdev;
     gas_sensor.read = &i2c_read;
     gas_sensor.write = &i2c_write;
 
@@ -122,7 +123,7 @@ bool Adafruit_BME680::begin(uint8_t addr, bool initSettings) {
 
     gas_sensor.chip_id = 0;
     gas_sensor.intf = BME68X_SPI_INTF;
-    gas_sensor.intf_ptr = (void *)_spidev;
+    gas_sensor.intf_ptr = (void*)_spidev;
     gas_sensor.read = &spi_read;
     gas_sensor.write = &spi_write;
   }
@@ -288,7 +289,9 @@ float Adafruit_BME680::readAltitude(float seaLevel) {
  * Adafruit_BME680#gas_resistance member variables
  *  @return True on success, False on failure
  */
-bool Adafruit_BME680::performReading(void) { return endReading(); }
+bool Adafruit_BME680::performReading(void) {
+  return endReading();
+}
 
 /*! @brief Begin an asynchronous reading.
  *  @return When the reading would be ready as absolute time in millis().
@@ -415,7 +418,6 @@ int Adafruit_BME680::remainingReadingMillis(void) {
  *  @return True on success, False on failure
  */
 bool Adafruit_BME680::setGasHeater(uint16_t heaterTemp, uint16_t heaterTime) {
-
   if ((heaterTemp == 0) || (heaterTime == 0)) {
     gas_heatr_conf.enable = BME68X_DISABLE;
   } else {
@@ -548,9 +550,8 @@ bool Adafruit_BME680::setIIRFilterSize(uint8_t filtersize) {
 /*!
  *  @brief  Reads 8 bit values over I2C
  */
-int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf) {
-
-  Adafruit_I2CDevice *_dev = (Adafruit_I2CDevice *)intf;
+int8_t i2c_read(uint8_t reg_addr, uint8_t* reg_data, uint32_t len, void* intf) {
+  Adafruit_I2CDevice* _dev = (Adafruit_I2CDevice*)intf;
 
   if (!_dev->write_then_read(&reg_addr, 1, reg_data, len, true)) {
     return -1;
@@ -562,11 +563,11 @@ int8_t i2c_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf) {
 /*!
  *  @brief  Writes 8 bit values over I2C
  */
-int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
-                 void *intf) {
-  Adafruit_I2CDevice *_dev = (Adafruit_I2CDevice *)intf;
+int8_t i2c_write(uint8_t reg_addr, const uint8_t* reg_data, uint32_t len,
+                 void* intf) {
+  Adafruit_I2CDevice* _dev = (Adafruit_I2CDevice*)intf;
 
-  if (!_dev->write((uint8_t *)reg_data, len, true, &reg_addr, 1)) {
+  if (!_dev->write((uint8_t*)reg_data, len, true, &reg_addr, 1)) {
     return -1;
   }
   return 0;
@@ -575,9 +576,9 @@ int8_t i2c_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
 /*!
  *  @brief  Reads 8 bit values over SPI
  */
-static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len,
-                       void *intf_ptr) {
-  Adafruit_SPIDevice *_dev = (Adafruit_SPIDevice *)intf_ptr;
+static int8_t spi_read(uint8_t reg_addr, uint8_t* reg_data, uint32_t len,
+                       void* intf_ptr) {
+  Adafruit_SPIDevice* _dev = (Adafruit_SPIDevice*)intf_ptr;
 
   reg_addr |= 0x80;
 
@@ -591,18 +592,18 @@ static int8_t spi_read(uint8_t reg_addr, uint8_t *reg_data, uint32_t len,
 /*!
  *  @brief  Writes 8 bit values over SPI
  */
-static int8_t spi_write(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
-                        void *intf_ptr) {
-  Adafruit_SPIDevice *_dev = (Adafruit_SPIDevice *)intf_ptr;
+static int8_t spi_write(uint8_t reg_addr, const uint8_t* reg_data, uint32_t len,
+                        void* intf_ptr) {
+  Adafruit_SPIDevice* _dev = (Adafruit_SPIDevice*)intf_ptr;
 
-  if (!_dev->write((uint8_t *)reg_data, len, &reg_addr, 1)) {
+  if (!_dev->write((uint8_t*)reg_data, len, &reg_addr, 1)) {
     return -1;
   }
 
   return 0;
 }
 
-static void delay_usec(uint32_t us, void *intf_ptr) {
+static void delay_usec(uint32_t us, void* intf_ptr) {
   (void)intf_ptr; // Unused parameter
   delayMicroseconds(us);
   yield();
